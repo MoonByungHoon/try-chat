@@ -1,17 +1,23 @@
 package study.trychat.Dto;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import study.trychat.entity.Member;
 
 @Builder
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class MemberDto {
   private Long id;
   private String username;
   private String password;
+
+  public MemberDto(String username) {
+    this.username = username;
+  }
 
   public Member toEntity() {
     return Member.builder()
