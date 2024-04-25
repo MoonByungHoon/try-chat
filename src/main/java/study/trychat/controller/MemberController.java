@@ -3,10 +3,7 @@ package study.trychat.controller;
 import jakarta.persistence.EntityExistsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import study.trychat.Dto.MemberDto;
 import study.trychat.service.MemberService;
 
@@ -18,7 +15,7 @@ public class MemberController {
   private final MemberService memberService;
 
   @PostMapping("/sign-up")
-  public ResponseEntity<?> signIn(@RequestBody MemberDto memberDto) {
+  public ResponseEntity<?> signUp(@RequestBody MemberDto memberDto) {
     try {
       ResponseEntity.ok().body(memberService.signIn(memberDto));
 
@@ -27,5 +24,27 @@ public class MemberController {
 
       return ResponseEntity.badRequest().body(e.getMessage());
     }
+  }
+
+  @GetMapping("/sign-in")
+  public ResponseEntity<?> signIn(@RequestBody MemberDto memberDto) {
+
+    return ResponseEntity.ok(200);
+  }
+
+  @PutMapping("/update/{id}")
+  public ResponseEntity<?> update(@PathVariable("id") Long id,
+                                  @RequestBody MemberDto memberDto) {
+
+    memberDto.setId(id);
+
+    return ResponseEntity.ok().body(memberDto);
+  }
+
+  @DeleteMapping("/delete/{id}")
+  public ResponseEntity<?> delete(@PathVariable("id") Long id,
+                                  @RequestBody MemberDto memberDto) {
+
+    return ResponseEntity.ok(200);
   }
 }
