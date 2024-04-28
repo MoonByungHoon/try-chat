@@ -36,7 +36,6 @@ public class MemberController {
   @PutMapping("/profile/user/{id}")
   public ResponseEntity<?> updateUserProfile(@PathVariable("id") final Long id,
                                              @RequestBody MemberDto memberDto) {
-    ;
 
     return ResponseEntity.ok().body(memberDto);
   }
@@ -60,12 +59,6 @@ public class MemberController {
   public ResponseEntity<?> getUserProfile(@PathVariable("id") final Long id) {
 
     MemberDto memberDto = new MemberDto("userTest", "img", "imgPath");
-
-    return ResponseEntity.ok().body(memberDto);
-  }
-
-  @PutMapping("/greetings")
-  public ResponseEntity<?> updateGreetings(@RequestBody MemberDto memberDto) {
 
     return ResponseEntity.ok().body(memberDto);
   }
