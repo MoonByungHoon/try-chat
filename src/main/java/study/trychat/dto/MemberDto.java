@@ -21,7 +21,7 @@ public class MemberDto {
   private String nickName;
   private String profileImg;
   private String profileImgPath;
-  
+
   private List<FriendDto> friendDtoList = new ArrayList<>();
 
   public MemberDto(String username) {
@@ -31,6 +31,12 @@ public class MemberDto {
   public MemberDto(Long id, String username) {
     this.id = id;
     this.username = username;
+  }
+
+  public MemberDto(String nickName, String profileImg, String profileImgPath) {
+    this.nickName = nickName;
+    this.profileImg = profileImg;
+    this.profileImgPath = profileImgPath;
   }
 
   public void addFriendDto(FriendDto... friendDtos) {

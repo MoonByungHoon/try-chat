@@ -1,6 +1,5 @@
 package study.trychat.controller;
 
-import jakarta.persistence.EntityExistsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +19,7 @@ public class MemberController {
   @PostMapping("/signin")
   public ResponseEntity<?> signIn(@RequestBody MemberDto memberDto) {
 
-    memberDto.set
+    memberDto.setNickName("userTest");
 
     return ResponseEntity.ok().body(memberDto);
   }
@@ -30,6 +29,14 @@ public class MemberController {
                                       @RequestBody MemberDto memberDto) {
 
     memberDto.setId(id);
+
+    return ResponseEntity.ok().body(memberDto);
+  }
+
+  @PutMapping("/profile/user/{id}")
+  public ResponseEntity<?> updateUserProfile(@PathVariable("id") final Long id,
+                                             @RequestBody MemberDto memberDto) {
+    ;
 
     return ResponseEntity.ok().body(memberDto);
   }
@@ -45,6 +52,14 @@ public class MemberController {
   public ResponseEntity<?> getUser(@PathVariable("id") final Long id) {
 
     MemberDto memberDto = new MemberDto("테스트");
+
+    return ResponseEntity.ok().body(memberDto);
+  }
+
+  @GetMapping("/profile/user/{id}")
+  public ResponseEntity<?> getUserProfile(@PathVariable("id") final Long id) {
+
+    MemberDto memberDto = new MemberDto("userTest", "img", "imgPath");
 
     return ResponseEntity.ok().body(memberDto);
   }
