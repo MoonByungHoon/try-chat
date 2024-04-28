@@ -20,6 +20,8 @@ public class MemberController {
   @PostMapping("/signin")
   public ResponseEntity<?> signIn(@RequestBody MemberDto memberDto) {
 
+    memberDto.set
+
     return ResponseEntity.ok().body(memberDto);
   }
 

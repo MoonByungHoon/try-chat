@@ -16,13 +16,13 @@ public class FriendController {
   public ResponseEntity<?> addFriendNickName(@PathVariable("userId") final Long userId,
                                              @PathVariable("nickName") final String nickName) {
 
-    return ResponseEntity.ok().body(new Friend(userId, nickName));
+    return ResponseEntity.ok(200);
   }
 
   @GetMapping("/find/friend/{friendId}")
   public ResponseEntity<?> findFriendByFriendId(@PathVariable("friendId") final Long friendId) {
 
-    return ResponseEntity.ok().body(new Friend(friendId, "testFriend"));
+    return ResponseEntity.ok().body(new Friend("testFriend"));
   }
 
   @GetMapping("/find/friend-list/{userId}")

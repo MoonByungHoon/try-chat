@@ -1,12 +1,12 @@
 package study.trychat.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Builder
 @Entity
@@ -19,4 +19,10 @@ public class Member {
   private Long id;
   private String username;
   private String password;
+  private String nickName;
+  private String profileImg;
+  private String profileImgPath;
+
+  @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Friend> friendList = new ArrayList<>();
 }

@@ -18,6 +18,10 @@ public class MemberDto {
   private Long id;
   private String username;
   private String password;
+  private String nickName;
+  private String profileImg;
+  private String profileImgPath;
+  
   private List<FriendDto> friendDtoList = new ArrayList<>();
 
   public MemberDto(String username) {
