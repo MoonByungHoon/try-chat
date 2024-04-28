@@ -63,4 +63,10 @@ public class MemberController {
 
     return ResponseEntity.ok().body(memberDto);
   }
+
+  @PutMapping("/greetings")
+  public ResponseEntity<?> updateGreetings(@RequestBody MemberDto memberDto) {
+
+    return ResponseEntity.ok().body(memberDto);
+  }
 }

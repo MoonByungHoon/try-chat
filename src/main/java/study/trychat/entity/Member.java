@@ -20,6 +20,7 @@ public class Member {
   private String username;
   private String password;
   private String nickName;
+  private String greetings;
   private String profileImg;
   private String profileImgPath;
 
