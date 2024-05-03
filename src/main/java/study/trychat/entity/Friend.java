@@ -1,12 +1,14 @@
 package study.trychat.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 @Builder
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 public class Friend {
 
   @Id

@@ -1,9 +1,6 @@
 package study.trychat.dto;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import study.trychat.entity.Member;
 
 import java.util.ArrayList;
@@ -14,6 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class MemberDto {
   private Long id;
   private String username;
@@ -40,7 +38,9 @@ public class MemberDto {
     this.profileImgPath = profileImgPath;
   }
 
-  public void addFriendDto(FriendDto... friendDtos) {
+  public MemberDto(Long userId, String nickName, FriendDto... friendDtos) {
+    this.id = userId;
+    this.nickName = nickName;
     Collections.addAll(friendDtoList, friendDtos);
   }
 

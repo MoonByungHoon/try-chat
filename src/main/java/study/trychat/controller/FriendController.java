@@ -8,7 +8,7 @@ import study.trychat.dto.MemberDto;
 import study.trychat.entity.Friend;
 
 @RestController
-@RequestMapping("friends")
+@RequestMapping("/friends")
 @RequiredArgsConstructor
 public class FriendController {
 
@@ -27,9 +27,8 @@ public class FriendController {
 
   @GetMapping("/find/friend-list/{userId}")
   public ResponseEntity<?> findFriendByUserId(@PathVariable("userId") final Long userId) {
-    MemberDto memberDto = new MemberDto(userId, "testUser");
-
-    memberDto.addFriendDto(new FriendDto("testFriend1"), new FriendDto("testFriend2"));
+    MemberDto memberDto = new MemberDto(userId, "testUser",
+            new FriendDto("testFriend1"), new FriendDto("testFriend2"));
 
     return ResponseEntity.ok().body(memberDto);
   }

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import study.trychat.dto.MemberDto;
 
 @RestController
-@RequestMapping("users")
+@RequestMapping("/users")
 @RequiredArgsConstructor
 public class MemberController {
 
