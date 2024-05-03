@@ -21,7 +21,7 @@ public class MemberController {
 
     memberDto.setNickName("userTest");
 
-    return ResponseEntity.ok().body(memberDto);
+    return ResponseEntity.ok(memberDto);
   }
 
   @PutMapping("/{id}")
@@ -30,14 +30,14 @@ public class MemberController {
 
     memberDto.setId(id);
 
-    return ResponseEntity.ok().body(memberDto);
+    return ResponseEntity.ok(memberDto);
   }
 
   @PutMapping("/profile/user/{id}")
   public ResponseEntity<?> updateUserProfile(@PathVariable("id") final Long id,
                                              @RequestBody MemberDto memberDto) {
 
-    return ResponseEntity.ok().body(memberDto);
+    return ResponseEntity.ok(memberDto);
   }
 
   @DeleteMapping("/{id}")
@@ -52,7 +52,7 @@ public class MemberController {
 
     MemberDto memberDto = new MemberDto("테스트");
 
-    return ResponseEntity.ok().body(memberDto);
+    return ResponseEntity.ok(memberDto);
   }
 
   @GetMapping("/profile/user/{id}")
@@ -60,6 +60,6 @@ public class MemberController {
 
     MemberDto memberDto = new MemberDto("userTest", "img", "imgPath");
 
-    return ResponseEntity.ok().body(memberDto);
+    return ResponseEntity.ok(memberDto);
   }
 }
