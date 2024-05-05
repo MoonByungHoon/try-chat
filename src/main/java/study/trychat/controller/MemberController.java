@@ -25,46 +25,46 @@ public class MemberController {
     return ResponseEntity.ok(memberDto);
   }
 
-  @PutMapping("/{id}")
-  public ResponseEntity<MemberDto> updateUser(@PathVariable("id") final Long id,
+  @PutMapping("/{userId}")
+  public ResponseEntity<MemberDto> updateUser(@PathVariable("userId") final Long userId,
                                               @RequestBody MemberDto memberDto) {
 
-    memberDto.setId(id);
+    memberDto.setId(userId);
 
     return ResponseEntity.ok(memberDto);
   }
 
-  @PutMapping("/profile/user/{id}")
-  public ResponseEntity<MemberDto> updateUserProfile(@PathVariable("id") final Long id,
+  @PutMapping("/{userId}/profile")
+  public ResponseEntity<MemberDto> updateUserProfile(@PathVariable("userId") final Long userId,
                                                      @RequestBody MemberDto memberDto) {
 
     return ResponseEntity.ok(memberDto);
   }
 
-  @DeleteMapping("/{id}")
-  public ResponseEntity<String> removeUser(@PathVariable("id") final Long id,
+  @DeleteMapping("/{userId}")
+  public ResponseEntity<String> removeUser(@PathVariable("userId") final Long userId,
                                            @RequestBody MemberDto memberDto) {
 
     return ResponseEntity.ok("회원 탈퇴에 성공하였습니다.");
   }
 
-  @GetMapping("/{id}")
-  public ResponseEntity<MemberDto> getUser(@PathVariable("id") final Long id) {
+  @GetMapping("/{userId}")
+  public ResponseEntity<MemberDto> getUser(@PathVariable("userId") final Long userId) {
 
     MemberDto memberDto = new MemberDto("테스트");
 
     return ResponseEntity.ok(memberDto);
   }
 
-  @GetMapping("/profile/user/{id}")
-  public ResponseEntity<MemberDto> getUserProfile(@PathVariable("id") final Long id) {
+  @GetMapping("/{userId}/profile")
+  public ResponseEntity<MemberDto> getUserProfile(@PathVariable("userId") final Long userId) {
 
     MemberDto memberDto = new MemberDto("userTest", "img", "imgPath");
 
     return ResponseEntity.ok(memberDto);
   }
 
-  @GetMapping("/find/friend-list/{userId}")
+  @GetMapping("/{userId}/friends")
   public ResponseEntity<MemberDto> findFriendByUserId(@PathVariable("userId") final Long userId) {
     MemberDto memberDto = new MemberDto(userId, "testUser",
             new FriendDto("testFriend1"), new FriendDto("testFriend2"));
