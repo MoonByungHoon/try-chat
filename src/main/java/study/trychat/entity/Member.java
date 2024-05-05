@@ -19,7 +19,7 @@ public class Member {
   private Long id;
   private String username;
   private String password;
-  private String nickName;
+  private String nickname;
   private String greetings;
   private String profileImg;
   private String profileImgPath;

@@ -5,11 +5,11 @@ public class FriendDto {
   private Long id;
   private Long userId;
   private Long friendId;
-  private String friendNickName;
+  private String friendNickname;
   private String friendProfileImg;
   private String friendProfileImgPath;
 
-  public FriendDto(String friendNickName) {
-    this.friendNickName = friendNickName;
+  public FriendDto(String friendNickname) {
+    this.friendNickname = friendNickname;
   }
 }

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import study.trychat.dto.FriendDto;
+import study.trychat.dto.MemberAuthenticationDto;
 import study.trychat.dto.MemberDto;
 
 @RestController
@@ -12,7 +13,7 @@ import study.trychat.dto.MemberDto;
 public class MemberController {
 
   @PostMapping("/signup")
-  public ResponseEntity<String> signUp(@RequestBody MemberDto memberDto) {
+  public ResponseEntity<String> signUp(@RequestBody MemberAuthenticationDto authenticationDto) {
 
     return ResponseEntity.ok("회원가입에 성공하였습니다.");
   }
@@ -20,7 +21,7 @@ public class MemberController {
   @PostMapping("/signin")
   public ResponseEntity<MemberDto> signIn(@RequestBody MemberDto memberDto) {
 
-    memberDto.setNickName("userTest");
+    memberDto.setNickname("userTest");
 
     return ResponseEntity.ok(memberDto);
   }

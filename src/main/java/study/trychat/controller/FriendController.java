@@ -11,9 +11,9 @@ import study.trychat.dto.FriendDto;
 public class FriendController {
 
   //  닉네임 검색으로 친구 추가.
-  @PostMapping(value = "/{nickName}/add")
-  public ResponseEntity<String> addFriendNickName(@RequestHeader("userId") final Long userId,
-                                                  @PathVariable("nickName") final String nickName) {
+  @PostMapping(value = "/{nickname}/add")
+  public ResponseEntity<String> addFriendNickname(@RequestHeader("userId") final Long userId,
+                                                  @PathVariable("nickname") final String nickname) {
 
     return ResponseEntity.ok("친구 추가에 성공하였습니다.");
   }

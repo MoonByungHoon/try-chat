@@ -16,7 +16,7 @@ public class MemberDto {
   private Long id;
   private String username;
   private String password;
-  private String nickName;
+  private String nickname;
   private String greetings;
   private String profileImg;
   private String profileImgPath;
@@ -32,15 +32,15 @@ public class MemberDto {
     this.username = username;
   }
 
-  public MemberDto(String nickName, String profileImg, String profileImgPath) {
-    this.nickName = nickName;
+  public MemberDto(String nickname, String profileImg, String profileImgPath) {
+    this.nickname = nickname;
     this.profileImg = profileImg;
     this.profileImgPath = profileImgPath;
   }
 
-  public MemberDto(Long userId, String nickName, FriendDto... friendDtos) {
+  public MemberDto(Long userId, String nickname, FriendDto... friendDtos) {
     this.id = userId;
-    this.nickName = nickName;
+    this.nickname = nickname;
     Collections.addAll(friendDtoList, friendDtos);
   }
 

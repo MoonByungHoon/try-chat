@@ -15,7 +15,7 @@ public class Friend {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private Long FriendId;
-  private String friendNickName;
+  private String friendNickname;
   private String friendProfileImg;
   private String friendProfileImgPath;
 
@@ -23,7 +23,7 @@ public class Friend {
   @JoinColumn(name = "member_id")
   private Member member;
 
-  public Friend(String friendNickName) {
-    this.friendNickName = friendNickName;
+  public Friend(String friendNickname) {
+    this.friendNickname = friendNickname;
   }
 }
