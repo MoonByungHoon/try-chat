@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import study.trychat.dto.FriendDto;
-import study.trychat.dto.MemberDto;
 
 @RestController
 @RequestMapping("/friends")
@@ -22,14 +21,6 @@ public class FriendController {
   public ResponseEntity<FriendDto> findFriendByFriendId(@PathVariable("friendId") final Long friendId) {
 
     return ResponseEntity.ok(new FriendDto("testFriend"));
-  }
-
-  @GetMapping("/find/friend-list/{userId}")
-  public ResponseEntity<MemberDto> findFriendByUserId(@PathVariable("userId") final Long userId) {
-    MemberDto memberDto = new MemberDto(userId, "testUser",
-            new FriendDto("testFriend1"), new FriendDto("testFriend2"));
-
-    return ResponseEntity.ok(memberDto);
   }
 
   @PutMapping("/update/friend-profile/user/{userId}")
