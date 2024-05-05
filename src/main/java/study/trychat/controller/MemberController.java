@@ -11,7 +11,7 @@ import study.trychat.dto.MemberDto;
 public class MemberController {
 
   @PostMapping("/signup")
-  public ResponseEntity<?> signUp(@RequestBody MemberDto memberDto) {
+  public ResponseEntity<String> signUp(@RequestBody MemberDto memberDto) {
 
     return ResponseEntity.ok("회원가입에 성공하였습니다.");
   }
@@ -25,8 +25,8 @@ public class MemberController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<?> updateUser(@PathVariable("id") final Long id,
-                                      @RequestBody MemberDto memberDto) {
+  public ResponseEntity<MemberDto> updateUser(@PathVariable("id") final Long id,
+                                              @RequestBody MemberDto memberDto) {
 
     memberDto.setId(id);
 
@@ -34,21 +34,21 @@ public class MemberController {
   }
 
   @PutMapping("/profile/user/{id}")
-  public ResponseEntity<?> updateUserProfile(@PathVariable("id") final Long id,
-                                             @RequestBody MemberDto memberDto) {
+  public ResponseEntity<MemberDto> updateUserProfile(@PathVariable("id") final Long id,
+                                                     @RequestBody MemberDto memberDto) {
 
     return ResponseEntity.ok(memberDto);
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<?> removeUser(@PathVariable("id") final Long id,
-                                      @RequestBody MemberDto memberDto) {
+  public ResponseEntity<String> removeUser(@PathVariable("id") final Long id,
+                                           @RequestBody MemberDto memberDto) {
 
     return ResponseEntity.ok("회원 탈퇴에 성공하였습니다.");
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<?> getUser(@PathVariable("id") final Long id) {
+  public ResponseEntity<MemberDto> getUser(@PathVariable("id") final Long id) {
 
     MemberDto memberDto = new MemberDto("테스트");
 
@@ -56,7 +56,7 @@ public class MemberController {
   }
 
   @GetMapping("/profile/user/{id}")
-  public ResponseEntity<?> getUserProfile(@PathVariable("id") final Long id) {
+  public ResponseEntity<MemberDto> getUserProfile(@PathVariable("id") final Long id) {
 
     MemberDto memberDto = new MemberDto("userTest", "img", "imgPath");
 
