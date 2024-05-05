@@ -25,5 +25,5 @@ public class Member {
   private String profileImgPath;
 
   @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<Friend> friendList = new ArrayList<>();
+  private final List<Friend> friendList = new ArrayList<>();
 }

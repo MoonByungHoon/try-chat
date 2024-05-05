@@ -21,7 +21,7 @@ public class MemberDto {
   private String profileImg;
   private String profileImgPath;
 
-  private List<FriendDto> friendDtoList = new ArrayList<>();
+  private final List<FriendDto> friendDtoList = new ArrayList<>();
 
   public MemberDto(String username) {
     this.username = username;
