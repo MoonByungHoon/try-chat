@@ -12,7 +12,7 @@ import study.trychat.entity.Friend;
 @RequiredArgsConstructor
 public class FriendController {
 
-  @PostMapping("/add/user/{userId}/friend/{nickName}")
+  @PostMapping("/add/user/  {userId}/friend/{nickName}")
   public ResponseEntity<?> addFriendNickName(@PathVariable("userId") final Long userId,
                                              @PathVariable("nickName") final String nickName) {
 

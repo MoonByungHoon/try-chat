@@ -13,11 +13,11 @@ public class MemberController {
   @PostMapping("/signup")
   public ResponseEntity<?> signUp(@RequestBody MemberDto memberDto) {
 
-    return ResponseEntity.ok(200);
+    return ResponseEntity.ok("회원가입에 성공하였습니다.");
   }
 
   @PostMapping("/signin")
-  public ResponseEntity<?> signIn(@RequestBody MemberDto memberDto) {
+  public ResponseEntity<MemberDto> signIn(@RequestBody MemberDto memberDto) {
 
     memberDto.setNickName("userTest");
 
@@ -44,7 +44,7 @@ public class MemberController {
   public ResponseEntity<?> removeUser(@PathVariable("id") final Long id,
                                       @RequestBody MemberDto memberDto) {
 
-    return ResponseEntity.ok(200);
+    return ResponseEntity.ok("회원 탈퇴에 성공하였습니다.");
   }
 
   @GetMapping("/{id}")
