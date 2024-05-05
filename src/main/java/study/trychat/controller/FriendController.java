@@ -10,28 +10,29 @@ import study.trychat.dto.FriendDto;
 @RequiredArgsConstructor
 public class FriendController {
 
-  @PostMapping("/add/user/{userId}/friend/{nickName}")
-  public ResponseEntity<String> addFriendNickName(@PathVariable("userId") final Long userId,
+  //  닉네임 검색으로 친구 추가.
+  @PostMapping(value = "/{nickName}/add")
+  public ResponseEntity<String> addFriendNickName(@RequestHeader("userId") final Long userId,
                                                   @PathVariable("nickName") final String nickName) {
 
     return ResponseEntity.ok("친구 추가에 성공하였습니다.");
   }
 
-  @GetMapping("/find/friend/{friendId}")
+  @GetMapping("/{friendId}/profile")
   public ResponseEntity<FriendDto> findFriendByFriendId(@PathVariable("friendId") final Long friendId) {
 
     return ResponseEntity.ok(new FriendDto("testFriend"));
   }
 
-  @PutMapping("/update/friend-profile/user/{userId}")
-  public ResponseEntity<FriendDto> updateFriendProfile(@PathVariable("userId") final Long userId,
+  @PutMapping("/profile")
+  public ResponseEntity<FriendDto> updateFriendProfile(@RequestHeader("userId") final Long userId,
                                                        @RequestBody FriendDto friendDto) {
 
     return ResponseEntity.ok(friendDto);
   }
 
-  @DeleteMapping("/delete/user/{userId}/friend/{friendId}")
-  public ResponseEntity<String> removeFriendByUserIdAndFriendId(@PathVariable("userId") final Long userId,
+  @DeleteMapping("/{friendId}")
+  public ResponseEntity<String> removeFriendByUserIdAndFriendId(@RequestHeader("userId") final Long userId,
                                                                 @PathVariable("friendId") final Long friendId) {
 
     return ResponseEntity.ok("친구 삭제에 성공하였습니다.");
