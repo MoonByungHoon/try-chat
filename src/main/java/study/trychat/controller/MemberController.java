@@ -25,18 +25,19 @@ public class MemberController {
     return ResponseEntity.ok(memberDto);
   }
 
+  @GetMapping("/{userId}")
+  public ResponseEntity<MemberDto> getUser(@PathVariable("userId") final Long userId) {
+
+    MemberDto memberDto = new MemberDto("테스트");
+
+    return ResponseEntity.ok(memberDto);
+  }
+
   @PutMapping("/{userId}")
   public ResponseEntity<MemberDto> updateUser(@PathVariable("userId") final Long userId,
                                               @RequestBody MemberDto memberDto) {
 
     memberDto.setId(userId);
-
-    return ResponseEntity.ok(memberDto);
-  }
-
-  @PutMapping("/{userId}/profile")
-  public ResponseEntity<MemberDto> updateUserProfile(@PathVariable("userId") final Long userId,
-                                                     @RequestBody MemberDto memberDto) {
 
     return ResponseEntity.ok(memberDto);
   }
@@ -48,14 +49,6 @@ public class MemberController {
     return ResponseEntity.ok("회원 탈퇴에 성공하였습니다.");
   }
 
-  @GetMapping("/{userId}")
-  public ResponseEntity<MemberDto> getUser(@PathVariable("userId") final Long userId) {
-
-    MemberDto memberDto = new MemberDto("테스트");
-
-    return ResponseEntity.ok(memberDto);
-  }
-
   @GetMapping("/{userId}/profile")
   public ResponseEntity<MemberDto> getUserProfile(@PathVariable("userId") final Long userId) {
 
@@ -64,8 +57,15 @@ public class MemberController {
     return ResponseEntity.ok(memberDto);
   }
 
+  @PutMapping("/{userId}/profile")
+  public ResponseEntity<MemberDto> updateUserProfile(@PathVariable("userId") final Long userId,
+                                                     @RequestBody MemberDto memberDto) {
+
+    return ResponseEntity.ok(memberDto);
+  }
+
   @GetMapping("/{userId}/friends")
-  public ResponseEntity<MemberDto> findFriendByUserId(@PathVariable("userId") final Long userId) {
+  public ResponseEntity<MemberDto> findFriendsByUserId(@PathVariable("userId") final Long userId) {
     MemberDto memberDto = new MemberDto(userId, "testUser",
             new FriendDto("testFriend1"), new FriendDto("testFriend2"));
 
