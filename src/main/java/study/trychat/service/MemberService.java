@@ -30,6 +30,11 @@ public class MemberService {
   public MemberRequest signIn(MemberAuthenticationDto authenticationDto) {
 
     return memberRepository
-            .findByUsernameAndPasswordSignIn(authenticationDto.getUsername(), authenticationDto.getPassword());
+            .findByUsernameAndPasswordQuerydsl(authenticationDto.getUsername(), authenticationDto.getPassword());
+  }
+
+  public MemberRequest findUser(Long userId) {
+
+    return memberRepository.findByIdQuerydsl(userId);
   }
 }

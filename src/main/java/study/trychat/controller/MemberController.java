@@ -35,11 +35,9 @@ public class MemberController {
   }
 
   @GetMapping("/{userId}")
-  public ResponseEntity<MemberDto> getUser(@PathVariable("userId") final Long userId) {
+  public ResponseEntity<MemberRequest> findUser(@PathVariable("userId") final Long userId) {
 
-    MemberDto memberDto = new MemberDto("테스트");
-
-    return ResponseEntity.ok(memberDto);
+    return ResponseEntity.ok(memberService.findUser(userId));
   }
 
   @PutMapping("/{userId}")

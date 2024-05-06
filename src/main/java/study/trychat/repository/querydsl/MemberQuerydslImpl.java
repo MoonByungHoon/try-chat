@@ -16,18 +16,34 @@ public class MemberQuerydslImpl implements MemberQuerydsl {
   }
 
   @Override
-  public MemberRequest findByUsernameAndPasswordSignIn(String username, String password) {
+  public MemberRequest findByUsernameAndPasswordQuerydsl(String username, String password) {
     return queryFactory.select(new QMemberRequest(
                     member.id,
                     memberInfo.nickname,
                     memberInfo.greetings,
                     memberInfo.profileImg,
                     memberInfo.profileImgPath,
-                    member.username))
+                    member.username
+            ))
             .from(member)
             .where((member.username.eq(username)
                     .and(member.password.eq(password))
                     .and(member.id.eq(memberInfo.id))))
+            .fetchOne();
+  }
+
+  @Override
+  public MemberRequest findByIdQuerydsl(Long userId) {
+    return queryFactory.select(new QMemberRequest(
+                    member.id,
+                    memberInfo.nickname,
+                    memberInfo.greetings,
+                    memberInfo.profileImg,
+                    memberInfo.profileImgPath,
+                    member.username
+            ))
+            .from(member)
+            .where(member.id.eq(userId))
             .fetchOne();
   }
 }
