@@ -1,10 +1,10 @@
 package study.trychat.dto;
 
+import com.querydsl.core.annotations.QueryProjection;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import study.trychat.entity.Member;
@@ -12,8 +12,9 @@ import study.trychat.entity.MemberInfo;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class MemberAuthenticationDto {
+
+  private Long id;
 
   @NotBlank(message = "이메일을 입력해주세요.")
   @Size(max = 320)
@@ -24,7 +25,20 @@ public class MemberAuthenticationDto {
   @Size(min = 8, max = 64)
   private String password;
 
-  protected MemberAuthenticationDto(String username) {
+  @QueryProjection
+  public MemberAuthenticationDto(Long id, String username, String password) {
+    this.id = id;
+    this.username = username;
+    this.password = password;
+  }
+
+  public MemberAuthenticationDto(String username, String password) {
+    this.username = username;
+    this.password = password;
+  }
+
+  protected MemberAuthenticationDto(Long id, String username) {
+    this.id = id;
     this.username = username;
   }
 

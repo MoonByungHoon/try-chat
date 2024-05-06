@@ -2,7 +2,9 @@ package study.trychat.repository.querydsl;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
+import study.trychat.dto.MemberAuthenticationDto;
 import study.trychat.dto.MemberRequest;
+import study.trychat.dto.QMemberAuthenticationDto;
 import study.trychat.dto.QMemberRequest;
 
 import static study.trychat.entity.QMember.member;
@@ -33,7 +35,19 @@ public class MemberQuerydslImpl implements MemberQuerydsl {
   }
 
   @Override
-  public MemberRequest findByIdQuerydsl(Long userId) {
+  public MemberAuthenticationDto findByIdQuerydsl(Long userId) {
+    return queryFactory.select(new QMemberAuthenticationDto(
+                    member.id,
+                    member.username,
+                    member.password
+            ))
+            .from(member)
+            .where(member.id.eq(userId))
+            .fetchOne();
+  }
+
+  @Override
+  public MemberRequest findByIdForProfileQuerydsl(Long userId) {
     return queryFactory.select(new QMemberRequest(
                     member.id,
                     memberInfo.nickname,

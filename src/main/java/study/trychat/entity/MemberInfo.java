@@ -1,9 +1,11 @@
 package study.trychat.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
 @NoArgsConstructor
 public class MemberInfo {
 

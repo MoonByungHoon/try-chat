@@ -17,8 +17,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import study.trychat.dto.MemberAuthenticationDto;
 import study.trychat.dto.MemberRequest;
+import study.trychat.dto.QMemberAuthenticationDto;
 import study.trychat.dto.QMemberRequest;
 import study.trychat.entity.Member;
+import study.trychat.entity.MemberInfo;
 import study.trychat.exception.custom.CustomDuplicateUsernameException;
 import study.trychat.exception.custom.CustomPrimaryKeyMismatchException;
 
@@ -189,12 +191,8 @@ class MemberServiceTest {
 
     queryFactory = new JPAQueryFactory(em);
 
-    MemberRequest memberRequest = queryFactory.select(new QMemberRequest(
+    MemberAuthenticationDto authenticationDto = queryFactory.select(new QMemberAuthenticationDto(
                     member.id,
-                    memberInfo.nickname,
-                    memberInfo.greetings,
-                    memberInfo.profileImg,
-                    memberInfo.profileImgPath,
                     member.username,
                     member.password
             ))
@@ -204,8 +202,9 @@ class MemberServiceTest {
 
     //then
     assertAll(
-            () -> assertEquals(memberRequest.getUsername(), TEST_USERNAME),
-            () -> assertEquals(memberRequest.getPassword(), TEST_PASSWORD)
+            () -> assertNotNull(authenticationDto.getId()),
+            () -> assertEquals(authenticationDto.getUsername(), TEST_USERNAME),
+            () -> assertEquals(authenticationDto.getPassword(), TEST_PASSWORD)
     );
   }
 
@@ -271,6 +270,40 @@ class MemberServiceTest {
     //    then
     assertThrows(CustomPrimaryKeyMismatchException.class,
             () -> compareUserId(testId, findMember.getId()));
+  }
+
+  @Test
+  @DisplayName("find user profile test")
+  void 회원_프로필_열람() {
+    //    given
+    //    when
+    init();
+
+    MemberAuthenticationDto authenticationDto = new MemberAuthenticationDto(TEST_USERNAME, TEST_USERNAME);
+    MemberInfo compareMember = authenticationDto.toEntity().getMemberInfo();
+
+    MemberRequest memberRequest = queryFactory.select(new QMemberRequest(
+                    member.id,
+                    memberInfo.nickname,
+                    memberInfo.greetings,
+                    memberInfo.profileImg,
+                    memberInfo.profileImgPath,
+                    member.username,
+                    member.password
+            ))
+            .from(member)
+            .where((member.username.eq(TEST_USERNAME)
+                    .and(member.password.eq(TEST_PASSWORD))))
+            .fetchOne();
+
+
+    //    then
+    assertAll(
+            () -> assertEquals(compareMember.getNickname(), memberRequest.getNickname()),
+            () -> assertEquals(compareMember.getGreetings(), memberRequest.getGreetings()),
+            () -> assertEquals(compareMember.getProfileImg(), memberRequest.getProfileImg()),
+            () -> assertEquals(compareMember.getProfileImgPath(), memberRequest.getProfileImgPath())
+    );
   }
 
   private void checkForDuplicateUsername(String username, String duplicateUsername) {

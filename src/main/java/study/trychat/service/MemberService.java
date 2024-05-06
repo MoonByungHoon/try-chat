@@ -36,7 +36,7 @@ public class MemberService {
             .findByUsernameAndPasswordQuerydsl(authenticationDto.getUsername(), authenticationDto.getPassword());
   }
 
-  public MemberRequest findUser(Long userId) {
+  public MemberAuthenticationDto findUser(Long userId) {
 
     return memberRepository.findByIdQuerydsl(userId);
   }
@@ -57,6 +57,11 @@ public class MemberService {
     compareUserId(userId, findMember.getId());
 
     memberRepository.delete(findMember);
+  }
+
+  public MemberRequest findUserProfile(Long userId) {
+
+    return memberRepository.findByIdForProfileQuerydsl(userId);
   }
 
   private void checkForDuplicateUsername(String username) {

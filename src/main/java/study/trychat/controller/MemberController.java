@@ -35,7 +35,7 @@ public class MemberController {
   }
 
   @GetMapping("/{userId}")
-  public ResponseEntity<MemberRequest> findUser(@PathVariable("userId") final Long userId) {
+  public ResponseEntity<MemberAuthenticationDto> findUser(@PathVariable("userId") final Long userId) {
 
     return ResponseEntity.ok(memberService.findUser(userId));
   }
@@ -43,7 +43,7 @@ public class MemberController {
   //  username과 password 변경 요청 처리.
   @PutMapping("/{userId}")
   public ResponseEntity<String> updateUser(@PathVariable("userId") final Long userId,
-                                           @RequestBody MemberAuthenticationDto authenticationDto) {
+                                           @Valid @RequestBody MemberAuthenticationDto authenticationDto) {
 
     memberService.updateUser(userId, authenticationDto);
 
@@ -52,7 +52,7 @@ public class MemberController {
 
   @DeleteMapping("/{userId}")
   public ResponseEntity<String> removeUser(@PathVariable("userId") final Long userId,
-                                           @RequestBody MemberAuthenticationDto authenticationDto) {
+                                           @Valid @RequestBody MemberAuthenticationDto authenticationDto) {
 
     memberService.remove(userId, authenticationDto);
 
@@ -60,11 +60,9 @@ public class MemberController {
   }
 
   @GetMapping("/{userId}/profile")
-  public ResponseEntity<MemberDto> getUserProfile(@PathVariable("userId") final Long userId) {
+  public ResponseEntity<MemberRequest> findUserProfile(@PathVariable("userId") final Long userId) {
 
-    MemberDto memberDto = new MemberDto("userTest", "img", "imgPath");
-
-    return ResponseEntity.ok(memberDto);
+    return ResponseEntity.ok(memberService.findUserProfile(userId));
   }
 
   @PutMapping("/{userId}/profile")

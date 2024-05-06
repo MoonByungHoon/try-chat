@@ -14,7 +14,7 @@ public class MemberRequest extends MemberAuthenticationDto {
 
   @QueryProjection
   public MemberRequest(Long id, String nickname, String greetings, String profileImg, String profileImgPath, String username) {
-    super(username);
+    super(id, username);
     this.id = id;
     this.nickname = nickname;
     this.greetings = greetings;
@@ -24,7 +24,7 @@ public class MemberRequest extends MemberAuthenticationDto {
 
   @QueryProjection
   public MemberRequest(Long id, String nickname, String greetings, String profileImg, String profileImgPath, String username, String password) {
-    super(username, password);
+    super(id, username, password);
     this.id = id;
     this.nickname = nickname;
     this.greetings = greetings;
