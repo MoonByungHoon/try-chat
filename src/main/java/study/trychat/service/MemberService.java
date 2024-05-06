@@ -45,6 +45,7 @@ public class MemberService {
     return memberRepository.findByIdQuerydsl(userId);
   }
 
+  @Transactional
   public void updateUser(Long userId, MemberAuthenticationDto authenticationDto) {
 
     Member findMember = memberRepository.findById(userId)
@@ -53,6 +54,7 @@ public class MemberService {
     findMember.update(authenticationDto);
   }
 
+  @Transactional
   public void remove(Long userId, MemberAuthenticationDto authenticationDto) {
 
     Member findMember =
@@ -68,6 +70,7 @@ public class MemberService {
     return memberRepository.findByIdForProfileQuerydsl(userId);
   }
 
+  @Transactional
   public MemberRequest updateUserProfile(Long userId, MemberResponse memberResponse) {
 
     MemberInfo findMemberInfo = memberInfoRepository.findById(memberResponse.getId())
