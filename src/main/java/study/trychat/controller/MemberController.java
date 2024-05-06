@@ -40,13 +40,14 @@ public class MemberController {
     return ResponseEntity.ok(memberService.findUser(userId));
   }
 
+  //  username과 password 변경 요청 처리.
   @PutMapping("/{userId}")
-  public ResponseEntity<MemberDto> updateUser(@PathVariable("userId") final Long userId,
-                                              @RequestBody MemberDto memberDto) {
+  public ResponseEntity<String> updateUser(@PathVariable("userId") final Long userId,
+                                           @RequestBody MemberAuthenticationDto authenticationDto) {
 
-    memberDto.setId(userId);
+    memberService.updateUser(userId, authenticationDto);
 
-    return ResponseEntity.ok(memberDto);
+    return ResponseEntity.ok("회원정보가 수정되었습니다.");
   }
 
   @DeleteMapping("/{userId}")

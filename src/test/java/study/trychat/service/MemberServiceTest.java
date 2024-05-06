@@ -1,4 +1,4 @@
-package study.trychat.repository.querydsl;
+package study.trychat.service;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
@@ -27,7 +27,7 @@ import static study.trychat.entity.QMemberInfo.memberInfo;
 
 @SpringBootTest
 @Transactional
-class MemberQuerydslImplTest {
+class MemberServiceTest {
 
   @Autowired
   private EntityManager em;
@@ -53,7 +53,7 @@ class MemberQuerydslImplTest {
 
   @Test
   @DisplayName("signUp success test")
-  void 회원가입_통과_테스트() {
+  void 회원가입_통과() {
     //    given
     String username = "signUpTest@try-chat.co.kr";
     String password = "try-chat";
@@ -72,15 +72,15 @@ class MemberQuerydslImplTest {
 
     //    then
     assertAll(
-            () -> assertEquals(findMember.getUsername(), "signUpTest@try-chat.co.kr"),
-            () -> assertEquals(findMember.getPassword(), "try-chat")
+            () -> assertEquals(findMember.getUsername(), username),
+            () -> assertEquals(findMember.getPassword(), password)
     );
   }
 
   @ParameterizedTest
   @ValueSource(strings = {"", "이메일_양식이_아닌_문자열"})
   @DisplayName("signUp username unSuccess test and validate test")
-  void 잘못된_Username으로_회원가입_실패_및_검증_테스트(String username) {
+  void 잘못된_Username으로_회원가입_실패_및_검증(String username) {
     //    given
     String emailNotMatch = "올바른 이메일 주소를 입력해주세요.";
     String successPassword = "testPassword@1";
@@ -102,7 +102,7 @@ class MemberQuerydslImplTest {
           "when they see a getter method, there's swift pull on their battleaxe and " +
           "a satisfied cry as another getter is hewn unmercifully from a class which immediately swoons in "})
   @DisplayName("signUp password unSuccess test and validate test")
-  void 잘못된_Password로_회원가입_실패_및_검증_테스트(String password) {
+  void 잘못된_Password로_회원가입_실패_및_검증(String password) {
     //    given
     String successUsername = "try-chat@try-chat.co.kr";
 
@@ -117,7 +117,7 @@ class MemberQuerydslImplTest {
 
   @Test
   @DisplayName("signIn success test")
-  void 로그인_성공_테스트() {
+  void 로그인_성공() {
     //give
     String username = "test1@try-chat.co.kr";
     String password = "try-chat";
@@ -134,7 +134,8 @@ class MemberQuerydslImplTest {
                     memberInfo.greetings,
                     memberInfo.profileImg,
                     memberInfo.profileImgPath,
-                    member.username
+                    member.username,
+                    member.password
             ))
             .from(member)
             .where((member.username.eq(username)
@@ -146,7 +147,7 @@ class MemberQuerydslImplTest {
 
     assertAll(
             () -> assertEquals(memberRequest.getUsername(), username),
-            () -> assertEquals(memberRequest.getPassword(), null)
+            () -> assertEquals(memberRequest.getPassword(), password)
     );
   }
 
@@ -170,7 +171,8 @@ class MemberQuerydslImplTest {
                     memberInfo.greetings,
                     memberInfo.profileImg,
                     memberInfo.profileImgPath,
-                    member.username
+                    member.username,
+                    member.password
             ))
             .from(member)
             .where(member.id.eq(findMember.getId()))
@@ -179,7 +181,32 @@ class MemberQuerydslImplTest {
     //then
     assertAll(
             () -> assertEquals(memberRequest.getUsername(), TEST_USERNAME),
-            () -> assertEquals(memberRequest.getPassword(), null)
+            () -> assertEquals(memberRequest.getPassword(), TEST_PASSWORD)
+    );
+  }
+
+  @Test
+  @DisplayName("updateUser success test")
+  void 유저정보_수정() {
+    //    given
+    init();
+    String username = "updateTest";
+    String password = "updatePassword";
+
+    MemberAuthenticationDto authenticationDto = new MemberAuthenticationDto(username, password);
+
+    Member findMember = em.createQuery("select m from Member m where m.username = :username", Member.class)
+            .setParameter("username", TEST_USERNAME)
+            .getSingleResult();
+
+
+    //    when
+    findMember.update(authenticationDto);
+
+    //    then
+    assertAll(
+            () -> assertEquals(findMember.getUsername(), username),
+            () -> assertEquals(findMember.getPassword(), password)
     );
   }
 }

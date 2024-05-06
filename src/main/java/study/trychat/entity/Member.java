@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import study.trychat.dto.MemberAuthenticationDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,4 +32,9 @@ public class Member {
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
   @JoinColumn(name = "member_id")
   private List<Friend> friendList = new ArrayList<>();
+
+  public void update(MemberAuthenticationDto authenticationDto) {
+    this.username = authenticationDto.getUsername();
+    this.password = authenticationDto.getPassword();
+  }
 }

@@ -21,4 +21,14 @@ public class MemberRequest extends MemberAuthenticationDto {
     this.profileImg = profileImg;
     this.profileImgPath = profileImgPath;
   }
+
+  @QueryProjection
+  public MemberRequest(Long id, String nickname, String greetings, String profileImg, String profileImgPath, String username, String password) {
+    super(username, password);
+    this.id = id;
+    this.nickname = nickname;
+    this.greetings = greetings;
+    this.profileImg = profileImg;
+    this.profileImgPath = profileImgPath;
+  }
 }
