@@ -3,6 +3,8 @@ package study.trychat.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import study.trychat.dto.MemberRequest;
+import study.trychat.dto.MemberResponse;
 
 @Entity
 @Getter
@@ -23,5 +25,22 @@ public class MemberInfo {
     this.greetings = greetings;
     this.profileImg = profileImg;
     this.profileImgPath = profileImgPath;
+  }
+
+  public void update(MemberResponse memberResponse) {
+    this.nickname = memberResponse.getNickname();
+    this.greetings = memberResponse.getGreetings();
+    this.profileImg = memberResponse.getProfileImg();
+    this.profileImgPath = memberResponse.getProfileImgPath();
+  }
+
+  public MemberRequest toDto() {
+    return MemberRequest.builder()
+            .id(id)
+            .nickname(nickname)
+            .greetings(greetings)
+            .profileImg(profileImg)
+            .profileImgPath(profileImgPath)
+            .build();
   }
 }

@@ -20,14 +20,13 @@ public class MemberQuerydslImpl implements MemberQuerydsl {
   @Override
   public MemberRequest findByUsernameAndPasswordQuerydsl(String username, String password) {
     return queryFactory.select(new QMemberRequest(
-                    member.id,
+                    memberInfo.id,
                     memberInfo.nickname,
                     memberInfo.greetings,
                     memberInfo.profileImg,
-                    memberInfo.profileImgPath,
-                    member.username
+                    memberInfo.profileImgPath
             ))
-            .from(member)
+            .from(member, memberInfo)
             .where((member.username.eq(username)
                     .and(member.password.eq(password))
                     .and(member.id.eq(memberInfo.id))))
@@ -49,14 +48,13 @@ public class MemberQuerydslImpl implements MemberQuerydsl {
   @Override
   public MemberRequest findByIdForProfileQuerydsl(Long userId) {
     return queryFactory.select(new QMemberRequest(
-                    member.id,
+                    memberInfo.id,
                     memberInfo.nickname,
                     memberInfo.greetings,
                     memberInfo.profileImg,
-                    memberInfo.profileImgPath,
-                    member.username
+                    memberInfo.profileImgPath
             ))
-            .from(member)
+            .from(member, memberInfo)
             .where(member.id.eq(userId))
             .fetchOne();
   }

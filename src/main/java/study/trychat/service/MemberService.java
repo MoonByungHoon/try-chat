@@ -6,9 +6,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import study.trychat.dto.MemberAuthenticationDto;
 import study.trychat.dto.MemberRequest;
+import study.trychat.dto.MemberResponse;
 import study.trychat.entity.Member;
+import study.trychat.entity.MemberInfo;
 import study.trychat.exception.custom.CustomDuplicateUsernameException;
 import study.trychat.exception.custom.CustomPrimaryKeyMismatchException;
+import study.trychat.repository.MemberInfoRepository;
 import study.trychat.repository.MemberRepository;
 
 @Service
@@ -20,6 +23,7 @@ public class MemberService {
   private static String PRIMARY_KEY_MISMATCH = "대상이 일치하지 않습니다.";
 
   private final MemberRepository memberRepository;
+  private final MemberInfoRepository memberInfoRepository;
 
   @Transactional
   public void signUp(MemberAuthenticationDto authenticationDto) {
@@ -62,6 +66,17 @@ public class MemberService {
   public MemberRequest findUserProfile(Long userId) {
 
     return memberRepository.findByIdForProfileQuerydsl(userId);
+  }
+
+  public MemberRequest updateUserProfile(Long userId, MemberResponse memberResponse) {
+
+    MemberInfo findMemberInfo = memberInfoRepository.findById(memberResponse.getId())
+            .orElseThrow(() -> new EntityNotFoundException(ENTITY_NOT_FOUND));
+
+    compareUserId(userId, findMemberInfo.getId());
+    findMemberInfo.update(memberResponse);
+
+    return findMemberInfo.toDto();
   }
 
   private void checkForDuplicateUsername(String username) {

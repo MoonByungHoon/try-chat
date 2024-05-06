@@ -15,10 +15,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import study.trychat.dto.MemberAuthenticationDto;
-import study.trychat.dto.MemberRequest;
-import study.trychat.dto.QMemberAuthenticationDto;
-import study.trychat.dto.QMemberRequest;
+import study.trychat.dto.*;
 import study.trychat.entity.Member;
 import study.trychat.entity.MemberInfo;
 import study.trychat.exception.custom.CustomDuplicateUsernameException;
@@ -149,31 +146,33 @@ class MemberServiceTest {
     String password = "try-chat";
 
     //when
+    MemberAuthenticationDto dto = new MemberAuthenticationDto(TEST_USERNAME, TEST_USERNAME);
+    MemberInfo compareMember = dto.toEntity().getMemberInfo();
+
     MemberAuthenticationDto authenticationDto = new MemberAuthenticationDto(username, password);
     Member entity = authenticationDto.toEntity();
 
     em.persist(entity);
 
     MemberRequest memberRequest = queryFactory.select(new QMemberRequest(
-                    member.id,
+                    memberInfo.id,
                     memberInfo.nickname,
                     memberInfo.greetings,
                     memberInfo.profileImg,
-                    memberInfo.profileImgPath,
-                    member.username,
-                    member.password
+                    memberInfo.profileImgPath
             ))
-            .from(member)
+            .from(member, memberInfo)
             .where((member.username.eq(username)
                     .and(member.password.eq(password))
                     .and(member.id.eq(memberInfo.id))))
             .fetchOne();
 
     //then
-
     assertAll(
-            () -> assertEquals(memberRequest.getUsername(), username),
-            () -> assertEquals(memberRequest.getPassword(), password)
+            () -> assertEquals(compareMember.getNickname(), memberRequest.getNickname()),
+            () -> assertEquals(compareMember.getGreetings(), memberRequest.getGreetings()),
+            () -> assertEquals(compareMember.getProfileImg(), memberRequest.getProfileImg()),
+            () -> assertEquals(compareMember.getProfileImgPath(), memberRequest.getProfileImgPath())
     );
   }
 
@@ -283,19 +282,16 @@ class MemberServiceTest {
     MemberInfo compareMember = authenticationDto.toEntity().getMemberInfo();
 
     MemberRequest memberRequest = queryFactory.select(new QMemberRequest(
-                    member.id,
+                    memberInfo.id,
                     memberInfo.nickname,
                     memberInfo.greetings,
                     memberInfo.profileImg,
-                    memberInfo.profileImgPath,
-                    member.username,
-                    member.password
+                    memberInfo.profileImgPath
             ))
             .from(member)
             .where((member.username.eq(TEST_USERNAME)
                     .and(member.password.eq(TEST_PASSWORD))))
             .fetchOne();
-
 
     //    then
     assertAll(
@@ -303,6 +299,48 @@ class MemberServiceTest {
             () -> assertEquals(compareMember.getGreetings(), memberRequest.getGreetings()),
             () -> assertEquals(compareMember.getProfileImg(), memberRequest.getProfileImg()),
             () -> assertEquals(compareMember.getProfileImgPath(), memberRequest.getProfileImgPath())
+    );
+  }
+
+  @Test
+  @DisplayName("update user profile")
+  void 유저_프로필_수정() {
+    //    given
+    String nickname = "testNickname";
+    String greetings = "testGreetings";
+    String profileImg = "testImg";
+    String profileImgPath = "testPath";
+
+    //    when
+    init();
+
+    MemberInfo findMemberInfo = em.createQuery("select mi from Member m, MemberInfo mi where m.username = :username and m.id = mi.id", MemberInfo.class)
+            .setParameter("username", TEST_USERNAME)
+            .getSingleResult();
+
+    MemberResponse memberResponse =
+            new MemberResponse(findMemberInfo.getId(), nickname, greetings, profileImg, profileImgPath);
+
+    findMemberInfo.update(memberResponse);
+
+    em.flush();
+    em.clear();
+
+    MemberInfo compare = em.createQuery("select mi from Member m, MemberInfo mi where m.username = :username and m.id = mi.id", MemberInfo.class)
+            .setParameter("username", TEST_USERNAME)
+            .getSingleResult();
+
+    System.out.println("확인 : " + compare.getNickname());
+    System.out.println("확인 : " + compare.getGreetings());
+    System.out.println("확인 : " + compare.getProfileImg());
+    System.out.println("확인 : " + compare.getProfileImgPath());
+
+    //    then
+    assertAll(
+            () -> assertEquals(compare.getNickname(), nickname),
+            () -> assertEquals(compare.getGreetings(), greetings),
+            () -> assertEquals(compare.getProfileImg(), profileImg),
+            () -> assertEquals(compare.getProfileImgPath(), profileImgPath)
     );
   }
 

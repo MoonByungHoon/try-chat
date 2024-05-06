@@ -4,10 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import study.trychat.dto.FriendDto;
-import study.trychat.dto.MemberAuthenticationDto;
-import study.trychat.dto.MemberDto;
-import study.trychat.dto.MemberRequest;
+import study.trychat.dto.*;
 import study.trychat.service.MemberService;
 
 @RestController
@@ -66,10 +63,10 @@ public class MemberController {
   }
 
   @PutMapping("/{userId}/profile")
-  public ResponseEntity<MemberDto> updateUserProfile(@PathVariable("userId") final Long userId,
-                                                     @RequestBody MemberDto memberDto) {
+  public ResponseEntity<MemberRequest> updateUserProfile(@PathVariable("userId") final Long userId,
+                                                         @Valid @RequestBody MemberResponse memberResponse) {
 
-    return ResponseEntity.ok(memberDto);
+    return ResponseEntity.ok(memberService.updateUserProfile(userId, memberResponse));
   }
 
   @GetMapping("/{userId}/friends")
