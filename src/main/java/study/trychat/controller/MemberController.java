@@ -1,19 +1,27 @@
 package study.trychat.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import study.trychat.dto.FriendDto;
 import study.trychat.dto.MemberAuthenticationDto;
 import study.trychat.dto.MemberDto;
+import study.trychat.service.MemberService;
 
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class MemberController {
 
+  private final MemberService memberService;
+
   @PostMapping("/signup")
-  public ResponseEntity<String> signUp(@RequestBody MemberAuthenticationDto authenticationDto) {
+  public ResponseEntity<String> signUp(@Valid @RequestBody MemberAuthenticationDto authenticationDto) {
+
+    authenticationDto.validateUsername(authenticationDto);
+
+    memberService.signUp(authenticationDto);
 
     return ResponseEntity.ok("회원가입에 성공하였습니다.");
   }

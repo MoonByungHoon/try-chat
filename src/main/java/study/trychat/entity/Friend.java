@@ -1,6 +1,9 @@
 package study.trychat.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -18,10 +21,6 @@ public class Friend {
   private String friendNickname;
   private String friendProfileImg;
   private String friendProfileImgPath;
-
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "member_id")
-  private Member member;
 
   public Friend(String friendNickname) {
     this.friendNickname = friendNickname;

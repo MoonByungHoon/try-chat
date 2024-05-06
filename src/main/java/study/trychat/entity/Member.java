@@ -17,13 +17,16 @@ public class Member {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+  @Column(nullable = false, unique = true, length = 340)
   private String username;
+  @Column(nullable = false, length = 64)
   private String password;
-  private String nickname;
-  private String greetings;
-  private String profileImg;
-  private String profileImgPath;
 
-  @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-  private final List<Friend> friendList = new ArrayList<>();
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+  @JoinColumn(name = "member_id")
+  private List<MemberInfo> memberInfo = new ArrayList<>();
+
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+  @JoinColumn(name = "member_id")
+  private List<Friend> friendList = new ArrayList<>();
 }
