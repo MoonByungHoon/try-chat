@@ -52,7 +52,9 @@ public class MemberController {
 
   @DeleteMapping("/{userId}")
   public ResponseEntity<String> removeUser(@PathVariable("userId") final Long userId,
-                                           @RequestBody MemberDto memberDto) {
+                                           @RequestBody MemberAuthenticationDto authenticationDto) {
+
+    memberService.remove(userId, authenticationDto);
 
     return ResponseEntity.ok("회원 탈퇴에 성공하였습니다.");
   }

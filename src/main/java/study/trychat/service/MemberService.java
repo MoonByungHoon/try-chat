@@ -8,6 +8,7 @@ import study.trychat.dto.MemberAuthenticationDto;
 import study.trychat.dto.MemberRequest;
 import study.trychat.entity.Member;
 import study.trychat.exception.custom.CustomDuplicateUsernameException;
+import study.trychat.exception.custom.CustomPrimaryKeyMismatchException;
 import study.trychat.repository.MemberRepository;
 
 @Service
@@ -16,14 +17,13 @@ import study.trychat.repository.MemberRepository;
 public class MemberService {
   private static String ENTITY_NOT_FOUND = "일치하는 회원이 없습니다.";
   private static String DUPLICATE_USER = "이미 가입된 회원입니다.";
+  private static String PRIMARY_KEY_MISMATCH = "대상이 일치하지 않습니다.";
 
   private final MemberRepository memberRepository;
 
   @Transactional
   public void signUp(MemberAuthenticationDto authenticationDto) {
-    if (memberRepository.existsByUsername(authenticationDto.getUsername())) {
-      throw new CustomDuplicateUsernameException(DUPLICATE_USER);
-    }
+    checkForDuplicateUsername(authenticationDto.getUsername());
 
     Member member = authenticationDto.toEntity();
 
@@ -47,5 +47,27 @@ public class MemberService {
             .orElseThrow(() -> new EntityNotFoundException(ENTITY_NOT_FOUND));
 
     findMember.update(authenticationDto);
+  }
+
+  public void remove(Long userId, MemberAuthenticationDto authenticationDto) {
+
+    Member findMember =
+            memberRepository.findByUsernameAndPassword(authenticationDto.getUsername(), authenticationDto.getPassword());
+
+    compareUserId(userId, findMember.getId());
+
+    memberRepository.delete(findMember);
+  }
+
+  private void checkForDuplicateUsername(String username) {
+    if (memberRepository.existsByUsername(username)) {
+      throw new CustomDuplicateUsernameException(DUPLICATE_USER);
+    }
+  }
+
+  private void compareUserId(Long userId, Long findId) {
+    if (!(userId.equals(findId))) {
+      throw new CustomPrimaryKeyMismatchException(PRIMARY_KEY_MISMATCH);
+    }
   }
 }

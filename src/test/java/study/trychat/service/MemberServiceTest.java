@@ -2,6 +2,7 @@ package study.trychat.service;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -18,6 +19,8 @@ import study.trychat.dto.MemberAuthenticationDto;
 import study.trychat.dto.MemberRequest;
 import study.trychat.dto.QMemberRequest;
 import study.trychat.entity.Member;
+import study.trychat.exception.custom.CustomDuplicateUsernameException;
+import study.trychat.exception.custom.CustomPrimaryKeyMismatchException;
 
 import java.util.Set;
 
@@ -36,6 +39,9 @@ class MemberServiceTest {
 
   private static String TEST_USERNAME = "test@try-chat.co.kr";
   private static String TEST_PASSWORD = "try-chat";
+  private static String ENTITY_NOT_FOUND = "일치하는 회원이 없습니다.";
+  private static String DUPLICATE_USER = "이미 가입된 회원입니다.";
+  private static String PRIMARY_KEY_MISMATCH = "대상이 일치하지 않습니다.";
 
   @BeforeEach
   public void before() {
@@ -75,6 +81,24 @@ class MemberServiceTest {
             () -> assertEquals(findMember.getUsername(), username),
             () -> assertEquals(findMember.getPassword(), password)
     );
+  }
+
+  @Test
+  @DisplayName("signUp duplicate user test")
+  void 중복_회원가입_실패() {
+    //    given
+    String duplicateUsername = TEST_USERNAME;
+
+    //    when
+    init();
+
+    Member findMember = em.createQuery("select m from Member m where m.username = :username", Member.class)
+            .setParameter("username", TEST_USERNAME)
+            .getSingleResult();
+
+    //    then
+    assertThrows(CustomDuplicateUsernameException.class,
+            () -> checkForDuplicateUsername(duplicateUsername, findMember.getUsername()));
   }
 
   @ParameterizedTest
@@ -189,18 +213,18 @@ class MemberServiceTest {
   @DisplayName("updateUser success test")
   void 유저정보_수정() {
     //    given
-    init();
     String username = "updateTest";
     String password = "updatePassword";
 
+    //    when
     MemberAuthenticationDto authenticationDto = new MemberAuthenticationDto(username, password);
+
+    init();
 
     Member findMember = em.createQuery("select m from Member m where m.username = :username", Member.class)
             .setParameter("username", TEST_USERNAME)
             .getSingleResult();
 
-
-    //    when
     findMember.update(authenticationDto);
 
     //    then
@@ -208,5 +232,56 @@ class MemberServiceTest {
             () -> assertEquals(findMember.getUsername(), username),
             () -> assertEquals(findMember.getPassword(), password)
     );
+  }
+
+  @Test
+  @DisplayName("user success remove test")
+  void 유저_탈퇴_성공() {
+    //    given
+    //    when
+    init();
+
+    Member beforeMember = em.createQuery("select m from Member m where m.username = :username", Member.class)
+            .setParameter("username", TEST_USERNAME)
+            .getSingleResult();
+
+    em.remove(beforeMember);
+
+    //    then
+    assertThrows(NoResultException.class,
+            () -> em.createQuery("select m from Member m where m.username = :username", Member.class)
+                    .setParameter("username", TEST_USERNAME)
+                    .getSingleResult());
+  }
+
+  @Test
+  @DisplayName("user pk mismatch unSuccess remove test")
+  void PK불일치_회원_탈퇴_실패() {
+    //    given
+    Long testId = 100L;
+
+    //    when
+    init();
+    Member findMember =
+            em.createQuery("select m from Member m where m.username = :username and m.password = :password", Member.class)
+                    .setParameter("username", TEST_USERNAME)
+                    .setParameter("password", TEST_PASSWORD)
+                    .getSingleResult();
+
+    //    then
+    assertThrows(CustomPrimaryKeyMismatchException.class,
+            () -> compareUserId(testId, findMember.getId()));
+  }
+
+  private void checkForDuplicateUsername(String username, String duplicateUsername) {
+    if (username.equals(duplicateUsername)) {
+      throw new CustomDuplicateUsernameException(DUPLICATE_USER);
+    }
+  }
+
+  private void compareUserId(Long userId, Long findId) {
+    if (!(userId.equals(findId))) {
+      throw new CustomPrimaryKeyMismatchException(PRIMARY_KEY_MISMATCH);
+    }
   }
 }
