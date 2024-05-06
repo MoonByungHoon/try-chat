@@ -22,9 +22,9 @@ public class Member {
   @Column(nullable = false, length = 64)
   private String password;
 
-  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-  @JoinColumn(name = "member_id")
-  private List<MemberInfo> memberInfo = new ArrayList<>();
+  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+  @JoinColumn(name = "member_info_id")
+  private MemberInfo memberInfo;
 
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
   @JoinColumn(name = "member_id")

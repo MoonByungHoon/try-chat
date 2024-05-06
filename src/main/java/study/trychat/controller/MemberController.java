@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import study.trychat.dto.FriendDto;
 import study.trychat.dto.MemberAuthenticationDto;
 import study.trychat.dto.MemberDto;
+import study.trychat.dto.MemberRequest;
 import study.trychat.service.MemberService;
 
 @RestController
@@ -27,11 +28,10 @@ public class MemberController {
   }
 
   @PostMapping("/signin")
-  public ResponseEntity<MemberDto> signIn(@RequestBody MemberDto memberDto) {
+  public ResponseEntity<MemberRequest> signIn(@Valid @RequestBody MemberAuthenticationDto authenticationDto) {
 
-    memberDto.setNickname("userTest");
 
-    return ResponseEntity.ok(memberDto);
+    return ResponseEntity.ok(memberService.signIn(authenticationDto));
   }
 
   @GetMapping("/{userId}")

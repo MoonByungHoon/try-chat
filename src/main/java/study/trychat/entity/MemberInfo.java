@@ -15,4 +15,11 @@ public class MemberInfo {
   private String greetings;
   private String profileImg;
   private String profileImgPath;
+
+  public MemberInfo(String nickname, String greetings, String profileImg, String profileImgPath) {
+    this.nickname = nickname;
+    this.greetings = greetings;
+    this.profileImg = profileImg;
+    this.profileImgPath = profileImgPath;
+  }
 }

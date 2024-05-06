@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import study.trychat.dto.MemberAuthenticationDto;
+import study.trychat.dto.MemberRequest;
 import study.trychat.entity.Member;
 import study.trychat.exception.custom.CustomDuplicateUsernameException;
 import study.trychat.repository.MemberRepository;
@@ -24,5 +25,11 @@ public class MemberService {
     Member member = authenticationDto.toEntity();
 
     memberRepository.save(member);
+  }
+
+  public MemberRequest signIn(MemberAuthenticationDto authenticationDto) {
+
+    return memberRepository
+            .findByUsernameAndPasswordSignIn(authenticationDto.getUsername(), authenticationDto.getPassword());
   }
 }
