@@ -9,8 +9,8 @@ import study.trychat.dto.MemberRequest;
 import study.trychat.dto.MemberResponse;
 import study.trychat.entity.Member;
 import study.trychat.entity.MemberInfo;
-import study.trychat.exception.custom.CustomDuplicateUsernameException;
 import study.trychat.exception.custom.CustomPrimaryKeyMismatchException;
+import study.trychat.exception.custom.DuplicateUsernameException;
 import study.trychat.repository.MemberInfoRepository;
 import study.trychat.repository.MemberRepository;
 
@@ -84,7 +84,7 @@ public class MemberService {
 
   private void checkForDuplicateUsername(String username) {
     if (memberRepository.existsByUsername(username)) {
-      throw new CustomDuplicateUsernameException(DUPLICATE_USER);
+      throw new DuplicateUsernameException(DUPLICATE_USER);
     }
   }
 

@@ -18,8 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 import study.trychat.dto.*;
 import study.trychat.entity.Member;
 import study.trychat.entity.MemberInfo;
-import study.trychat.exception.custom.CustomDuplicateUsernameException;
 import study.trychat.exception.custom.CustomPrimaryKeyMismatchException;
+import study.trychat.exception.custom.DuplicateUsernameException;
 
 import java.util.Set;
 
@@ -96,7 +96,7 @@ class MemberServiceTest {
             .getSingleResult();
 
     //    then
-    assertThrows(CustomDuplicateUsernameException.class,
+    assertThrows(DuplicateUsernameException.class,
             () -> checkForDuplicateUsername(duplicateUsername, findMember.getUsername()));
   }
 
@@ -346,7 +346,7 @@ class MemberServiceTest {
 
   private void checkForDuplicateUsername(String username, String duplicateUsername) {
     if (username.equals(duplicateUsername)) {
-      throw new CustomDuplicateUsernameException(DUPLICATE_USER);
+      throw new DuplicateUsernameException(DUPLICATE_USER);
     }
   }
 
