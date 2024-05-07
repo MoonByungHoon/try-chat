@@ -10,10 +10,10 @@ import study.trychat.dto.QMemberResponse;
 import static study.trychat.entity.QMember.member;
 import static study.trychat.entity.QMemberInfo.memberInfo;
 
-public class MemberQuerydslImpl implements MemberQuerydsl {
+public class MemberQueryImpl implements MemberQuery {
   private JPAQueryFactory queryFactory;
 
-  public MemberQuerydslImpl(EntityManager em) {
+  public MemberQueryImpl(EntityManager em) {
     this.queryFactory = new JPAQueryFactory(em);
   }
 
