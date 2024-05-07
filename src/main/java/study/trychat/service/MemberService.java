@@ -27,7 +27,7 @@ public class MemberService {
 
   @Transactional
   public void signUp(MemberAuthenticationDto authenticationDto) {
-    checkForDuplicateUsername(authenticationDto.getUsername());
+    checkDuplicateUsername(authenticationDto.getUsername());
 
     Member member = authenticationDto.toEntity();
 
@@ -82,7 +82,7 @@ public class MemberService {
     return findMemberInfo.toDto();
   }
 
-  private void checkForDuplicateUsername(String username) {
+  private void checkDuplicateUsername(String username) {
     if (memberRepository.existsByUsername(username)) {
       throw new DuplicateUsernameException(DUPLICATE_USER);
     }
