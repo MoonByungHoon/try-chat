@@ -1,17 +1,16 @@
 package study.trychat.dto;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.querydsl.core.annotations.QueryProjection;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import study.trychat.entity.Member;
 import study.trychat.entity.MemberInfo;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberAuthenticationDto {
 
   private Long id;
@@ -32,14 +31,11 @@ public class MemberAuthenticationDto {
     this.password = password;
   }
 
-  public MemberAuthenticationDto(String username, String password) {
+  @JsonCreator
+  public MemberAuthenticationDto(@JsonProperty("username") String username,
+                                 @JsonProperty("password") String password) {
     this.username = username;
     this.password = password;
-  }
-
-  protected MemberAuthenticationDto(Long id, String username) {
-    this.id = id;
-    this.username = username;
   }
 
   public void validateUsername(MemberAuthenticationDto authenticationDto) {

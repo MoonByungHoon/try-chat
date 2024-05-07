@@ -1,15 +1,16 @@
 package study.trychat.dto;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
 
 @Builder
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class MemberResponse {
 
   private Long id;
@@ -25,4 +26,15 @@ public class MemberResponse {
   @NotBlank
   @Size(min = 1)
   private String profileImgPath;
+
+  @JsonCreator
+  public MemberResponse(@JsonProperty("id") Long id, @JsonProperty("nickname") String nickname,
+                        @JsonProperty("greetings") String greetings, @JsonProperty("profileImg") String profileImg,
+                        @JsonProperty("profileImgPath") String profileImgPath) {
+    this.id = id;
+    this.nickname = nickname;
+    this.greetings = greetings;
+    this.profileImg = profileImg;
+    this.profileImgPath = profileImgPath;
+  }
 }
