@@ -5,7 +5,7 @@ import jakarta.persistence.EntityManager;
 import study.trychat.dto.MemberAuthenticationDto;
 import study.trychat.dto.MemberResponse;
 import study.trychat.dto.QMemberAuthenticationDto;
-import study.trychat.dto.QMemberRequest;
+import study.trychat.dto.QMemberResponse;
 
 import static study.trychat.entity.QMember.member;
 import static study.trychat.entity.QMemberInfo.memberInfo;
@@ -31,7 +31,7 @@ public class MemberQuerydslImpl implements MemberQuerydsl {
 
   @Override
   public MemberResponse findSignInByUsernameAndPassword(String username, String password) {
-    return queryFactory.select(new QMemberRequest(
+    return queryFactory.select(new QMemberResponse(
                     memberInfo.id,
                     memberInfo.nickname,
                     memberInfo.greetings,
@@ -47,7 +47,7 @@ public class MemberQuerydslImpl implements MemberQuerydsl {
 
   @Override
   public MemberResponse findProfileById(Long userId) {
-    return queryFactory.select(new QMemberRequest(
+    return queryFactory.select(new QMemberResponse(
                     memberInfo.id,
                     memberInfo.nickname,
                     memberInfo.greetings,

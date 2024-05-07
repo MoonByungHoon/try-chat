@@ -20,6 +20,7 @@ import study.trychat.entity.Member;
 import study.trychat.entity.MemberInfo;
 import study.trychat.exception.custom.DuplicateUsernameException;
 import study.trychat.exception.custom.PrimaryKeyMismatchException;
+import study.trychat.repository.MemberRepository;
 
 import java.util.Set;
 
@@ -35,6 +36,8 @@ class MemberServiceTest {
   private EntityManager em;
   private JPAQueryFactory queryFactory;
   private Validator validator;
+  @Autowired
+  private MemberRepository memberRepository;
 
   private static String TEST_USERNAME = "test@try-chat.co.kr";
   private static String TEST_PASSWORD = "try-chat";
@@ -50,10 +53,7 @@ class MemberServiceTest {
   }
 
   public void init() {
-    MemberAuthenticationDto authenticationDto =
-            new MemberAuthenticationDto(TEST_USERNAME, TEST_PASSWORD);
-
-    em.persist(authenticationDto.toEntity());
+    memberRepository.save(new MemberAuthenticationDto(TEST_USERNAME, TEST_PASSWORD).toEntity());
   }
 
   @Test
@@ -154,7 +154,7 @@ class MemberServiceTest {
 
     em.persist(entity);
 
-    MemberResponse memberResponse = queryFactory.select(new QMemberRequest(
+    MemberResponse memberResponse = queryFactory.select(new QMemberResponse(
                     memberInfo.id,
                     memberInfo.nickname,
                     memberInfo.greetings,
@@ -281,7 +281,7 @@ class MemberServiceTest {
     MemberAuthenticationDto authenticationDto = new MemberAuthenticationDto(TEST_USERNAME, TEST_USERNAME);
     MemberInfo compareMember = authenticationDto.toEntity().getMemberInfo();
 
-    MemberResponse memberResponse = queryFactory.select(new QMemberRequest(
+    MemberResponse memberResponse = queryFactory.select(new QMemberResponse(
                     memberInfo.id,
                     memberInfo.nickname,
                     memberInfo.greetings,
