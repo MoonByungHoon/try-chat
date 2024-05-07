@@ -25,7 +25,7 @@ public class MemberController {
   }
 
   @PostMapping("/signin")
-  public ResponseEntity<MemberRequestt> signIn(@Valid @RequestBody MemberAuthenticationDto authenticationDto) {
+  public ResponseEntity<MemberResponse> signIn(@Valid @RequestBody MemberAuthenticationDto authenticationDto) {
 
 
     return ResponseEntity.ok(memberService.signIn(authenticationDto));
@@ -57,13 +57,13 @@ public class MemberController {
   }
 
   @GetMapping("/{userId}/profile")
-  public ResponseEntity<MemberRequestt> findUserProfile(@PathVariable("userId") final Long userId) {
+  public ResponseEntity<MemberResponse> findUserProfile(@PathVariable("userId") final Long userId) {
 
     return ResponseEntity.ok(memberService.findUserProfile(userId));
   }
 
   @PutMapping("/{userId}/profile")
-  public ResponseEntity<MemberRequestt> updateUserProfile(@PathVariable("userId") final Long userId,
+  public ResponseEntity<MemberResponse> updateUserProfile(@PathVariable("userId") final Long userId,
                                                           @Valid @RequestBody MemberRequest memberRequest) {
 
     return ResponseEntity.ok(memberService.updateUserProfile(userId, memberRequest));

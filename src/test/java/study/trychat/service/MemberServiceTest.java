@@ -39,7 +39,7 @@ class MemberServiceTest {
   private static String TEST_USERNAME = "test@try-chat.co.kr";
   private static String TEST_PASSWORD = "try-chat";
   private static String ENTITY_NOT_FOUND = "일치하는 회원이 없습니다.";
-  private static String DUPLICATE_USER = "이미 가입된 회원입니다.";
+
   private static String PRIMARY_KEY_MISMATCH = "대상이 일치하지 않습니다.";
 
   @BeforeEach
@@ -154,7 +154,7 @@ class MemberServiceTest {
 
     em.persist(entity);
 
-    MemberRequestt memberRequestt = queryFactory.select(new QMemberRequest(
+    MemberResponse memberResponse = queryFactory.select(new QMemberRequest(
                     memberInfo.id,
                     memberInfo.nickname,
                     memberInfo.greetings,
@@ -169,10 +169,10 @@ class MemberServiceTest {
 
     //then
     assertAll(
-            () -> assertEquals(compareMember.getNickname(), memberRequestt.getNickname()),
-            () -> assertEquals(compareMember.getGreetings(), memberRequestt.getGreetings()),
-            () -> assertEquals(compareMember.getProfileImg(), memberRequestt.getProfileImg()),
-            () -> assertEquals(compareMember.getProfileImgPath(), memberRequestt.getProfileImgPath())
+            () -> assertEquals(compareMember.getNickname(), memberResponse.getNickname()),
+            () -> assertEquals(compareMember.getGreetings(), memberResponse.getGreetings()),
+            () -> assertEquals(compareMember.getProfileImg(), memberResponse.getProfileImg()),
+            () -> assertEquals(compareMember.getProfileImgPath(), memberResponse.getProfileImgPath())
     );
   }
 
@@ -268,7 +268,7 @@ class MemberServiceTest {
 
     //    then
     assertThrows(PrimaryKeyMismatchException.class,
-            () -> compareUserId(testId, findMember.getId()));
+            () -> checkUserId(testId, findMember.getId()));
   }
 
   @Test
@@ -281,7 +281,7 @@ class MemberServiceTest {
     MemberAuthenticationDto authenticationDto = new MemberAuthenticationDto(TEST_USERNAME, TEST_USERNAME);
     MemberInfo compareMember = authenticationDto.toEntity().getMemberInfo();
 
-    MemberRequestt memberRequestt = queryFactory.select(new QMemberRequest(
+    MemberResponse memberResponse = queryFactory.select(new QMemberRequest(
                     memberInfo.id,
                     memberInfo.nickname,
                     memberInfo.greetings,
@@ -295,10 +295,10 @@ class MemberServiceTest {
 
     //    then
     assertAll(
-            () -> assertEquals(compareMember.getNickname(), memberRequestt.getNickname()),
-            () -> assertEquals(compareMember.getGreetings(), memberRequestt.getGreetings()),
-            () -> assertEquals(compareMember.getProfileImg(), memberRequestt.getProfileImg()),
-            () -> assertEquals(compareMember.getProfileImgPath(), memberRequestt.getProfileImgPath())
+            () -> assertEquals(compareMember.getNickname(), memberResponse.getNickname()),
+            () -> assertEquals(compareMember.getGreetings(), memberResponse.getGreetings()),
+            () -> assertEquals(compareMember.getProfileImg(), memberResponse.getProfileImg()),
+            () -> assertEquals(compareMember.getProfileImgPath(), memberResponse.getProfileImgPath())
     );
   }
 
@@ -346,13 +346,13 @@ class MemberServiceTest {
 
   private void checkForDuplicateUsername(String username, String duplicateUsername) {
     if (username.equals(duplicateUsername)) {
-      throw new DuplicateUsernameException(DUPLICATE_USER);
+      throw new DuplicateUsernameException();
     }
   }
 
-  private void compareUserId(Long userId, Long findId) {
+  private void checkUserId(Long userId, Long findId) {
     if (!(userId.equals(findId))) {
-      throw new PrimaryKeyMismatchException(PRIMARY_KEY_MISMATCH);
+      throw new PrimaryKeyMismatchException();
     }
   }
 }

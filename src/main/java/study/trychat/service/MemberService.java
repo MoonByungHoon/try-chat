@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import study.trychat.dto.MemberAuthenticationDto;
 import study.trychat.dto.MemberRequest;
-import study.trychat.dto.MemberRequestt;
+import study.trychat.dto.MemberResponse;
 import study.trychat.entity.Member;
 import study.trychat.entity.MemberInfo;
 import study.trychat.exception.custom.DuplicateUsernameException;
@@ -19,8 +19,6 @@ import study.trychat.repository.MemberRepository;
 @RequiredArgsConstructor
 public class MemberService {
   private static String ENTITY_NOT_FOUND = "일치하는 회원이 없습니다.";
-  private static String DUPLICATE_USER = "이미 가입된 회원입니다.";
-  private static String PRIMARY_KEY_MISMATCH = "대상이 일치하지 않습니다.";
 
   private final MemberRepository memberRepository;
   private final MemberInfoRepository memberInfoRepository;
@@ -34,7 +32,7 @@ public class MemberService {
     memberRepository.save(member);
   }
 
-  public MemberRequestt signIn(MemberAuthenticationDto authenticationDto) {
+  public MemberResponse signIn(MemberAuthenticationDto authenticationDto) {
 
     return memberRepository
             .findSignInByUsernameAndPassword(authenticationDto.getUsername(), authenticationDto.getPassword());
@@ -65,13 +63,13 @@ public class MemberService {
     memberRepository.delete(findMember);
   }
 
-  public MemberRequestt findUserProfile(Long userId) {
+  public MemberResponse findUserProfile(Long userId) {
 
     return memberRepository.findProfileById(userId);
   }
 
   @Transactional
-  public MemberRequestt updateUserProfile(Long userId, MemberRequest memberRequest) {
+  public MemberResponse updateUserProfile(Long userId, MemberRequest memberRequest) {
 
     MemberInfo findMemberInfo = memberInfoRepository.findById(memberRequest.getId())
             .orElseThrow(() -> new EntityNotFoundException(ENTITY_NOT_FOUND));
@@ -84,13 +82,13 @@ public class MemberService {
 
   private void checkDuplicateUsername(String username) {
     if (memberRepository.existsByUsername(username)) {
-      throw new DuplicateUsernameException(DUPLICATE_USER);
+      throw new DuplicateUsernameException();
     }
   }
 
   private void compareUserId(Long userId, Long findId) {
     if (!(userId.equals(findId))) {
-      throw new PrimaryKeyMismatchException(PRIMARY_KEY_MISMATCH);
+      throw new PrimaryKeyMismatchException();
     }
   }
 }

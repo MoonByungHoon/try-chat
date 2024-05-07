@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class MemberRequestt {
+public class MemberResponse {
 
   private Long id;
   private String nickname;
@@ -15,7 +15,7 @@ public class MemberRequestt {
   private String profileImgPath;
 
   @QueryProjection
-  public MemberRequestt(Long id, String nickname, String greetings, String profileImg, String profileImgPath) {
+  public MemberResponse(Long id, String nickname, String greetings, String profileImg, String profileImgPath) {
     this.id = id;
     this.nickname = nickname;
     this.greetings = greetings;

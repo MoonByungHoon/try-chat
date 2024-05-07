@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import study.trychat.dto.MemberRequest;
-import study.trychat.dto.MemberRequestt;
+import study.trychat.dto.MemberResponse;
 
 @Entity
 @Getter
@@ -34,8 +34,8 @@ public class MemberInfo {
     this.profileImgPath = memberRequest.getProfileImgPath();
   }
 
-  public MemberRequestt toDto() {
-    return MemberRequestt.builder()
+  public MemberResponse toDto() {
+    return MemberResponse.builder()
             .id(id)
             .nickname(nickname)
             .greetings(greetings)

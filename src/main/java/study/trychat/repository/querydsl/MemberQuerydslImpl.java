@@ -3,7 +3,7 @@ package study.trychat.repository.querydsl;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import study.trychat.dto.MemberAuthenticationDto;
-import study.trychat.dto.MemberRequestt;
+import study.trychat.dto.MemberResponse;
 import study.trychat.dto.QMemberAuthenticationDto;
 import study.trychat.dto.QMemberRequest;
 
@@ -30,7 +30,7 @@ public class MemberQuerydslImpl implements MemberQuerydsl {
   }
 
   @Override
-  public MemberRequestt findSignInByUsernameAndPassword(String username, String password) {
+  public MemberResponse findSignInByUsernameAndPassword(String username, String password) {
     return queryFactory.select(new QMemberRequest(
                     memberInfo.id,
                     memberInfo.nickname,
@@ -46,7 +46,7 @@ public class MemberQuerydslImpl implements MemberQuerydsl {
   }
 
   @Override
-  public MemberRequestt findProfileById(Long userId) {
+  public MemberResponse findProfileById(Long userId) {
     return queryFactory.select(new QMemberRequest(
                     memberInfo.id,
                     memberInfo.nickname,
