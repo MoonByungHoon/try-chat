@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import study.trychat.dto.MemberAuthenticationDto;
+import study.trychat.exception.custom.PrimaryKeyMismatchException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,5 +37,11 @@ public class Member {
   public void update(MemberAuthenticationDto authenticationDto) {
     this.username = authenticationDto.getUsername();
     this.password = authenticationDto.getPassword();
+  }
+
+  public void checkId(Long id) {
+    if (!(this.id == id)) {
+      throw new PrimaryKeyMismatchException();
+    }
   }
 }

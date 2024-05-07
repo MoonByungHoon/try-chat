@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import study.trychat.dto.MemberRequest;
 import study.trychat.dto.MemberResponse;
+import study.trychat.exception.custom.PrimaryKeyMismatchException;
 
 @Entity
 @Getter
@@ -42,5 +43,11 @@ public class MemberInfo {
             .profileImg(profileImg)
             .profileImgPath(profileImgPath)
             .build();
+  }
+
+  public void checkId(Long userId) {
+    if (!(this.id == id)) {
+      throw new PrimaryKeyMismatchException();
+    }
   }
 }

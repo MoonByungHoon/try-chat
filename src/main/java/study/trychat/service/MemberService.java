@@ -10,7 +10,6 @@ import study.trychat.dto.MemberResponse;
 import study.trychat.entity.Member;
 import study.trychat.entity.MemberInfo;
 import study.trychat.exception.custom.DuplicateUsernameException;
-import study.trychat.exception.custom.PrimaryKeyMismatchException;
 import study.trychat.repository.MemberInfoRepository;
 import study.trychat.repository.MemberRepository;
 
@@ -58,7 +57,7 @@ public class MemberService {
     Member findMember =
             memberRepository.findByUsernameAndPassword(authenticationDto.getUsername(), authenticationDto.getPassword());
 
-    compareUserId(userId, findMember.getId());
+    findMember.checkId(userId);
 
     memberRepository.delete(findMember);
   }
@@ -74,7 +73,7 @@ public class MemberService {
     MemberInfo findMemberInfo = memberInfoRepository.findById(memberRequest.getId())
             .orElseThrow(() -> new EntityNotFoundException(ENTITY_NOT_FOUND));
 
-    compareUserId(userId, findMemberInfo.getId());
+    findMemberInfo.checkId(userId);
     findMemberInfo.update(memberRequest);
 
     return findMemberInfo.toDto();
@@ -83,12 +82,6 @@ public class MemberService {
   private void checkDuplicateUsername(String username) {
     if (memberRepository.existsByUsername(username)) {
       throw new DuplicateUsernameException();
-    }
-  }
-
-  private void compareUserId(Long userId, Long findId) {
-    if (!(userId.equals(findId))) {
-      throw new PrimaryKeyMismatchException();
     }
   }
 }
