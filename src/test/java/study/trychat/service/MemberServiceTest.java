@@ -91,13 +91,9 @@ class MemberServiceTest {
     //    when
     init();
 
-    Member findMember = em.createQuery("select m from Member m where m.username = :username", Member.class)
-            .setParameter("username", TEST_USERNAME)
-            .getSingleResult();
-
     //    then
     assertThrows(DuplicateUsernameException.class,
-            () -> checkForDuplicateUsername(duplicateUsername, findMember.getUsername()));
+            () -> checkForDuplicateUsername(duplicateUsername));
   }
 
   @ParameterizedTest
@@ -344,8 +340,8 @@ class MemberServiceTest {
     );
   }
 
-  private void checkForDuplicateUsername(String username, String duplicateUsername) {
-    if (username.equals(duplicateUsername)) {
+  private void checkForDuplicateUsername(String duplicateUsername) {
+    if (memberRepository.existsByUsername(duplicateUsername)) {
       throw new DuplicateUsernameException();
     }
   }
