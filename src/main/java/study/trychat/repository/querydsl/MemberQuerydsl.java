@@ -5,9 +5,9 @@ import study.trychat.dto.MemberRequest;
 
 public interface MemberQuerydsl {
 
-  MemberRequest findByUsernameAndPasswordQuerydsl(String username, String password);
+  MemberRequest findSignInByUsernameAndPassword(String username, String password);
 
-  MemberAuthenticationDto findByIdQuerydsl(Long userId);
+  MemberRequest findProfileById(Long userId);
 
-  MemberRequest findByIdForProfileQuerydsl(Long userId);
+  MemberAuthenticationDto findAuthenticationTypeById(Long userId);
 }

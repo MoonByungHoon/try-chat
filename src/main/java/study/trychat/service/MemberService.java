@@ -9,8 +9,8 @@ import study.trychat.dto.MemberRequest;
 import study.trychat.dto.MemberResponse;
 import study.trychat.entity.Member;
 import study.trychat.entity.MemberInfo;
-import study.trychat.exception.custom.CustomPrimaryKeyMismatchException;
 import study.trychat.exception.custom.DuplicateUsernameException;
+import study.trychat.exception.custom.PrimaryKeyMismatchException;
 import study.trychat.repository.MemberInfoRepository;
 import study.trychat.repository.MemberRepository;
 
@@ -37,12 +37,12 @@ public class MemberService {
   public MemberRequest signIn(MemberAuthenticationDto authenticationDto) {
 
     return memberRepository
-            .findByUsernameAndPasswordQuerydsl(authenticationDto.getUsername(), authenticationDto.getPassword());
+            .findSignInByUsernameAndPassword(authenticationDto.getUsername(), authenticationDto.getPassword());
   }
 
   public MemberAuthenticationDto findUser(Long userId) {
 
-    return memberRepository.findByIdQuerydsl(userId);
+    return memberRepository.findAuthenticationTypeById(userId);
   }
 
   @Transactional
@@ -67,7 +67,7 @@ public class MemberService {
 
   public MemberRequest findUserProfile(Long userId) {
 
-    return memberRepository.findByIdForProfileQuerydsl(userId);
+    return memberRepository.findProfileById(userId);
   }
 
   @Transactional
@@ -90,7 +90,7 @@ public class MemberService {
 
   private void compareUserId(Long userId, Long findId) {
     if (!(userId.equals(findId))) {
-      throw new CustomPrimaryKeyMismatchException(PRIMARY_KEY_MISMATCH);
+      throw new PrimaryKeyMismatchException(PRIMARY_KEY_MISMATCH);
     }
   }
 }

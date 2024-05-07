@@ -18,7 +18,19 @@ public class MemberQuerydslImpl implements MemberQuerydsl {
   }
 
   @Override
-  public MemberRequest findByUsernameAndPasswordQuerydsl(String username, String password) {
+  public MemberAuthenticationDto findAuthenticationTypeById(Long userId) {
+    return queryFactory.select(new QMemberAuthenticationDto(
+                    member.id,
+                    member.username,
+                    member.password
+            ))
+            .from(member)
+            .where(member.id.eq(userId))
+            .fetchOne();
+  }
+
+  @Override
+  public MemberRequest findSignInByUsernameAndPassword(String username, String password) {
     return queryFactory.select(new QMemberRequest(
                     memberInfo.id,
                     memberInfo.nickname,
@@ -34,19 +46,7 @@ public class MemberQuerydslImpl implements MemberQuerydsl {
   }
 
   @Override
-  public MemberAuthenticationDto findByIdQuerydsl(Long userId) {
-    return queryFactory.select(new QMemberAuthenticationDto(
-                    member.id,
-                    member.username,
-                    member.password
-            ))
-            .from(member)
-            .where(member.id.eq(userId))
-            .fetchOne();
-  }
-
-  @Override
-  public MemberRequest findByIdForProfileQuerydsl(Long userId) {
+  public MemberRequest findProfileById(Long userId) {
     return queryFactory.select(new QMemberRequest(
                     memberInfo.id,
                     memberInfo.nickname,
