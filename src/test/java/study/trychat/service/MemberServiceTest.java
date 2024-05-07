@@ -18,8 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 import study.trychat.dto.*;
 import study.trychat.entity.Member;
 import study.trychat.entity.MemberInfo;
-import study.trychat.exception.custom.CustomPrimaryKeyMismatchException;
 import study.trychat.exception.custom.DuplicateUsernameException;
+import study.trychat.exception.custom.PrimaryKeyMismatchException;
 
 import java.util.Set;
 
@@ -154,7 +154,7 @@ class MemberServiceTest {
 
     em.persist(entity);
 
-    MemberRequest memberRequest = queryFactory.select(new QMemberRequest(
+    MemberRequestt memberRequestt = queryFactory.select(new QMemberRequest(
                     memberInfo.id,
                     memberInfo.nickname,
                     memberInfo.greetings,
@@ -169,10 +169,10 @@ class MemberServiceTest {
 
     //then
     assertAll(
-            () -> assertEquals(compareMember.getNickname(), memberRequest.getNickname()),
-            () -> assertEquals(compareMember.getGreetings(), memberRequest.getGreetings()),
-            () -> assertEquals(compareMember.getProfileImg(), memberRequest.getProfileImg()),
-            () -> assertEquals(compareMember.getProfileImgPath(), memberRequest.getProfileImgPath())
+            () -> assertEquals(compareMember.getNickname(), memberRequestt.getNickname()),
+            () -> assertEquals(compareMember.getGreetings(), memberRequestt.getGreetings()),
+            () -> assertEquals(compareMember.getProfileImg(), memberRequestt.getProfileImg()),
+            () -> assertEquals(compareMember.getProfileImgPath(), memberRequestt.getProfileImgPath())
     );
   }
 
@@ -267,7 +267,7 @@ class MemberServiceTest {
                     .getSingleResult();
 
     //    then
-    assertThrows(CustomPrimaryKeyMismatchException.class,
+    assertThrows(PrimaryKeyMismatchException.class,
             () -> compareUserId(testId, findMember.getId()));
   }
 
@@ -281,7 +281,7 @@ class MemberServiceTest {
     MemberAuthenticationDto authenticationDto = new MemberAuthenticationDto(TEST_USERNAME, TEST_USERNAME);
     MemberInfo compareMember = authenticationDto.toEntity().getMemberInfo();
 
-    MemberRequest memberRequest = queryFactory.select(new QMemberRequest(
+    MemberRequestt memberRequestt = queryFactory.select(new QMemberRequest(
                     memberInfo.id,
                     memberInfo.nickname,
                     memberInfo.greetings,
@@ -295,10 +295,10 @@ class MemberServiceTest {
 
     //    then
     assertAll(
-            () -> assertEquals(compareMember.getNickname(), memberRequest.getNickname()),
-            () -> assertEquals(compareMember.getGreetings(), memberRequest.getGreetings()),
-            () -> assertEquals(compareMember.getProfileImg(), memberRequest.getProfileImg()),
-            () -> assertEquals(compareMember.getProfileImgPath(), memberRequest.getProfileImgPath())
+            () -> assertEquals(compareMember.getNickname(), memberRequestt.getNickname()),
+            () -> assertEquals(compareMember.getGreetings(), memberRequestt.getGreetings()),
+            () -> assertEquals(compareMember.getProfileImg(), memberRequestt.getProfileImg()),
+            () -> assertEquals(compareMember.getProfileImgPath(), memberRequestt.getProfileImgPath())
     );
   }
 
@@ -318,10 +318,10 @@ class MemberServiceTest {
             .setParameter("username", TEST_USERNAME)
             .getSingleResult();
 
-    MemberResponse memberResponse =
-            new MemberResponse(findMemberInfo.getId(), nickname, greetings, profileImg, profileImgPath);
+    MemberRequest memberRequest =
+            new MemberRequest(findMemberInfo.getId(), nickname, greetings, profileImg, profileImgPath);
 
-    findMemberInfo.update(memberResponse);
+    findMemberInfo.update(memberRequest);
 
     em.flush();
     em.clear();
@@ -352,7 +352,7 @@ class MemberServiceTest {
 
   private void compareUserId(Long userId, Long findId) {
     if (!(userId.equals(findId))) {
-      throw new CustomPrimaryKeyMismatchException(PRIMARY_KEY_MISMATCH);
+      throw new PrimaryKeyMismatchException(PRIMARY_KEY_MISMATCH);
     }
   }
 }

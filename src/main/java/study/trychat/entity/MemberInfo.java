@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import study.trychat.dto.MemberRequest;
-import study.trychat.dto.MemberResponse;
+import study.trychat.dto.MemberRequestt;
 
 @Entity
 @Getter
@@ -27,15 +27,15 @@ public class MemberInfo {
     this.profileImgPath = profileImgPath;
   }
 
-  public void update(MemberResponse memberResponse) {
-    this.nickname = memberResponse.getNickname();
-    this.greetings = memberResponse.getGreetings();
-    this.profileImg = memberResponse.getProfileImg();
-    this.profileImgPath = memberResponse.getProfileImgPath();
+  public void update(MemberRequest memberRequest) {
+    this.nickname = memberRequest.getNickname();
+    this.greetings = memberRequest.getGreetings();
+    this.profileImg = memberRequest.getProfileImg();
+    this.profileImgPath = memberRequest.getProfileImgPath();
   }
 
-  public MemberRequest toDto() {
-    return MemberRequest.builder()
+  public MemberRequestt toDto() {
+    return MemberRequestt.builder()
             .id(id)
             .nickname(nickname)
             .greetings(greetings)

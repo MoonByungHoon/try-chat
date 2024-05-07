@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import study.trychat.dto.MemberAuthenticationDto;
 import study.trychat.dto.MemberRequest;
-import study.trychat.dto.MemberResponse;
+import study.trychat.dto.MemberRequestt;
 import study.trychat.entity.Member;
 import study.trychat.entity.MemberInfo;
 import study.trychat.exception.custom.DuplicateUsernameException;
@@ -34,7 +34,7 @@ public class MemberService {
     memberRepository.save(member);
   }
 
-  public MemberRequest signIn(MemberAuthenticationDto authenticationDto) {
+  public MemberRequestt signIn(MemberAuthenticationDto authenticationDto) {
 
     return memberRepository
             .findSignInByUsernameAndPassword(authenticationDto.getUsername(), authenticationDto.getPassword());
@@ -65,19 +65,19 @@ public class MemberService {
     memberRepository.delete(findMember);
   }
 
-  public MemberRequest findUserProfile(Long userId) {
+  public MemberRequestt findUserProfile(Long userId) {
 
     return memberRepository.findProfileById(userId);
   }
 
   @Transactional
-  public MemberRequest updateUserProfile(Long userId, MemberResponse memberResponse) {
+  public MemberRequestt updateUserProfile(Long userId, MemberRequest memberRequest) {
 
-    MemberInfo findMemberInfo = memberInfoRepository.findById(memberResponse.getId())
+    MemberInfo findMemberInfo = memberInfoRepository.findById(memberRequest.getId())
             .orElseThrow(() -> new EntityNotFoundException(ENTITY_NOT_FOUND));
 
     compareUserId(userId, findMemberInfo.getId());
-    findMemberInfo.update(memberResponse);
+    findMemberInfo.update(memberRequest);
 
     return findMemberInfo.toDto();
   }
