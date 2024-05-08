@@ -34,6 +34,7 @@ class MemberServiceTest {
 
   @Autowired
   private EntityManager em;
+  @Autowired
   private JPAQueryFactory queryFactory;
   private Validator validator;
   @Autowired
@@ -47,7 +48,6 @@ class MemberServiceTest {
 
   @BeforeEach
   public void before() {
-    queryFactory = new JPAQueryFactory(em);
     ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     validator = factory.getValidator();
   }

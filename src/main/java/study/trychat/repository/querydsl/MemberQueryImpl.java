@@ -1,7 +1,7 @@
 package study.trychat.repository.querydsl;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import jakarta.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
 import study.trychat.dto.MemberAuthenticationDto;
 import study.trychat.dto.MemberResponse;
 import study.trychat.dto.QMemberAuthenticationDto;
@@ -10,12 +10,10 @@ import study.trychat.dto.QMemberResponse;
 import static study.trychat.entity.QMember.member;
 import static study.trychat.entity.QMemberInfo.memberInfo;
 
+@RequiredArgsConstructor
 public class MemberQueryImpl implements MemberQuery {
-  private JPAQueryFactory queryFactory;
 
-  public MemberQueryImpl(EntityManager em) {
-    this.queryFactory = new JPAQueryFactory(em);
-  }
+  private final JPAQueryFactory queryFactory;
 
   @Override
   public MemberAuthenticationDto findAuthenticationTypeById(Long userId) {
