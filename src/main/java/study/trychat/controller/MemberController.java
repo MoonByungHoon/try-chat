@@ -4,7 +4,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import study.trychat.dto.*;
+import study.trychat.dto.MemberAuthenticationDto;
+import study.trychat.dto.MemberRequest;
+import study.trychat.dto.MemberResponse;
 import study.trychat.service.MemberService;
 
 @RestController
@@ -70,10 +72,9 @@ public class MemberController {
   }
 
   @GetMapping("/{userId}/friends")
-  public ResponseEntity<MemberDto> findFriendsByUserId(@PathVariable("userId") final Long userId) {
-    MemberDto memberDto = new MemberDto(userId, "testUser",
-            new FriendDto("testFriend1"), new FriendDto("testFriend2"));
+  public ResponseEntity<?> findFriendsByUserId(@PathVariable("userId") final Long userId) {
 
-    return ResponseEntity.ok(memberDto);
+    return null;
+//    return ResponseEntity.ok(memberDto);
   }
 }
