@@ -31,6 +31,10 @@ public class MemberAuthenticationDto {
     this.password = password;
   }
 
+  public static void of(String username, String password) {
+    new MemberAuthenticationDto(username, password);
+  }
+
   @JsonCreator
   public MemberAuthenticationDto(@JsonProperty("username") String username,
                                  @JsonProperty("password") String password) {

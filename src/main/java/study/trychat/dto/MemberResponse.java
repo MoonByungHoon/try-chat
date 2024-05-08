@@ -14,6 +14,15 @@ public class MemberResponse {
   private String profileImg;
   private String profileImgPath;
 
+  public static MemberResponse fromRequest(MemberRequest memberRequest) {
+    return of(memberRequest.getId(), memberRequest.getNickname(), memberRequest.getGreetings(),
+            memberRequest.getProfileImg(), memberRequest.getProfileImgPath());
+  }
+
+  public static MemberResponse of(Long id, String nickname, String greetings, String profileImg, String profileImgPath) {
+    return new MemberResponse(id, nickname, greetings, profileImg, profileImgPath);
+  }
+
   @QueryProjection
   public MemberResponse(Long id, String nickname, String greetings, String profileImg, String profileImgPath) {
     this.id = id;

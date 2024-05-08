@@ -76,7 +76,7 @@ public class MemberService {
     findMemberInfo.checkId(userId);
     findMemberInfo.update(memberRequest);
 
-    return findMemberInfo.toDto();
+    return MemberResponse.fromRequest(memberRequest);
   }
 
   private void checkDuplicateUsername(String username) {
