@@ -27,7 +27,7 @@ public class Member {
   private String password;
 
   @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-  @JoinColumn(name = "member_info_id")
+  @JoinColumn(name = "member_info_id", nullable = false)
   private MemberInfo memberInfo;
 
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
