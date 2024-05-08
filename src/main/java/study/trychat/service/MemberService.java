@@ -45,6 +45,10 @@ public class MemberService {
   @Transactional
   public void updateUser(Long userId, MemberAuthenticationDto authenticationDto) {
 
+    if (memberRepository.existsByUsername(authenticationDto.getUsername())) {
+      throw new DuplicateUsernameException();
+    }
+
     Member findMember = memberRepository.findById(userId)
             .orElseThrow(() -> new EntityNotFoundException(ENTITY_NOT_FOUND));
 
