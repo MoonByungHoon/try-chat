@@ -40,7 +40,7 @@ public class Member {
   }
 
   public void checkId(Long id) {
-    if (!(this.id == id)) {
+    if (!(this.id.equals(id))) {
       throw new PrimaryKeyMismatchException();
     }
   }
