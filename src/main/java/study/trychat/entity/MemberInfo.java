@@ -16,9 +16,13 @@ public class MemberInfo {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "member_info_id")
   private Long id;
+  @Column(nullable = false, length = 20)
   private String nickname;
+  @Column(nullable = false, length = 40)
   private String greetings;
+  @Column(nullable = false)
   private String profileImg;
+  @Column(nullable = false)
   private String profileImgPath;
 
   public MemberInfo(String nickname, String greetings, String profileImg, String profileImgPath) {
