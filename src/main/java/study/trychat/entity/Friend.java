@@ -1,9 +1,6 @@
 package study.trychat.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -17,10 +14,19 @@ public class Friend {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+  @Column(nullable = false)
+  private Long memberId;
+  @Column(nullable = false)
   private Long FriendId;
+  @Column(nullable = false)
   private String friendNickname;
+  @Column(nullable = false)
   private String friendProfileImg;
+  @Column(nullable = false)
   private String friendProfileImgPath;
+  @Column(nullable = false)
+  @Enumerated(EnumType.STRING)
+  private FriendStatus friendStatus;
 
   public Friend(String friendNickname) {
     this.friendNickname = friendNickname;
