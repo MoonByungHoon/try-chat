@@ -27,7 +27,11 @@ public class QFriend extends EntityPathBase<Friend> {
 
     public final StringPath friendProfileImgPath = createString("friendProfileImgPath");
 
+    public final EnumPath<FriendStatus> friendStatus = createEnum("friendStatus", FriendStatus.class);
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
+
+    public final NumberPath<Long> memberId = createNumber("memberId", Long.class);
 
     public QFriend(String variable) {
         super(Friend.class, forVariable(variable));

@@ -14,7 +14,7 @@ public class Friend {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-  @Column(nullable = false)
+  @Column(name = "member_id", nullable = false)
   private Long memberId;
   @Column(nullable = false)
   private Long FriendId;
