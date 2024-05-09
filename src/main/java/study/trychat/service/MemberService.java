@@ -1,6 +1,5 @@
 package study.trychat.service;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,6 +9,7 @@ import study.trychat.dto.MemberResponse;
 import study.trychat.entity.Member;
 import study.trychat.entity.MemberInfo;
 import study.trychat.exception.custom.DuplicateUsernameException;
+import study.trychat.exception.custom.EntityNotFoundException;
 import study.trychat.repository.MemberInfoRepository;
 import study.trychat.repository.MemberRepository;
 
@@ -17,7 +17,6 @@ import study.trychat.repository.MemberRepository;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class MemberService {
-  private static String ENTITY_NOT_FOUND = "일치하는 회원이 없습니다.";
 
   private final MemberRepository memberRepository;
   private final MemberInfoRepository memberInfoRepository;
@@ -50,7 +49,7 @@ public class MemberService {
     }
 
     Member findMember = memberRepository.findById(userId)
-            .orElseThrow(() -> new EntityNotFoundException(ENTITY_NOT_FOUND));
+            .orElseThrow(() -> new EntityNotFoundException());
 
     findMember.update(authenticationDto);
   }
@@ -75,7 +74,7 @@ public class MemberService {
   public MemberResponse updateUserProfile(Long userId, MemberRequest memberRequest) {
 
     MemberInfo findMemberInfo = memberInfoRepository.findById(memberRequest.getId())
-            .orElseThrow(() -> new EntityNotFoundException(ENTITY_NOT_FOUND));
+            .orElseThrow(() -> new EntityNotFoundException());
 
     findMemberInfo.checkId(userId);
     findMemberInfo.update(memberRequest);
