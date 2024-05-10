@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import study.trychat.dto.MemberRequest;
-import study.trychat.dto.MemberResponse;
 import study.trychat.exception.custom.PrimaryKeyMismatchException;
 
 @Entity
@@ -18,6 +17,8 @@ public class MemberInfo {
   private Long id;
   @Column(nullable = false, length = 20)
   private String nickname;
+  @Column(nullable = false, length = 20)
+  private String uniqueName;
   @Column(nullable = false, length = 40)
   private String greetings;
   @Column(nullable = false)
@@ -25,8 +26,9 @@ public class MemberInfo {
   @Column(nullable = false)
   private String profileImgPath;
 
-  public MemberInfo(String nickname, String greetings, String profileImg, String profileImgPath) {
+  public MemberInfo(String nickname, String uniqueName, String greetings, String profileImg, String profileImgPath) {
     this.nickname = nickname;
+    this.uniqueName = uniqueName;
     this.greetings = greetings;
     this.profileImg = profileImg;
     this.profileImgPath = profileImgPath;
@@ -34,19 +36,17 @@ public class MemberInfo {
 
   public void update(MemberRequest memberRequest) {
     this.nickname = memberRequest.getNickname();
+    this.uniqueName = memberRequest.getUniqueName();
     this.greetings = memberRequest.getGreetings();
     this.profileImg = memberRequest.getProfileImg();
     this.profileImgPath = memberRequest.getProfileImgPath();
   }
 
-  public MemberResponse toDto() {
-    return MemberResponse.builder()
-            .id(id)
-            .nickname(nickname)
-            .greetings(greetings)
-            .profileImg(profileImg)
-            .profileImgPath(profileImgPath)
-            .build();
+  public void updateProfile(MemberRequest memberRequest) {
+    this.nickname = memberRequest.getNickname();
+    this.greetings = memberRequest.getGreetings();
+    this.profileImg = memberRequest.getProfileImg();
+    this.profileImgPath = memberRequest.getProfileImgPath();
   }
 
   public void checkId(Long userId) {

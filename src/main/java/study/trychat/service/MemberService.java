@@ -13,6 +13,10 @@ import study.trychat.exception.custom.EntityNotFoundException;
 import study.trychat.repository.MemberInfoRepository;
 import study.trychat.repository.MemberRepository;
 
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.NoSuchElementException;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -23,9 +27,16 @@ public class MemberService {
 
   @Transactional
   public void signUp(MemberAuthenticationDto authenticationDto) {
+//    가입 이메일 중복 검사.
     checkDuplicateUsername(authenticationDto.getUsername());
 
-    Member member = authenticationDto.toEntity();
+//    검색 필터에 사용될 유니크 네임 추출.
+    String extractName = extractByUsername(authenticationDto.getUsername());
+
+//    유니크 네임 중복 검사 및 중복 시 랜덤한 이름 생성.
+    String uniqueName = checkDuplicateUniqueName(extractName);
+
+    Member member = authenticationDto.toEntityForSignUp(uniqueName);
 
     memberRepository.save(member);
   }
@@ -77,7 +88,7 @@ public class MemberService {
             .orElseThrow(() -> new EntityNotFoundException());
 
     findMemberInfo.checkId(userId);
-    findMemberInfo.update(memberRequest);
+    findMemberInfo.updateProfile(memberRequest);
 
     return MemberResponse.fromRequest(memberRequest);
   }
@@ -86,5 +97,22 @@ public class MemberService {
     if (memberRepository.existsByUsername(username)) {
       throw new DuplicateUsernameException();
     }
+  }
+
+  private String checkDuplicateUniqueName(String uniqueName) {
+    if (memberInfoRepository.existsByUniqueName(uniqueName)) {
+
+      LocalDateTime now = LocalDateTime.now();
+
+      String makeUniqueName = String.valueOf(now.getHour() + now.getMinute() + now.getSecond() + now.getNano() / 1000);
+
+      return makeUniqueName;
+    }
+    return uniqueName;
+  }
+
+  private String extractByUsername(String username) {
+    return Arrays.stream(username.split("@"))
+            .findFirst().orElseThrow(() -> new NoSuchElementException("username split 배열의 첫번째 요소가 없습니다."));
   }
 }

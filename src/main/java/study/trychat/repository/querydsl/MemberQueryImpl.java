@@ -32,6 +32,7 @@ public class MemberQueryImpl implements MemberQuery {
     return queryFactory.select(new QMemberResponse(
                     memberInfo.id,
                     memberInfo.nickname,
+                    memberInfo.uniqueName,
                     memberInfo.greetings,
                     memberInfo.profileImg,
                     memberInfo.profileImgPath
@@ -48,6 +49,7 @@ public class MemberQueryImpl implements MemberQuery {
     return queryFactory.select(new QMemberResponse(
                     memberInfo.id,
                     memberInfo.nickname,
+                    memberInfo.uniqueName,
                     memberInfo.greetings,
                     memberInfo.profileImg,
                     memberInfo.profileImgPath

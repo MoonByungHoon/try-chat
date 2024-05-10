@@ -15,6 +15,8 @@ public class MemberRequest {
   @NotEmpty(message = "공백은 혀용하지 않습니다.")
   @Size(min = 1, max = 20)
   private String nickname;
+  @Size(min = 4, max = 20)
+  private String uniqueName;
   @NotNull
   @Size(max = 60)
   private String greetings;
@@ -26,11 +28,15 @@ public class MemberRequest {
   private String profileImgPath;
 
   @JsonCreator
-  public MemberRequest(@JsonProperty("id") Long id, @JsonProperty("nickname") String nickname,
-                       @JsonProperty("greetings") String greetings, @JsonProperty("profileImg") String profileImg,
+  public MemberRequest(@JsonProperty("id") Long id,
+                       @JsonProperty("nickname") String nickname,
+                       @JsonProperty("uniqueName") String uniqueName,
+                       @JsonProperty("greetings") String greetings,
+                       @JsonProperty("profileImg") String profileImg,
                        @JsonProperty("profileImgPath") String profileImgPath) {
     this.id = id;
     this.nickname = nickname;
+    this.uniqueName = uniqueName;
     this.greetings = greetings;
     this.profileImg = profileImg;
     this.profileImgPath = profileImgPath;

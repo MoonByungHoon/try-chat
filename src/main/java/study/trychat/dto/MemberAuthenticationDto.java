@@ -10,13 +10,16 @@ import lombok.Getter;
 import study.trychat.entity.Member;
 import study.trychat.entity.MemberInfo;
 
+import java.util.Arrays;
+import java.util.NoSuchElementException;
+
 @Getter
 public class MemberAuthenticationDto {
 
   private Long id;
 
   @NotBlank(message = "이메일을 입력해주세요.")
-  @Email(message = "올바른 이메일 주소를 입력해주세요.", regexp = "^[^@]{5,10}@[^@]{8,255}")
+  @Email(message = "올바른 이메일 주소를 입력해주세요.", regexp = "^[^@]{5,64}@[^@]{8,255}")
   private String username;
 
   @NotBlank(message = "비밀번호를 입력해주세요.")
@@ -41,21 +44,26 @@ public class MemberAuthenticationDto {
     this.password = password;
   }
 
-  public void validateUsername(MemberAuthenticationDto authenticationDto) {
-
-    String[] split = authenticationDto.username.split("@");
-
-    if (split[0].length() > 64 || split[1].length() > 255) {
-      throw new IllegalArgumentException("올바른 이메일 주소를 입력해주세요.");
-    }
-  }
-
   public Member toEntity() {
 
     return Member.builder()
             .username(username)
             .password(password)
-            .memberInfo(new MemberInfo("unknown", "", "default.jpg", "/local/default/"))
+            .memberInfo(new MemberInfo("unknownNickName", "unknownUniqueName",
+                    "", "default.jpg", "/local/default/"))
+            .build();
+  }
+
+  public Member toEntityForSignUp(String uniqueName) {
+
+    String nickname = Arrays.stream(username.split("@"))
+            .findFirst().orElseThrow(() -> new NoSuchElementException("username split 배열의 첫번째 요소가 없습니다."));
+
+    return Member.builder()
+            .username(username)
+            .password(password)
+            .memberInfo(new MemberInfo(nickname, uniqueName,
+                    "", nickname + ".jpg", "/local/" + nickname + "/"))
             .build();
   }
 }

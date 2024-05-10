@@ -19,8 +19,6 @@ public class MemberController {
   @PostMapping("/signup")
   public ResponseEntity<String> signUp(@Valid @RequestBody MemberAuthenticationDto authenticationDto) {
 
-    authenticationDto.validateUsername(authenticationDto);
-
     memberService.signUp(authenticationDto);
 
     return ResponseEntity.ok("회원가입에 성공하였습니다.");
