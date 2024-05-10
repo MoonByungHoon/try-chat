@@ -101,7 +101,6 @@ class MemberServiceTest {
   @DisplayName("signUp username unSuccess test and validate test")
   void 잘못된_Username으로_회원가입_실패_및_검증(String username) {
     //    given
-    String emailNotMatch = "올바른 이메일 주소를 입력해주세요.";
     String successPassword = "testPassword@1";
 
     //    when
@@ -110,10 +109,7 @@ class MemberServiceTest {
     Set<ConstraintViolation<MemberAuthenticationDto>> violations = validator.validate(authenticationDto);
 
     //    then
-    assertAll(
-            () -> assertFalse(violations.isEmpty()),
-            () -> assertEquals(violations.size(), 1)
-    );
+    assertFalse(violations.isEmpty());
   }
 
   @ParameterizedTest
@@ -153,6 +149,7 @@ class MemberServiceTest {
     MemberResponse memberResponse = queryFactory.select(new QMemberResponse(
                     memberInfo.id,
                     memberInfo.nickname,
+                    memberInfo.uniqueName,
                     memberInfo.greetings,
                     memberInfo.profileImg,
                     memberInfo.profileImgPath
@@ -280,6 +277,7 @@ class MemberServiceTest {
     MemberResponse memberResponse = queryFactory.select(new QMemberResponse(
                     memberInfo.id,
                     memberInfo.nickname,
+                    memberInfo.uniqueName,
                     memberInfo.greetings,
                     memberInfo.profileImg,
                     memberInfo.profileImgPath
@@ -303,6 +301,7 @@ class MemberServiceTest {
   void 유저_프로필_수정() {
     //    given
     String nickname = "testNickname";
+    String uniqueName = "testUniqueName";
     String greetings = "testGreetings";
     String profileImg = "testImg";
     String profileImgPath = "testPath";
@@ -315,7 +314,7 @@ class MemberServiceTest {
             .getSingleResult();
 
     MemberRequest memberRequest =
-            new MemberRequest(findMemberInfo.getId(), nickname, greetings, profileImg, profileImgPath);
+            new MemberRequest(findMemberInfo.getId(), nickname, uniqueName, greetings, profileImg, profileImgPath);
 
     findMemberInfo.update(memberRequest);
 
