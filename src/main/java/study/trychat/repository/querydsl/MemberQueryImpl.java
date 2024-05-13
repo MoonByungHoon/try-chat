@@ -28,6 +28,22 @@ public class MemberQueryImpl implements MemberQuery {
   }
 
   @Override
+  public MemberResponse findUserProfileByUniqueName(String uniqueName) {
+    return queryFactory.select(new QMemberResponse(
+                    memberInfo.id,
+                    memberInfo.nickname,
+                    memberInfo.uniqueName,
+                    memberInfo.greetings,
+                    memberInfo.profileImg,
+                    memberInfo.profileImgPath
+            ))
+            .from(memberInfo)
+            .where(memberInfo.uniqueName.eq(uniqueName))
+            .fetchOne();
+
+  }
+
+  @Override
   public MemberResponse findSignInByUsernameAndPassword(String username, String password) {
     return queryFactory.select(new QMemberResponse(
                     memberInfo.id,

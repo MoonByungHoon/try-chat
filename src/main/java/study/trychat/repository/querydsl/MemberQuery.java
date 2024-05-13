@@ -10,4 +10,6 @@ public interface MemberQuery {
   MemberResponse findProfileById(Long userId);
 
   MemberAuthenticationDto findAuthenticationTypeById(Long userId);
+
+  MemberResponse findUserProfileByUniqueName(String uniqueName);
 }

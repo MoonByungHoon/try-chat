@@ -57,9 +57,15 @@ public class MemberController {
   }
 
   @GetMapping("/{userId}/profile")
-  public ResponseEntity<MemberResponse> findUserProfile(@PathVariable("userId") final Long userId) {
+  public ResponseEntity<MemberResponse> findUserProfileByUserId(@PathVariable("userId") final Long userId) {
 
-    return ResponseEntity.ok(memberService.findUserProfile(userId));
+    return ResponseEntity.ok(memberService.findUserProfileByUserId(userId));
+  }
+
+  @GetMapping("{uniqueName}/profile")
+  public ResponseEntity<MemberResponse> findUserProfileByUniqueName(@PathVariable final String uniqueName) {
+
+    return ResponseEntity.ok(memberService.findUserProfileByUniqueName(uniqueName));
   }
 
   @PutMapping("/{userId}/profile")

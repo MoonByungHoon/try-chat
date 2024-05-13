@@ -76,9 +76,14 @@ public class MemberService {
     memberRepository.delete(findMember);
   }
 
-  public MemberResponse findUserProfile(Long userId) {
+  public MemberResponse findUserProfileByUserId(Long userId) {
 
     return memberRepository.findProfileById(userId);
+  }
+
+  public MemberResponse findUserProfileByUniqueName(String uniqueName) {
+
+    return memberRepository.findUserProfileByUniqueName(uniqueName);
   }
 
   @Transactional

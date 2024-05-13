@@ -24,7 +24,6 @@ public class HttpMemberControllerTest {
 
   private static MemberTest memberTest;
 
-
   @BeforeAll
   static void 테스트_환경_설정() {
     memberTest = new MemberTest();
@@ -96,10 +95,10 @@ public class HttpMemberControllerTest {
     Long userId = memberTest.getUserId();
 
     //    when
-    //    then
     String splitName = Arrays.stream(username.split("@"))
             .findFirst().orElseThrow(() -> new NoSuchElementException("username split 배열의 첫번째 요소가 없습니다."));
 
+    //    then
     given().log().all()
             .pathParam("userId", userId)
             .when()
@@ -112,10 +111,37 @@ public class HttpMemberControllerTest {
             .assertThat().body("greetings", equalTo(""))
             .assertThat().body("profileImg", equalTo(splitName + ".jpg"))
             .assertThat().body("profileImgPath", equalTo("/local/" + splitName + "/"));
+
   }
 
   @Test
   @Order(4)
+  void 유니크네임으로_프로필조회() {
+    //    given
+    String username = memberTest.getUsername();
+    Long userId = memberTest.getUserId();
+
+    //    when
+    String splitName = Arrays.stream(username.split("@"))
+            .findFirst().orElseThrow(() -> new NoSuchElementException("username split 배열의 첫번째 요소가 없습니다."));
+
+    //    then
+    given().log().all()
+            .pathParam("uniqueName", splitName)
+            .when()
+            .get("/users/{uniqueName}/profile")
+            .then().log().all()
+            .statusCode(200)
+            .assertThat().body("id", equalTo(userId.intValue()))
+            .assertThat().body("nickname", equalTo(splitName))
+            .assertThat().body("uniqueName", equalTo(splitName))
+            .assertThat().body("greetings", equalTo(""))
+            .assertThat().body("profileImg", equalTo(splitName + ".jpg"))
+            .assertThat().body("profileImgPath", equalTo("/local/" + splitName + "/"));
+  }
+
+  @Test
+  @Order(5)
   void 회원정보_수정_및_열람() {
     //    given
     String afterUsername = "TestName101@Test.co.kr";
@@ -154,6 +180,7 @@ public class HttpMemberControllerTest {
   }
 
   @Test
+  @Order(6)
   void 마이_프로필_수정() {
     //    given
     Long userId = memberTest.getUserId();
