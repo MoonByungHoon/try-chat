@@ -34,14 +34,6 @@ public class MemberInfo {
     this.profileImgPath = profileImgPath;
   }
 
-  public void update(MemberRequest memberRequest) {
-    this.nickname = memberRequest.getNickname();
-    this.uniqueName = memberRequest.getUniqueName();
-    this.greetings = memberRequest.getGreetings();
-    this.profileImg = memberRequest.getProfileImg();
-    this.profileImgPath = memberRequest.getProfileImgPath();
-  }
-
   public void updateProfile(MemberRequest memberRequest) {
     this.nickname = memberRequest.getNickname();
     this.greetings = memberRequest.getGreetings();

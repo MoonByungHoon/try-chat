@@ -29,6 +29,8 @@ public class QMemberInfo extends EntityPathBase<MemberInfo> {
 
     public final StringPath profileImgPath = createString("profileImgPath");
 
+    public final StringPath uniqueName = createString("uniqueName");
+
     public QMemberInfo(String variable) {
         super(MemberInfo.class, forVariable(variable));
     }

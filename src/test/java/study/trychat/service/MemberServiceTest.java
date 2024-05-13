@@ -316,7 +316,7 @@ class MemberServiceTest {
     MemberRequest memberRequest =
             new MemberRequest(findMemberInfo.getId(), nickname, uniqueName, greetings, profileImg, profileImgPath);
 
-    findMemberInfo.update(memberRequest);
+    findMemberInfo.updateProfile(memberRequest);
 
     em.flush();
     em.clear();

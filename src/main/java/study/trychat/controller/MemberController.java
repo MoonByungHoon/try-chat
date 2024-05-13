@@ -32,14 +32,14 @@ public class MemberController {
   }
 
   @GetMapping("/{userId}")
-  public ResponseEntity<MemberAuthenticationDto> findUser(@PathVariable("userId") final Long userId) {
+  public ResponseEntity<MemberAuthenticationDto> findUser(@PathVariable final Long userId) {
 
     return ResponseEntity.ok(memberService.findUser(userId));
   }
 
   //  username과 password 변경 요청 처리.
   @PutMapping("/{userId}")
-  public ResponseEntity<String> updateUser(@PathVariable("userId") final Long userId,
+  public ResponseEntity<String> updateUser(@PathVariable final Long userId,
                                            @Valid @RequestBody MemberAuthenticationDto authenticationDto) {
 
     memberService.updateUser(userId, authenticationDto);
@@ -48,7 +48,7 @@ public class MemberController {
   }
 
   @DeleteMapping("/{userId}")
-  public ResponseEntity<String> removeUser(@PathVariable("userId") final Long userId,
+  public ResponseEntity<String> removeUser(@PathVariable final Long userId,
                                            @Valid @RequestBody MemberAuthenticationDto authenticationDto) {
 
     memberService.remove(userId, authenticationDto);
@@ -57,7 +57,7 @@ public class MemberController {
   }
 
   @GetMapping("/{userId}/profile")
-  public ResponseEntity<MemberResponse> findUserProfileByUserId(@PathVariable("userId") final Long userId) {
+  public ResponseEntity<MemberResponse> findUserProfileByUserId(@PathVariable final Long userId) {
 
     return ResponseEntity.ok(memberService.findUserProfileByUserId(userId));
   }
@@ -69,14 +69,14 @@ public class MemberController {
   }
 
   @PutMapping("/{userId}/profile")
-  public ResponseEntity<MemberResponse> updateUserProfile(@PathVariable("userId") final Long userId,
+  public ResponseEntity<MemberResponse> updateUserProfile(@PathVariable final Long userId,
                                                           @Valid @RequestBody MemberRequest memberRequest) {
 
     return ResponseEntity.ok(memberService.updateUserProfile(userId, memberRequest));
   }
 
   @GetMapping("/{userId}/friends")
-  public ResponseEntity<?> findFriendsByUserId(@PathVariable("userId") final Long userId) {
+  public ResponseEntity<?> findFriendsByUserId(@PathVariable final Long userId) {
 
     return null;
 //    return ResponseEntity.ok(memberDto);
