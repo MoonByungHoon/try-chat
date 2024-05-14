@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import study.trychat.dto.MemberAuthenticationDto;
 import study.trychat.dto.MemberRequest;
 import study.trychat.dto.MemberResponse;
+import study.trychat.service.FriendService;
 import study.trychat.service.MemberService;
 
 @RestController
@@ -15,6 +16,7 @@ import study.trychat.service.MemberService;
 public class MemberController {
 
   private final MemberService memberService;
+  private final FriendService friendService;
 
   @PostMapping("/signup")
   public ResponseEntity<String> signUp(@Valid @RequestBody MemberAuthenticationDto authenticationDto) {
@@ -62,8 +64,8 @@ public class MemberController {
     return ResponseEntity.ok(memberService.findUserProfileByUserId(userId));
   }
 
-  @GetMapping("{uniqueName}/profile")
-  public ResponseEntity<MemberResponse> findUserProfileByUniqueName(@PathVariable final String uniqueName) {
+  @GetMapping("/profile")
+  public ResponseEntity<MemberResponse> findUserProfileByUniqueName(@RequestParam final String uniqueName) {
 
     return ResponseEntity.ok(memberService.findUserProfileByUniqueName(uniqueName));
   }
@@ -78,7 +80,6 @@ public class MemberController {
   @GetMapping("/{userId}/friends")
   public ResponseEntity<?> findFriendsByUserId(@PathVariable final Long userId) {
 
-    return null;
-//    return ResponseEntity.ok(memberDto);
+    return ResponseEntity.ok(friendService.findByUserId(userId));
   }
 }

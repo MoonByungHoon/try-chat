@@ -111,7 +111,6 @@ public class HttpMemberControllerTest {
             .assertThat().body("greetings", equalTo(""))
             .assertThat().body("profileImg", equalTo(splitName + ".jpg"))
             .assertThat().body("profileImgPath", equalTo("/local/" + splitName + "/"));
-
   }
 
   @Test
@@ -127,9 +126,9 @@ public class HttpMemberControllerTest {
 
     //    then
     given().log().all()
-            .pathParam("uniqueName", splitName)
+            .param("uniqueName", splitName)
             .when()
-            .get("/users/{uniqueName}/profile")
+            .get("/users/profile")
             .then().log().all()
             .statusCode(200)
             .assertThat().body("id", equalTo(userId.intValue()))

@@ -1,5 +1,10 @@
 package study.trychat.httptest;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class MemberTest {
 
   private String username;
@@ -12,27 +17,9 @@ public class MemberTest {
     this.userId = 0L;
   }
 
-  public void setUserId(Long userId) {
-    this.userId = userId;
-  }
-
-  public void setUsername(String username) {
-    this.username = username;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
-  }
-
-  public String getUsername() {
-    return username;
-  }
-
-  public String getPassword() {
-    return password;
-  }
-
-  public Long getUserId() {
-    return userId;
+  public MemberTest(String mail, String s) {
+    username = mail;
+    password = s;
+    userId = 0L;
   }
 }

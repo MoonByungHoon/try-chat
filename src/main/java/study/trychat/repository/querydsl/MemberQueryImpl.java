@@ -40,7 +40,6 @@ public class MemberQueryImpl implements MemberQuery {
             .from(memberInfo)
             .where(memberInfo.uniqueName.eq(uniqueName))
             .fetchOne();
-
   }
 
   @Override
@@ -53,10 +52,10 @@ public class MemberQueryImpl implements MemberQuery {
                     memberInfo.profileImg,
                     memberInfo.profileImgPath
             ))
-            .from(member, memberInfo)
-            .where((member.username.eq(username)
-                    .and(member.password.eq(password))
-                    .and(member.id.eq(memberInfo.id))))
+            .from(memberInfo)
+            .join(member)
+            .on(member.username.eq(username).and(member.password.eq(password)))
+            .where(member.id.eq(memberInfo.id))
             .fetchOne();
   }
 
@@ -70,8 +69,8 @@ public class MemberQueryImpl implements MemberQuery {
                     memberInfo.profileImg,
                     memberInfo.profileImgPath
             ))
-            .from(member, memberInfo)
-            .where(member.id.eq(userId))
+            .from(memberInfo)
+            .where(memberInfo.id.eq(userId))
             .fetchOne();
   }
 }
