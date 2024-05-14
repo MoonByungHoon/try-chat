@@ -3,12 +3,14 @@ package study.trychat.entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import static study.trychat.entity.FriendStatus.FRIEND;
 
 @Builder
 @Entity
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Friend {

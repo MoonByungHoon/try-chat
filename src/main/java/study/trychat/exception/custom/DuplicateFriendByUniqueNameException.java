@@ -1,9 +1,9 @@
 package study.trychat.exception.custom;
 
-public class DuplicateUniqueNameException extends RuntimeException {
-  private static String DUPLICATE_UNIQUE_NAME = "중복된 이름입니다.";
+public class DuplicateFriendByUniqueNameException extends RuntimeException {
+  private static String DUPLICATE_UNIQUE_NAME = "이미 친구 추가가 되어있습니다.";
 
-  public DuplicateUniqueNameException() {
+  public DuplicateFriendByUniqueNameException() {
     super(DUPLICATE_UNIQUE_NAME);
   }
 }

@@ -4,7 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import study.trychat.dto.FriendDto;
+import study.trychat.dto.FriendResponse;
 import study.trychat.service.FriendService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/friends")
@@ -15,12 +18,10 @@ public class FriendController {
 
   //  유니크 네임으로 검색 친구 추가.
   @PostMapping("/{uniqueName}")
-  public ResponseEntity<String> addFriendByNickname(@RequestHeader final Long userId,
-                                                    @PathVariable final String uniqueName) {
+  public ResponseEntity<List<FriendResponse>> addFriendByNickname(@RequestHeader final Long userId,
+                                                                  @PathVariable final String uniqueName) {
 
-    friendService.addFriendByNickname(userId, uniqueName);
-
-    return ResponseEntity.ok("친구 추가에 성공하였습니다.");
+    return ResponseEntity.ok(friendService.addFriendByNickname(userId, uniqueName));
   }
 
   @GetMapping("/{friendId}/profile")
