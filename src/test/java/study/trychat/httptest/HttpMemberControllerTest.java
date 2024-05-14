@@ -61,8 +61,7 @@ public class HttpMemberControllerTest {
             .when()
             .post("/users/signup")
             .then().log().all()
-            .statusCode(200)
-            .extract().jsonPath();
+            .statusCode(200);
   }
 
   @Test
