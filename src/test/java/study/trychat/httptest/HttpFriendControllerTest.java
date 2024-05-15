@@ -40,6 +40,21 @@ public class HttpFriendControllerTest {
     friendInfoTest2 = 회원프로필조회(friendTest2.getUserId());
   }
 
+  @AfterAll
+  static void 친구삭제() {
+    List<FriendTest> friendTests = given().log().all()
+            .header("userId", memberTest.getUserId())
+            .pathParam("friendId", friendInfoTest1.getId())
+            .when()
+            .delete("/friends/{friendId}")
+            .then().log().all()
+            .statusCode(200)
+            .extract().as(new TypeRef<List<FriendTest>>() {
+            });
+
+    assertEquals(friendTests.size(), 0);
+  }
+
   @Test
   @Order(1)
   void 친구_추가() {

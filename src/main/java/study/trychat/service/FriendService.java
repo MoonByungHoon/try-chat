@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import study.trychat.dto.FriendResponse;
 import study.trychat.entity.Friend;
 import study.trychat.entity.MemberInfo;
+import study.trychat.exception.custom.DeleteFalseByMemberIdAndFriendId;
 import study.trychat.exception.custom.DuplicateFriendByUniqueNameException;
 import study.trychat.repository.FriendRepository;
 import study.trychat.repository.MemberInfoRepository;
@@ -38,6 +39,16 @@ public class FriendService {
   }
 
   public List<FriendResponse> findByUserId(Long userId) {
+
+    return friendRepository.findFriendsByUserId(userId);
+  }
+
+  @Transactional
+  public List<FriendResponse> removeFriend(Long userId, Long friendId) {
+
+    if (friendRepository.deleteByMemberIdAndFriendId(userId, friendId) == 0) {
+      throw new DeleteFalseByMemberIdAndFriendId();
+    }
 
     return friendRepository.findFriendsByUserId(userId);
   }

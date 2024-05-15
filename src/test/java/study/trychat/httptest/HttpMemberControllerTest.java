@@ -19,9 +19,8 @@ import static org.hamcrest.Matchers.equalTo;
 @TestMethodOrder(OrderAnnotation.class)
 public class HttpMemberControllerTest {
 
-//  현재 테스트는 직접 서비스 되는 DB에 접근하게 된다.
+  //  현재 테스트는 직접 서비스 되는 DB에 접근하게 된다.
 //  지금 당장은 다른 방법을 찾기에는 진행이 더뎌지니 나중에 다른 방법을 찾아보자.
-
   private static MemberTest memberTest;
 
   @BeforeAll
