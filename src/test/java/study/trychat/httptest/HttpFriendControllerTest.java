@@ -52,7 +52,7 @@ public class HttpFriendControllerTest {
             .extract().as(new TypeRef<List<FriendTest>>() {
             });
 
-    assertEquals(friendTests.size(), 0);
+    assertEquals(friendTests.size(), 1);
   }
 
   @Test

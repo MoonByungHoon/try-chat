@@ -52,13 +52,13 @@ public class MemberQueryImpl implements MemberQuery {
                     memberInfo.profileImg,
                     memberInfo.profileImgPath
             ))
-            .from(memberInfo)
-            .join(member)
-            .on(member.username.eq(username).and(member.password.eq(password)))
-            .where(member.id.eq(memberInfo.id))
+            .from(member)
+            .join(member.memberInfo, memberInfo)
+            .on(member.id.eq(memberInfo.id))
+            .where(member.username.eq(username).and(member.password.eq(password)))
             .fetchOne();
   }
-
+ 
   @Override
   public MemberResponse findProfileById(Long userId) {
     return queryFactory.select(new QMemberResponse(
