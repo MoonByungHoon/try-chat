@@ -76,7 +76,7 @@ public class FriendService {
     return FriendResponse.fromRequest(findFriend);
   }
 
-  public Friend findFriendEntityByMemberIdAndFriendId(Long memberId, Long friendId) {
+  private Friend findFriendEntityByMemberIdAndFriendId(Long memberId, Long friendId) {
 
     return friendRepository.findByMemberIdAndFriendId(memberId, friendId);
   }
