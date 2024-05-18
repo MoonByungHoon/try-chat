@@ -1,8 +1,8 @@
 .gradle
 build/
 **/src/main/generated/
-**/src/test/java/
 **/src/main/resources/
+**/src/test/resources/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
