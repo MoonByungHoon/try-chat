@@ -9,5 +9,6 @@ public class MemberInfoTest {
   private String uniqueName;
   private String greetings;
   private String profileImg;
+  private String backgroundImg;
   private String profileImgPath;
 }

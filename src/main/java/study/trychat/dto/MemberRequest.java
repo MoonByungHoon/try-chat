@@ -25,6 +25,9 @@ public class MemberRequest {
   private String profileImg;
   @NotBlank
   @Size(min = 1)
+  private String backgroundImg;
+  @NotBlank
+  @Size(min = 1)
   private String profileImgPath;
 
   @JsonCreator
@@ -33,12 +36,15 @@ public class MemberRequest {
                        @JsonProperty("uniqueName") String uniqueName,
                        @JsonProperty("greetings") String greetings,
                        @JsonProperty("profileImg") String profileImg,
+                       @JsonProperty("backgroundImg") String backgroundImg,
                        @JsonProperty("profileImgPath") String profileImgPath) {
+
     this.id = id;
     this.nickname = nickname;
     this.uniqueName = uniqueName;
     this.greetings = greetings;
     this.profileImg = profileImg;
+    this.backgroundImg = backgroundImg;
     this.profileImgPath = profileImgPath;
   }
 }

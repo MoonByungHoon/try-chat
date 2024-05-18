@@ -6,4 +6,6 @@ import study.trychat.repository.querydsl.FriendQuery;
 
 public interface FriendRepository extends JpaRepository<Friend, Long>, FriendQuery {
   long deleteByMemberIdAndFriendId(Long memberId, Long friendId);
+
+  Friend findByMemberIdAndFriendId(Long memberId, Long friendId);
 }

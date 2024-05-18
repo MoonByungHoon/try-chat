@@ -16,28 +16,48 @@ public class FriendQueryImpl implements FriendQuery {
   private final JPAQueryFactory queryFactory;
 
   @Override
-  public List<FriendResponse> findFriendsByUserId(Long userId) {
+  public List<FriendResponse> findFriendsByMemberId(Long memberId) {
 
     return queryFactory.select(new QFriendResponse(
                     friend.id,
                     friend.friendId,
                     friend.friendNickname,
                     friend.friendProfileImg,
+                    friend.friendBackgroundImg,
                     friend.friendProfileImgPath,
                     friend.friendStatus
             ))
             .from(friend)
-            .where(friend.memberId.eq(userId))
+            .where(friend.memberId.eq(memberId))
             .fetch();
   }
 
   @Override
-  public boolean existsByUniqueName(String uniqueName) {
+  public boolean existsByUniqueName(Long memberId, String uniqueName) {
 
     return queryFactory.selectFrom(friend)
             .join(memberInfo)
             .on(friend.memberId.eq(memberInfo.id))
-            .where(memberInfo.uniqueName.eq(uniqueName))
+            .where(memberInfo.uniqueName.eq(uniqueName)
+                    .and(friend.memberId.eq(memberId)
+                            .and(memberInfo.id.eq(memberId))))
             .fetchOne() != null;
+  }
+
+  @Override
+  public FriendResponse findFriendsByMemberIdAndFriendId(Long memberId, Long friendId) {
+
+    return queryFactory.select(new QFriendResponse(
+                    friend.id,
+                    friend.friendId,
+                    friend.friendNickname,
+                    friend.friendProfileImg,
+                    friend.friendBackgroundImg,
+                    friend.friendProfileImgPath,
+                    friend.friendStatus
+            ))
+            .from(friend)
+            .where(friend.memberId.eq(memberId).and(friend.friendId.eq(friendId)))
+            .fetchOne();
   }
 }

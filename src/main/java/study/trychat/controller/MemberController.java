@@ -59,7 +59,7 @@ public class MemberController {
   }
 
   @GetMapping("/{userId}/profile")
-  public ResponseEntity<MemberResponse> findUserProfileByUserId(@PathVariable final Long userId) {
+  public ResponseEntity<MemberResponse> findUserProfileByMemberId(@PathVariable final Long userId) {
 
     return ResponseEntity.ok(memberService.findUserProfileByUserId(userId));
   }
@@ -78,8 +78,8 @@ public class MemberController {
   }
 
   @GetMapping("/{userId}/friends")
-  public ResponseEntity<?> findFriendsByUserId(@PathVariable final Long userId) {
+  public ResponseEntity<?> findFriendsByMemberId(@PathVariable final Long userId) {
 
-    return ResponseEntity.ok(friendService.findByUserId(userId));
+    return ResponseEntity.ok(friendService.findByMemberId(userId));
   }
 }

@@ -107,7 +107,8 @@ public class HttpMemberControllerTest {
             .assertThat().body("nickname", equalTo(splitName))
             .assertThat().body("uniqueName", equalTo(splitName))
             .assertThat().body("greetings", equalTo(""))
-            .assertThat().body("profileImg", equalTo(splitName + ".jpg"))
+            .assertThat().body("profileImg", equalTo("default.jpg"))
+            .assertThat().body("backgroundImg", equalTo("default.jpg"))
             .assertThat().body("profileImgPath", equalTo("/local/" + splitName + "/"));
   }
 
@@ -133,7 +134,8 @@ public class HttpMemberControllerTest {
             .assertThat().body("nickname", equalTo(splitName))
             .assertThat().body("uniqueName", equalTo(splitName))
             .assertThat().body("greetings", equalTo(""))
-            .assertThat().body("profileImg", equalTo(splitName + ".jpg"))
+            .assertThat().body("profileImg", equalTo("default.jpg"))
+            .assertThat().body("backgroundImg", equalTo("default.jpg"))
             .assertThat().body("profileImgPath", equalTo("/local/" + splitName + "/"));
   }
 
@@ -197,6 +199,7 @@ public class HttpMemberControllerTest {
             .assertThat().body("uniqueName", equalTo(requestData.get("uniqueName")))
             .assertThat().body("greetings", equalTo(requestData.get("greetings")))
             .assertThat().body("profileImg", equalTo(requestData.get("profileImg")))
+            .assertThat().body("backgroundImg", equalTo(requestData.get("backgroundImg")))
             .assertThat().body("profileImgPath", equalTo(requestData.get("profileImgPath")));
   }
 
@@ -205,16 +208,18 @@ public class HttpMemberControllerTest {
     String uniqueName = "testUniqueName";
     String greetings = "testGreetings";
     String profileImg = "testProfileImg";
+    String backgroundImg = "testBackgroundImg";
     String profileImgPath = "testProfileImgPath";
 
-    //    when
     HashMap<String, Object> requestData = new HashMap<>();
     requestData.put("id", userId);
     requestData.put("nickname", nickname);
     requestData.put("uniqueName", uniqueName);
     requestData.put("greetings", greetings);
     requestData.put("profileImg", profileImg);
+    requestData.put("backgroundImg", backgroundImg);
     requestData.put("profileImgPath", profileImgPath);
+
     return requestData;
   }
 }

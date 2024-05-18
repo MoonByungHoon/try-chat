@@ -3,7 +3,7 @@ package study.trychat.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import study.trychat.dto.FriendDto;
+import study.trychat.dto.FriendRequest;
 import study.trychat.dto.FriendResponse;
 import study.trychat.service.FriendService;
 
@@ -25,21 +25,30 @@ public class FriendController {
   }
 
   @GetMapping("/{friendId}/profile")
-  public ResponseEntity<FriendDto> findFriendByFriendId(@PathVariable final Long friendId) {
+  public ResponseEntity<FriendResponse> findFriendByFriendId(@RequestHeader final Long userId,
+                                                             @PathVariable final Long friendId) {
 
-    return ResponseEntity.ok(new FriendDto("testFriend"));
+
+    return ResponseEntity.ok(friendService.findFriendByFriendId(userId, friendId));
   }
 
   @PutMapping("/profile")
-  public ResponseEntity<FriendDto> updateFriendProfile(@RequestHeader final Long userId,
-                                                       @RequestBody FriendDto friendDto) {
+  public ResponseEntity<FriendResponse> updateFriendProfile(@RequestHeader final Long userId,
+                                                            @RequestBody FriendRequest friendRequest) {
 
-    return ResponseEntity.ok(friendDto);
+    return ResponseEntity.ok(friendService.updateFriendProfile(userId, friendRequest));
+  }
+
+  @PutMapping("/status")
+  public ResponseEntity<List<FriendResponse>> updateFriendStatus(@RequestHeader final Long userId,
+                                                                 @RequestBody FriendRequest friendRequest) {
+
+    return ResponseEntity.ok(friendService.updateFriendStatus(userId, friendRequest));
   }
 
   @DeleteMapping("/{friendId}")
-  public ResponseEntity<List<FriendResponse>> removeFriendByUserIdAndFriendId(@RequestHeader final Long userId,
-                                                                              @PathVariable final Long friendId) {
+  public ResponseEntity<List<FriendResponse>> removeFriendByMemberIdAndFriendId(@RequestHeader final Long userId,
+                                                                                @PathVariable final Long friendId) {
 
     return ResponseEntity.ok(friendService.removeFriend(userId, friendId));
   }

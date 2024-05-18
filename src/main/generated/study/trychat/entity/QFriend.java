@@ -19,6 +19,8 @@ public class QFriend extends EntityPathBase<Friend> {
 
     public static final QFriend friend = new QFriend("friend");
 
+    public final StringPath friendBackgroundImg = createString("friendBackgroundImg");
+
     public final NumberPath<Long> friendId = createNumber("friendId", Long.class);
 
     public final StringPath friendNickname = createString("friendNickname");

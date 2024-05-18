@@ -19,6 +19,8 @@ public class QMemberInfo extends EntityPathBase<MemberInfo> {
 
     public static final QMemberInfo memberInfo = new QMemberInfo("memberInfo");
 
+    public final StringPath backgroundImg = createString("backgroundImg");
+
     public final StringPath greetings = createString("greetings");
 
     public final NumberPath<Long> id = createNumber("id", Long.class);

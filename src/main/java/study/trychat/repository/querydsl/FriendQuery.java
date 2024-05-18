@@ -5,7 +5,9 @@ import study.trychat.dto.FriendResponse;
 import java.util.List;
 
 public interface FriendQuery {
-  List<FriendResponse> findFriendsByUserId(Long userId);
+  List<FriendResponse> findFriendsByMemberId(Long memberId);
 
-  boolean existsByUniqueName(String uniqueName);
+  boolean existsByUniqueName(Long memberId, String uniqueName);
+
+  FriendResponse findFriendsByMemberIdAndFriendId(Long memberId, Long friendId);
 }

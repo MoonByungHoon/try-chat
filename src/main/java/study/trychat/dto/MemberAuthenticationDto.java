@@ -50,7 +50,7 @@ public class MemberAuthenticationDto {
             .username(username)
             .password(password)
             .memberInfo(new MemberInfo("unknownNickName", "unknownUniqueName",
-                    "", "default.jpg", "/local/default/"))
+                    "", "default.jpg", "default.jpg", "/local/default/"))
             .build();
   }
 
@@ -63,7 +63,7 @@ public class MemberAuthenticationDto {
             .username(username)
             .password(password)
             .memberInfo(new MemberInfo(nickname, uniqueName,
-                    "", nickname + ".jpg", "/local/" + nickname + "/"))
+                    "", "default.jpg", "default.jpg", "/local/" + nickname + "/"))
             .build();
   }
 }

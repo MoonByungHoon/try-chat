@@ -11,6 +11,7 @@ public class FriendTest {
   private Long friendId;
   private String friendNickname;
   private String friendProfileImg;
+  private String friendBackgroundImg;
   private String friendProfileImgPath;
   @Enumerated(EnumType.STRING)
   private FriendStatus friendStatus;

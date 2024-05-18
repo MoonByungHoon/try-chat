@@ -152,6 +152,7 @@ class MemberServiceTest {
                     memberInfo.uniqueName,
                     memberInfo.greetings,
                     memberInfo.profileImg,
+                    memberInfo.backgroundImg,
                     memberInfo.profileImgPath
             ))
             .from(member, memberInfo)
@@ -280,6 +281,7 @@ class MemberServiceTest {
                     memberInfo.uniqueName,
                     memberInfo.greetings,
                     memberInfo.profileImg,
+                    memberInfo.backgroundImg,
                     memberInfo.profileImgPath
             ))
             .from(member)
@@ -304,6 +306,7 @@ class MemberServiceTest {
     String uniqueName = "testUniqueName";
     String greetings = "testGreetings";
     String profileImg = "testImg";
+    String backgroundImg = "testBackgroundImg";
     String profileImgPath = "testPath";
 
     //    when
@@ -314,7 +317,7 @@ class MemberServiceTest {
             .getSingleResult();
 
     MemberRequest memberRequest =
-            new MemberRequest(findMemberInfo.getId(), nickname, uniqueName, greetings, profileImg, profileImgPath);
+            new MemberRequest(findMemberInfo.getId(), nickname, uniqueName, greetings, profileImg, backgroundImg, profileImgPath);
 
     findMemberInfo.updateProfile(memberRequest);
 
@@ -335,6 +338,7 @@ class MemberServiceTest {
             () -> assertEquals(compare.getNickname(), nickname),
             () -> assertEquals(compare.getGreetings(), greetings),
             () -> assertEquals(compare.getProfileImg(), profileImg),
+            () -> assertEquals(compare.getBackgroundImg(), backgroundImg),
             () -> assertEquals(compare.getProfileImgPath(), profileImgPath)
     );
   }

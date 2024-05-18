@@ -24,13 +24,16 @@ public class MemberInfo {
   @Column(nullable = false)
   private String profileImg;
   @Column(nullable = false)
+  private String backgroundImg;
+  @Column(nullable = false)
   private String profileImgPath;
 
-  public MemberInfo(String nickname, String uniqueName, String greetings, String profileImg, String profileImgPath) {
+  public MemberInfo(String nickname, String uniqueName, String greetings, String profileImg, String backgroundImg, String profileImgPath) {
     this.nickname = nickname;
     this.uniqueName = uniqueName;
     this.greetings = greetings;
     this.profileImg = profileImg;
+    this.backgroundImg = backgroundImg;
     this.profileImgPath = profileImgPath;
   }
 
@@ -38,6 +41,7 @@ public class MemberInfo {
     this.nickname = memberRequest.getNickname();
     this.greetings = memberRequest.getGreetings();
     this.profileImg = memberRequest.getProfileImg();
+    this.backgroundImg = memberRequest.getBackgroundImg();
     this.profileImgPath = memberRequest.getProfileImgPath();
   }
 

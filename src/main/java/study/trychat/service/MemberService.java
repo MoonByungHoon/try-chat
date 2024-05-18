@@ -47,38 +47,38 @@ public class MemberService {
             .findSignInByUsernameAndPassword(authenticationDto.getUsername(), authenticationDto.getPassword());
   }
 
-  public MemberAuthenticationDto findUser(Long userId) {
+  public MemberAuthenticationDto findUser(Long memberId) {
 
-    return memberRepository.findAuthenticationTypeById(userId);
+    return memberRepository.findAuthenticationTypeById(memberId);
   }
 
   @Transactional
-  public void updateUser(Long userId, MemberAuthenticationDto authenticationDto) {
+  public void updateUser(Long memberId, MemberAuthenticationDto authenticationDto) {
 
     if (memberRepository.existsByUsername(authenticationDto.getUsername())) {
       throw new DuplicateUsernameException();
     }
 
-    Member findMember = memberRepository.findById(userId)
+    Member findMember = memberRepository.findById(memberId)
             .orElseThrow(() -> new EntityNotFoundException());
 
     findMember.update(authenticationDto);
   }
 
   @Transactional
-  public void remove(Long userId, MemberAuthenticationDto authenticationDto) {
+  public void remove(Long memberId, MemberAuthenticationDto authenticationDto) {
 
     Member findMember =
             memberRepository.findByUsernameAndPassword(authenticationDto.getUsername(), authenticationDto.getPassword());
 
-    findMember.checkId(userId);
+    findMember.checkId(memberId);
 
     memberRepository.delete(findMember);
   }
 
-  public MemberResponse findUserProfileByUserId(Long userId) {
+  public MemberResponse findUserProfileByUserId(Long memberId) {
 
-    return memberRepository.findProfileById(userId);
+    return memberRepository.findProfileById(memberId);
   }
 
   public MemberResponse findUserProfileByUniqueName(String uniqueName) {
@@ -87,12 +87,12 @@ public class MemberService {
   }
 
   @Transactional
-  public MemberResponse updateUserProfile(Long userId, MemberRequest memberRequest) {
+  public MemberResponse updateUserProfile(Long memberId, MemberRequest memberRequest) {
 
     MemberInfo findMemberInfo = memberInfoRepository.findById(memberRequest.getId())
             .orElseThrow(() -> new EntityNotFoundException());
 
-    findMemberInfo.checkId(userId);
+    findMemberInfo.checkId(memberId);
     findMemberInfo.updateProfile(memberRequest);
 
     return MemberResponse.fromRequest(memberRequest);

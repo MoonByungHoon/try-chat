@@ -7,9 +7,9 @@ public interface MemberQuery {
 
   MemberResponse findSignInByUsernameAndPassword(String username, String password);
 
-  MemberResponse findProfileById(Long userId);
+  MemberResponse findProfileById(Long memberId);
 
-  MemberAuthenticationDto findAuthenticationTypeById(Long userId);
+  MemberAuthenticationDto findAuthenticationTypeById(Long memberId);
 
   MemberResponse findUserProfileByUniqueName(String uniqueName);
 }
