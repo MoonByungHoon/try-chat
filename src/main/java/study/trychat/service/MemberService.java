@@ -43,8 +43,14 @@ public class MemberService {
 
   public MemberResponse signIn(MemberAuthenticationDto authenticationDto) {
 
-    return memberRepository
+    MemberResponse findMember = memberRepository
             .findSignInByUsernameAndPassword(authenticationDto.getUsername(), authenticationDto.getPassword());
+
+    if (findMember == null) {
+      throw new EntityNotFoundException();
+    }
+
+    return findMember;
   }
 
   public MemberAuthenticationDto findUser(Long memberId) {
