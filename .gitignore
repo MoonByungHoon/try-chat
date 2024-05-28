@@ -2,7 +2,8 @@
 build/
 **/src/main/generated/
 **/src/test/
-**/src/main/resources/application.properties
+**/application.properties
+
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
