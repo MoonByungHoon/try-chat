@@ -1,10 +1,9 @@
 package study.trychat.exception.custom;
 
+import study.trychat.exception.ErrorMessage;
+
 public class DeleteFalseByMemberIdAndFriendId extends RuntimeException {
-
-  private static String DELETE_FALSE = "친구 삭제에 실패하였습니다.";
-
   public DeleteFalseByMemberIdAndFriendId() {
-    super(DELETE_FALSE);
+    super(ErrorMessage.FRIEND_DELETE_FALSE.getMessage());
   }
 }

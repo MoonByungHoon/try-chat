@@ -1,9 +1,9 @@
 package study.trychat.exception.custom;
 
-public class PrimaryKeyMismatchException extends RuntimeException {
-  private static String PRIMARY_KEY_MISMATCH = "대상이 일치하지 않습니다.";
+import study.trychat.exception.ErrorMessage;
 
+public class PrimaryKeyMismatchException extends RuntimeException {
   public PrimaryKeyMismatchException() {
-    super(PRIMARY_KEY_MISMATCH);
+    super(ErrorMessage.PRIMARY_KEY_MISMATCH.getMessage());
   }
 }
