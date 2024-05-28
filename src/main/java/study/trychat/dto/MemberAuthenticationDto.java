@@ -50,7 +50,8 @@ public class MemberAuthenticationDto {
             .username(username)
             .password(password)
             .memberInfo(new MemberInfo("unknownNickName", "unknownUniqueName",
-                    "", "default.jpg", "default.jpg", "/local/default/"))
+                    "", "defaultProfile.jpg", "defaultBackground.jpg",
+                    "https://my-side-project-bucket.s3.ap-northeast-2.amazonaws.com/"))
             .build();
   }
 
@@ -62,8 +63,9 @@ public class MemberAuthenticationDto {
     return Member.builder()
             .username(username)
             .password(password)
-            .memberInfo(new MemberInfo(nickname, uniqueName,
-                    "", "default.jpg", "default.jpg", "/local/" + nickname + "/"))
+            .memberInfo(new MemberInfo("unknownNickName", "unknownUniqueName",
+                    "", "defaultProfile.jpg", "defaultBackground.jpg",
+                    "https://my-side-project-bucket.s3.ap-northeast-2.amazonaws.com/"))
             .build();
   }
 }
