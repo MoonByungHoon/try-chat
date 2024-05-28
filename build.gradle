@@ -29,6 +29,7 @@ dependencies {
   runtimeOnly 'com.h2database:h2'
   implementation 'com.mysql:mysql-connector-j'
   annotationProcessor 'org.projectlombok:lombok'
+  implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
 
 //	서버 헬스 체크 (Endpoints : /actuator/health)
