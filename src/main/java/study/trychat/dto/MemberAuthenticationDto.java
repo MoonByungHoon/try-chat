@@ -13,6 +13,8 @@ import study.trychat.entity.MemberInfo;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 
+import static study.trychat.vo.MemberInfoVo.*;
+
 @Getter
 public class MemberAuthenticationDto {
 
@@ -45,13 +47,15 @@ public class MemberAuthenticationDto {
   }
 
   public Member toEntity() {
+    String nickname = Arrays.stream(username.split("@"))
+            .findFirst().orElseThrow(() -> new NoSuchElementException("username split 배열의 첫번째 요소가 없습니다."));
 
     return Member.builder()
             .username(username)
             .password(password)
-            .memberInfo(new MemberInfo("unknownNickName", "unknownUniqueName",
-                    "", "defaultProfile.jpg", "defaultBackground.jpg",
-                    "https://my-side-project-bucket.s3.ap-northeast-2.amazonaws.com/"))
+            .memberInfo(new MemberInfo(nickname, nickname,
+                    "", PROFILE_IMG.getValue(), BACKGROUND_IMG.getValue(),
+                    PROFILE_PATH.getValue()))
             .build();
   }
 
@@ -63,9 +67,9 @@ public class MemberAuthenticationDto {
     return Member.builder()
             .username(username)
             .password(password)
-            .memberInfo(new MemberInfo("unknownNickName", "unknownUniqueName",
-                    "", "defaultProfile.jpg", "defaultBackground.jpg",
-                    "https://my-side-project-bucket.s3.ap-northeast-2.amazonaws.com/"))
+            .memberInfo(new MemberInfo(nickname, uniqueName,
+                    "", PROFILE_IMG.getValue(), BACKGROUND_IMG.getValue(),
+                    PROFILE_PATH.getValue()))
             .build();
   }
 }
