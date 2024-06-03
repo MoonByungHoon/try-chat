@@ -2,10 +2,7 @@ package study.trychat.repository.querydsl;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import study.trychat.dto.MemberAuthenticationDto;
-import study.trychat.dto.MemberResponse;
-import study.trychat.dto.QMemberAuthenticationDto;
-import study.trychat.dto.QMemberResponse;
+import study.trychat.dto.*;
 
 import static study.trychat.entity.QMember.member;
 import static study.trychat.entity.QMemberInfo.memberInfo;
@@ -44,11 +41,11 @@ public class MemberQueryImpl implements MemberQuery {
   }
 
   @Override
-  public MemberResponse findSignInByUsernameAndPassword(String username, String password) {
-    return queryFactory.select(new QMemberResponse(
+  public SignInResponse findSignInByUsernameAndPassword(String email, String password) {
+    return queryFactory.select(new QSignInResponse(
                     memberInfo.id,
                     memberInfo.nickname,
-                    memberInfo.uniqueName,
+                    memberInfo.username,
                     memberInfo.greetings,
                     memberInfo.profileImg,
                     memberInfo.backgroundImg,
@@ -57,7 +54,7 @@ public class MemberQueryImpl implements MemberQuery {
             .from(member)
             .join(member.memberInfo, memberInfo)
             .on(member.id.eq(memberInfo.id))
-            .where(member.username.eq(username).and(member.password.eq(password)))
+            .where(member.email.eq(email).and(member.password.eq(password)))
             .fetchOne();
   }
 

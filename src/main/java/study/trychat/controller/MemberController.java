@@ -4,10 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import study.trychat.dto.FriendResponse;
-import study.trychat.dto.MemberAuthenticationDto;
-import study.trychat.dto.MemberRequest;
-import study.trychat.dto.MemberResponse;
+import study.trychat.dto.*;
 import study.trychat.service.FriendService;
 import study.trychat.service.MemberService;
 
@@ -22,22 +19,21 @@ public class MemberController {
   private final FriendService friendService;
 
   @PostMapping("/signup")
-  public ResponseEntity<String> signUp(@Valid @RequestBody MemberAuthenticationDto authenticationDto) {
+  public ResponseEntity<String> signUp(@Valid @RequestBody SignUpRequest signUpRequest) {
 
-    memberService.signUp(authenticationDto);
+    memberService.signUp(signUpRequest);
 
     return ResponseEntity.ok("회원가입에 성공하였습니다.");
   }
 
   @PostMapping("/signin")
-  public ResponseEntity<MemberResponse> signIn(@Valid @RequestBody MemberAuthenticationDto authenticationDto) {
+  public ResponseEntity<SignInResponse> signIn(@Valid @RequestBody SignInRequest signInRequest) {
 
-
-    return ResponseEntity.ok(memberService.signIn(authenticationDto));
+    return ResponseEntity.ok(memberService.signIn(signInRequest));
   }
 
   @GetMapping("/{userId}")
-  public ResponseEntity<MemberAuthenticationDto> findUser(@PathVariable final Long userId) {
+  public ResponseEntity<MemberAuthenticationDto> findUserById(@PathVariable final Long userId) {
 
     return ResponseEntity.ok(memberService.findUser(userId));
   }

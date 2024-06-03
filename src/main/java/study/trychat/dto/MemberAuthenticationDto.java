@@ -9,11 +9,10 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import study.trychat.entity.Member;
 import study.trychat.entity.MemberInfo;
+import study.trychat.entity.Roles;
 
 import java.util.Arrays;
 import java.util.NoSuchElementException;
-
-import static study.trychat.vo.MemberInfoVo.*;
 
 @Getter
 public class MemberAuthenticationDto {
@@ -28,48 +27,47 @@ public class MemberAuthenticationDto {
   @Pattern(regexp = "^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*[0-9]).{8,64}$")
   private String password;
 
+  private Roles roles;
+
   @QueryProjection
   public MemberAuthenticationDto(Long id, String username, String password) {
     this.id = id;
     this.username = username;
     this.password = password;
-  }
-
-  public static void of(String username, String password) {
-    new MemberAuthenticationDto(username, password);
+    this.roles = Roles.USER;
   }
 
   @JsonCreator
-  public MemberAuthenticationDto(@JsonProperty("username") String username,
-                                 @JsonProperty("password") String password) {
+  public MemberAuthenticationDto(
+          @JsonProperty("username") String username,
+          @JsonProperty("password") String password
+  ) {
     this.username = username;
     this.password = password;
   }
 
   public Member toEntity() {
     String nickname = Arrays.stream(username.split("@"))
-            .findFirst().orElseThrow(() -> new NoSuchElementException("username split 배열의 첫번째 요소가 없습니다."));
+            .findFirst()
+            .orElseThrow(() -> new NoSuchElementException("username split 배열의 첫번째 요소가 없습니다."));
 
     return Member.builder()
             .username(username)
             .password(password)
-            .memberInfo(new MemberInfo(nickname, nickname,
-                    "", PROFILE_IMG.getValue(), BACKGROUND_IMG.getValue(),
-                    PROFILE_PATH.getValue()))
+            .roles(roles)
+            .memberInfo(MemberInfo.init(nickname, nickname))
             .build();
   }
 
   public Member toEntityForSignUp(String uniqueName) {
-
     String nickname = Arrays.stream(username.split("@"))
-            .findFirst().orElseThrow(() -> new NoSuchElementException("username split 배열의 첫번째 요소가 없습니다."));
+            .findFirst()
+            .orElseThrow(() -> new NoSuchElementException("username split 배열의 첫번째 요소가 없습니다."));
 
     return Member.builder()
             .username(username)
             .password(password)
-            .memberInfo(new MemberInfo(nickname, uniqueName,
-                    "", PROFILE_IMG.getValue(), BACKGROUND_IMG.getValue(),
-                    PROFILE_PATH.getValue()))
+            .memberInfo(MemberInfo.init(nickname, uniqueName))
             .build();
   }
 }

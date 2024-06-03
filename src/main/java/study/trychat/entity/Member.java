@@ -16,13 +16,13 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Member {
+public class Member extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   @Column(nullable = false, unique = true, length = 340)
-  private String username;
+  private String email; // email
   @Column(nullable = false, length = 64)
   private String password;
 
@@ -34,8 +34,11 @@ public class Member {
   @JoinColumn(name = "member_id")
   private List<Friend> friendList = new ArrayList<>();
 
+  @Enumerated(EnumType.STRING)
+  private Roles roles; //ADMIN, USER
+
   public void update(MemberAuthenticationDto authenticationDto) {
-    this.username = authenticationDto.getUsername();
+    this.email = authenticationDto.getUsername();
     this.password = authenticationDto.getPassword();
   }
 

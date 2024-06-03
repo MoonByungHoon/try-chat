@@ -5,7 +5,7 @@ import study.trychat.entity.Member;
 import study.trychat.repository.querydsl.MemberQuery;
 
 public interface MemberRepository extends JpaRepository<Member, Long>, MemberQuery {
-  boolean existsByUsername(String username);
-
   Member findByUsernameAndPassword(String username, String password);
+
+  boolean existsByEmail(String email);
 }

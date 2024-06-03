@@ -1,13 +1,11 @@
 package study.trychat.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import lombok.Getter;
+import lombok.Data;
 import study.trychat.entity.Friend;
 import study.trychat.entity.FriendStatus;
 
-@Getter
+@Data
 public class FriendResponse {
   private Long id;
   private Long friendId;
@@ -15,7 +13,6 @@ public class FriendResponse {
   private String friendProfileImg;
   private String friendBackgroundImg;
   private String friendProfileImgPath;
-  @Enumerated(EnumType.STRING)
   private FriendStatus friendStatus;
 
   public static FriendResponse fromRequest(Friend friend) {

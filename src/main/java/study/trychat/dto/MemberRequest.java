@@ -31,14 +31,15 @@ public class MemberRequest {
   private String profileImgPath;
 
   @JsonCreator
-  public MemberRequest(@JsonProperty("id") Long id,
-                       @JsonProperty("nickname") String nickname,
-                       @JsonProperty("uniqueName") String uniqueName,
-                       @JsonProperty("greetings") String greetings,
-                       @JsonProperty("profileImg") String profileImg,
-                       @JsonProperty("backgroundImg") String backgroundImg,
-                       @JsonProperty("profileImgPath") String profileImgPath) {
-
+  public MemberRequest(
+          @JsonProperty("id") Long id,
+          @JsonProperty("nickname") String nickname,
+          @JsonProperty("uniqueName") String uniqueName,
+          @JsonProperty("greetings") String greetings,
+          @JsonProperty("profileImg") String profileImg,
+          @JsonProperty("backgroundImg") String backgroundImg,
+          @JsonProperty("profileImgPath") String profileImgPath
+  ) {
     this.id = id;
     this.nickname = nickname;
     this.uniqueName = uniqueName;

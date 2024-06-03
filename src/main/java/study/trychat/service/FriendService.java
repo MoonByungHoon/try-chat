@@ -30,6 +30,7 @@ public class FriendService {
     if (friendRepository.existsByUniqueName(memberId, uniqueName)) {
       throw new DuplicateFriendByUniqueNameException();
     }
+    
     if (memberInfoRepository.existsByUniqueName(uniqueName)) {
       MemberInfo fineMemberInfo = memberInfoRepository.findByUniqueName(uniqueName);
 

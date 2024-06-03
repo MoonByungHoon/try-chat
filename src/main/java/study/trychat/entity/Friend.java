@@ -1,24 +1,25 @@
 package study.trychat.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import study.trychat.dto.FriendRequest;
 
+import static study.trychat.entity.FriendStatus.BEST_FRIEND;
 import static study.trychat.entity.FriendStatus.FRIEND;
 
 @Builder
 @Entity
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
-public class Friend {
+@NoArgsConstructor
+public class Friend extends BaseEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
   @Column(name = "member_id", nullable = false)
   private Long memberId;
   @Column(nullable = false)
@@ -45,19 +46,16 @@ public class Friend {
     return new Friend(userId, friendId, nickname, profileImg, backgroundImg, profileImgPath, friendStatus);
   }
 
-  public Friend(Long memberId, Long friendId, String friendNickname, String friendProfileImg,
-                String friendBackgroundImg, String friendProfileImgPath, FriendStatus friendStatus) {
-    this.memberId = memberId;
-    this.friendId = friendId;
-    this.friendNickname = friendNickname;
-    this.friendProfileImg = friendProfileImg;
-    this.friendBackgroundImg = friendBackgroundImg;
-    this.friendProfileImgPath = friendProfileImgPath;
+  public void updateStatus(FriendStatus friendStatus) {
     this.friendStatus = friendStatus;
   }
 
-  public void updateStatus(FriendStatus friendStatus) {
-    this.friendStatus = friendStatus;
+  public void bestFriend() {
+    this.friendStatus = BEST_FRIEND;
+  }
+
+  public void block() {
+    this.friendStatus = BEST_FRIEND;
   }
 
   public void updateProfile(FriendRequest friendRequest) {

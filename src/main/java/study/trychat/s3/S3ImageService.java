@@ -40,12 +40,10 @@ public class S3ImageService {
   }
 
   private String uploadFile(MultipartFile file, String fileType) {
-    String filePath = switch (fileType) {
+    return switch (fileType) {
       case "jpg", "jpeg", "png" -> uploadImg(file);
       default -> throw new S3UploadException(ErrorMessage.S3_FILE_NOT_FOUND);
     };
-
-    return filePath;
   }
 
   private String uploadImg(MultipartFile file) {

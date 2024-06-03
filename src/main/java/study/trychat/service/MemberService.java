@@ -3,9 +3,7 @@ package study.trychat.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import study.trychat.dto.MemberAuthenticationDto;
-import study.trychat.dto.MemberRequest;
-import study.trychat.dto.MemberResponse;
+import study.trychat.dto.*;
 import study.trychat.entity.Member;
 import study.trychat.entity.MemberInfo;
 import study.trychat.exception.custom.DuplicateUsernameException;
@@ -26,25 +24,25 @@ public class MemberService {
   private final MemberInfoRepository memberInfoRepository;
 
   @Transactional
-  public void signUp(MemberAuthenticationDto authenticationDto) {
+  public void signUp(SignUpRequest signUpRequest) {
 //    가입 이메일 중복 검사.
-    checkDuplicateUsername(authenticationDto.getUsername());
+    checkDuplicateEmail(signUpRequest.email());
 
 //    검색 필터에 사용될 유니크 네임 추출.
-    String extractName = extractByUsername(authenticationDto.getUsername());
+    String extractName = extractByEmail(signUpRequest.email());
 
 //    유니크 네임 중복 검사 및 중복 시 랜덤한 이름 생성.
     String uniqueName = checkDuplicateUniqueName(extractName);
 
-    Member member = authenticationDto.toEntityForSignUp(uniqueName);
+    Member member = signUpRequest.toEntityForSignUp(uniqueName);
 
     memberRepository.save(member);
   }
 
-  public MemberResponse signIn(MemberAuthenticationDto authenticationDto) {
+  public SignInResponse signIn(SignInRequest signInRequest) {
 
-    MemberResponse findMember = memberRepository
-            .findSignInByUsernameAndPassword(authenticationDto.getUsername(), authenticationDto.getPassword());
+    SignInResponse findMember = memberRepository
+            .findSignInByUsernameAndPassword(signInRequest.email(), signInRequest.password());
 
     if (findMember == null) {
       throw new EntityNotFoundException();
@@ -99,13 +97,13 @@ public class MemberService {
             .orElseThrow(() -> new EntityNotFoundException());
 
     findMemberInfo.checkId(memberId);
-    findMemberInfo.updateProfile(memberRequest);
+    findMemberInfo.update(memberRequest);
 
     return MemberResponse.fromRequest(memberRequest);
   }
 
-  private void checkDuplicateUsername(String username) {
-    if (memberRepository.existsByUsername(username)) {
+  private void checkDuplicateEmail(String email) {
+    if (memberRepository.existsByEmail(email)) {
       throw new DuplicateUsernameException();
     }
   }
@@ -115,15 +113,15 @@ public class MemberService {
 
       LocalDateTime now = LocalDateTime.now();
 
-      String makeUniqueName = String.valueOf(now.getHour() + now.getMinute() + now.getSecond() + now.getNano() / 1000);
+      String makeUniqueName = uniqueName + String.valueOf(now.getSecond() + now.getNano() / 1000);
 
       return makeUniqueName;
     }
     return uniqueName;
   }
 
-  private String extractByUsername(String username) {
-    return Arrays.stream(username.split("@"))
+  private String extractByEmail(String email) {
+    return Arrays.stream(email.split("@"))
             .findFirst().orElseThrow(() -> new NoSuchElementException("username split 배열의 첫번째 요소가 없습니다."));
   }
 }
