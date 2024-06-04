@@ -1,6 +1,6 @@
 package study.trychat.repository.querydsl;
 
-import study.trychat.dto.MemberAuthenticationDto;
+import study.trychat.dto.MemberProfileResponse;
 import study.trychat.dto.MemberResponse;
 import study.trychat.dto.SignInResponse;
 
@@ -8,9 +8,9 @@ public interface MemberQuery {
 
   SignInResponse findSignInByUsernameAndPassword(String username, String password);
 
-  MemberResponse findProfileById(Long memberId);
+  MemberProfileResponse findUserProfileById(Long memberId);
 
-  MemberAuthenticationDto findAuthenticationTypeById(Long memberId);
+  MemberResponse findUserQueryById(Long memberId);
 
-  MemberResponse findUserProfileByUniqueName(String uniqueName);
+  MemberProfileResponse findUserProfileByUsername(String username);
 }

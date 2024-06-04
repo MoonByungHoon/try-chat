@@ -7,7 +7,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import study.trychat.dto.MemberRequest;
+import study.trychat.dto.MemberProfileUpdateRequest;
 import study.trychat.exception.custom.PrimaryKeyMismatchException;
 
 import static study.trychat.vo.MemberInfoVo.*;
@@ -35,12 +35,12 @@ public class MemberInfo extends BaseEntity {
     return new MemberInfo(nickname, uniqueName, "", PROFILE_IMG.getValue(), BACKGROUND_IMG.getValue(), PROFILE_PATH.getValue());
   }
 
-  public void update(MemberRequest memberRequest) {
-    this.nickname = memberRequest.getNickname();
-    this.greetings = memberRequest.getGreetings();
-    this.profileImg = memberRequest.getProfileImg();
-    this.backgroundImg = memberRequest.getBackgroundImg();
-    this.profileImgPath = memberRequest.getProfileImgPath();
+  public void update(MemberProfileUpdateRequest profileUpdateRequest) {
+    this.nickname = profileUpdateRequest.nickname();
+    this.greetings = profileUpdateRequest.greetings();
+    this.profileImg = profileUpdateRequest.profileImg();
+    this.backgroundImg = profileUpdateRequest.backgroundImg();
+    this.profileImgPath = profileUpdateRequest.profileImgPath();
   }
 
   public void checkId(Long userId) {

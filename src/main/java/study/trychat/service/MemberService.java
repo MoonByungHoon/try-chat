@@ -51,55 +51,55 @@ public class MemberService {
     return findMember;
   }
 
-  public MemberAuthenticationDto findUser(Long memberId) {
+  public MemberResponse findUserById(Long memberId) {
 
-    return memberRepository.findAuthenticationTypeById(memberId);
+    return memberRepository.findUserQueryById(memberId);
   }
 
   @Transactional
-  public void updateUser(Long memberId, MemberAuthenticationDto authenticationDto) {
+  public void updateUser(Long memberId, MemberUpdateRequest memberUpdateRequest) {
 
-    if (memberRepository.existsByUsername(authenticationDto.getUsername())) {
+    if (memberRepository.existsByEmail(memberUpdateRequest.email())) {
       throw new DuplicateUsernameException();
     }
 
     Member findMember = memberRepository.findById(memberId)
             .orElseThrow(() -> new EntityNotFoundException());
 
-    findMember.update(authenticationDto);
+    findMember.update(memberUpdateRequest);
   }
 
   @Transactional
-  public void remove(Long memberId, MemberAuthenticationDto authenticationDto) {
+  public void remove(Long memberId, MemberRemoveRequest memberRemoveRequest) {
 
     Member findMember =
-            memberRepository.findByUsernameAndPassword(authenticationDto.getUsername(), authenticationDto.getPassword());
+            memberRepository.findByEmailAndPassword(memberRemoveRequest.email(), memberRemoveRequest.password());
 
     findMember.checkId(memberId);
 
     memberRepository.delete(findMember);
   }
 
-  public MemberResponse findUserProfileByUserId(Long memberId) {
+  public MemberProfileResponse findUserProfileByUserId(Long memberId) {
 
-    return memberRepository.findProfileById(memberId);
+    return memberRepository.findUserProfileById(memberId);
   }
 
-  public MemberResponse findUserProfileByUniqueName(String uniqueName) {
+  public MemberProfileResponse findUserProfileByUsername(String username) {
 
-    return memberRepository.findUserProfileByUniqueName(uniqueName);
+    return memberRepository.findUserProfileByUsername(username);
   }
 
   @Transactional
-  public MemberResponse updateUserProfile(Long memberId, MemberRequest memberRequest) {
+  public MemberProfileResponse updateUserProfile(Long memberId, MemberProfileUpdateRequest profileUpdateRequest) {
 
-    MemberInfo findMemberInfo = memberInfoRepository.findById(memberRequest.getId())
+    MemberInfo findMemberInfo = memberInfoRepository.findById(memberId)
             .orElseThrow(() -> new EntityNotFoundException());
 
     findMemberInfo.checkId(memberId);
-    findMemberInfo.update(memberRequest);
+    findMemberInfo.update(profileUpdateRequest);
 
-    return MemberResponse.fromRequest(memberRequest);
+    return MemberProfileResponse.change(findMemberInfo);
   }
 
   private void checkDuplicateEmail(String email) {
@@ -109,7 +109,7 @@ public class MemberService {
   }
 
   private String checkDuplicateUniqueName(String uniqueName) {
-    if (memberInfoRepository.existsByUniqueName(uniqueName)) {
+    if (memberInfoRepository.existsByUsername(uniqueName)) {
 
       LocalDateTime now = LocalDateTime.now();
 
@@ -122,6 +122,6 @@ public class MemberService {
 
   private String extractByEmail(String email) {
     return Arrays.stream(email.split("@"))
-            .findFirst().orElseThrow(() -> new NoSuchElementException("username split 배열의 첫번째 요소가 없습니다."));
+            .findFirst().orElseThrow(() -> new NoSuchElementException("email split 배열의 첫번째 요소가 없습니다."));
   }
 }

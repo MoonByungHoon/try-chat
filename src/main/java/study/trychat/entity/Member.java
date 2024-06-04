@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import study.trychat.dto.MemberAuthenticationDto;
+import study.trychat.dto.MemberUpdateRequest;
 import study.trychat.exception.custom.PrimaryKeyMismatchException;
 
 import java.util.ArrayList;
@@ -37,9 +37,9 @@ public class Member extends BaseEntity {
   @Enumerated(EnumType.STRING)
   private Roles roles; //ADMIN, USER
 
-  public void update(MemberAuthenticationDto authenticationDto) {
-    this.email = authenticationDto.getUsername();
-    this.password = authenticationDto.getPassword();
+  public void update(MemberUpdateRequest memberUpdateRequest) {
+    this.email = memberUpdateRequest.email();
+    this.password = memberUpdateRequest.password();
   }
 
   public void checkId(Long id) {

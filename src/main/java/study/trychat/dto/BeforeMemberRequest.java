@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
 @Getter
-public class MemberRequest {
+public class BeforeMemberRequest {
 
   private Long id;
   @NotEmpty(message = "공백은 혀용하지 않습니다.")
@@ -31,7 +31,7 @@ public class MemberRequest {
   private String profileImgPath;
 
   @JsonCreator
-  public MemberRequest(
+  public BeforeMemberRequest(
           @JsonProperty("id") Long id,
           @JsonProperty("nickname") String nickname,
           @JsonProperty("uniqueName") String uniqueName,

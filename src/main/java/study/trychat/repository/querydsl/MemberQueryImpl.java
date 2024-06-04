@@ -13,11 +13,10 @@ public class MemberQueryImpl implements MemberQuery {
   private final JPAQueryFactory queryFactory;
 
   @Override
-  public MemberAuthenticationDto findAuthenticationTypeById(Long memberId) {
-    return queryFactory.select(new QMemberAuthenticationDto(
+  public MemberResponse findUserQueryById(Long memberId) {
+    return queryFactory.select(new QMemberResponse(
                     member.id,
-                    member.username,
-                    member.password
+                    member.email
             ))
             .from(member)
             .where(member.id.eq(memberId))
@@ -25,18 +24,17 @@ public class MemberQueryImpl implements MemberQuery {
   }
 
   @Override
-  public MemberResponse findUserProfileByUniqueName(String uniqueName) {
-    return queryFactory.select(new QMemberResponse(
+  public MemberProfileResponse findUserProfileByUsername(String username) {
+    return queryFactory.select(new QMemberProfileResponse(
                     memberInfo.id,
                     memberInfo.nickname,
-                    memberInfo.uniqueName,
                     memberInfo.greetings,
                     memberInfo.profileImg,
                     memberInfo.backgroundImg,
                     memberInfo.profileImgPath
             ))
             .from(memberInfo)
-            .where(memberInfo.uniqueName.eq(uniqueName))
+            .where(memberInfo.username.eq(username))
             .fetchOne();
   }
 
@@ -45,7 +43,6 @@ public class MemberQueryImpl implements MemberQuery {
     return queryFactory.select(new QSignInResponse(
                     memberInfo.id,
                     memberInfo.nickname,
-                    memberInfo.username,
                     memberInfo.greetings,
                     memberInfo.profileImg,
                     memberInfo.backgroundImg,
@@ -59,11 +56,10 @@ public class MemberQueryImpl implements MemberQuery {
   }
 
   @Override
-  public MemberResponse findProfileById(Long memberId) {
-    return queryFactory.select(new QMemberResponse(
+  public MemberProfileResponse findUserProfileById(Long memberId) {
+    return queryFactory.select(new QMemberProfileResponse(
                     memberInfo.id,
                     memberInfo.nickname,
-                    memberInfo.uniqueName,
                     memberInfo.greetings,
                     memberInfo.profileImg,
                     memberInfo.backgroundImg,

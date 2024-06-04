@@ -21,7 +21,7 @@ public class MemberAuthenticationDto {
 
   @NotBlank(message = "이메일을 입력해주세요.")
   @Email(message = "올바른 이메일 주소를 입력해주세요.", regexp = "^[^@]{5,64}@[^@]{8,255}")
-  private String username;
+  private String email;
 
   @NotBlank(message = "비밀번호를 입력해주세요.")
   @Pattern(regexp = "^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*[0-9]).{8,64}$")
@@ -30,29 +30,29 @@ public class MemberAuthenticationDto {
   private Roles roles;
 
   @QueryProjection
-  public MemberAuthenticationDto(Long id, String username, String password) {
+  public MemberAuthenticationDto(Long id, String email, String password) {
     this.id = id;
-    this.username = username;
+    this.email = email;
     this.password = password;
     this.roles = Roles.USER;
   }
 
   @JsonCreator
   public MemberAuthenticationDto(
-          @JsonProperty("username") String username,
+          @JsonProperty("email") String email,
           @JsonProperty("password") String password
   ) {
-    this.username = username;
+    this.email = email;
     this.password = password;
   }
 
   public Member toEntity() {
-    String nickname = Arrays.stream(username.split("@"))
+    String nickname = Arrays.stream(email.split("@"))
             .findFirst()
-            .orElseThrow(() -> new NoSuchElementException("username split 배열의 첫번째 요소가 없습니다."));
+            .orElseThrow(() -> new NoSuchElementException("email split 배열의 첫번째 요소가 없습니다."));
 
     return Member.builder()
-            .username(username)
+            .email(email)
             .password(password)
             .roles(roles)
             .memberInfo(MemberInfo.init(nickname, nickname))
@@ -60,12 +60,12 @@ public class MemberAuthenticationDto {
   }
 
   public Member toEntityForSignUp(String uniqueName) {
-    String nickname = Arrays.stream(username.split("@"))
+    String nickname = Arrays.stream(email.split("@"))
             .findFirst()
-            .orElseThrow(() -> new NoSuchElementException("username split 배열의 첫번째 요소가 없습니다."));
+            .orElseThrow(() -> new NoSuchElementException("email split 배열의 첫번째 요소가 없습니다."));
 
     return Member.builder()
-            .username(username)
+            .email(email)
             .password(password)
             .memberInfo(MemberInfo.init(nickname, uniqueName))
             .build();

@@ -8,10 +8,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import study.trychat.dto.FriendRequest;
+import study.trychat.dto.FriendNicknameUpdateRequest;
+
+import java.util.Objects;
 
 import static study.trychat.entity.FriendStatus.BEST_FRIEND;
-import static study.trychat.entity.FriendStatus.FRIEND;
 
 @Builder
 @Entity
@@ -36,9 +37,9 @@ public class Friend extends BaseEntity {
   @Enumerated(EnumType.STRING)
   private FriendStatus friendStatus;
 
-  public static Friend fromMemberInfo(Long userId, MemberInfo fineMemberInfo) {
-    return of(userId, fineMemberInfo.getId(), fineMemberInfo.getNickname(), fineMemberInfo.getProfileImg(),
-            fineMemberInfo.getBackgroundImg(), fineMemberInfo.getProfileImgPath(), FRIEND);
+  public static Friend init(Long userId, MemberInfo memberInfo) {
+    return of(userId, memberInfo.getId(), memberInfo.getNickname(), memberInfo.getProfileImg(),
+            memberInfo.getBackgroundImg(), memberInfo.getProfileImgPath(), FriendStatus.FRIEND);
   }
 
   private static Friend of(Long userId, Long friendId, String nickname, String profileImg,
@@ -46,8 +47,8 @@ public class Friend extends BaseEntity {
     return new Friend(userId, friendId, nickname, profileImg, backgroundImg, profileImgPath, friendStatus);
   }
 
-  public void updateStatus(FriendStatus friendStatus) {
-    this.friendStatus = friendStatus;
+  public void updateBestStatus() {
+    this.friendStatus = BEST_FRIEND;
   }
 
   public void bestFriend() {
@@ -58,7 +59,20 @@ public class Friend extends BaseEntity {
     this.friendStatus = BEST_FRIEND;
   }
 
-  public void updateProfile(FriendRequest friendRequest) {
-    this.friendNickname = friendRequest.getFriendNickname();
+  public void updateProfile(FriendNicknameUpdateRequest nicknameUpdateRequest) {
+    this.friendNickname = nicknameUpdateRequest.nickname();
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Friend friend = (Friend) o;
+    return Objects.equals(memberId, friend.memberId) && Objects.equals(friendId, friend.friendId) && Objects.equals(friendNickname, friend.friendNickname) && Objects.equals(friendProfileImg, friend.friendProfileImg) && Objects.equals(friendBackgroundImg, friend.friendBackgroundImg) && Objects.equals(friendProfileImgPath, friend.friendProfileImgPath) && friendStatus == friend.friendStatus;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(memberId, friendId, friendNickname, friendProfileImg, friendBackgroundImg, friendProfileImgPath, friendStatus);
   }
 }

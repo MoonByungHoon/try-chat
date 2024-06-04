@@ -33,12 +33,12 @@ public class FriendQueryImpl implements FriendQuery {
   }
 
   @Override
-  public boolean existsByUniqueName(Long memberId, String uniqueName) {
+  public boolean duplicateFriend(Long memberId, String username) {
 
     return queryFactory.selectFrom(friend)
             .join(memberInfo)
-            .on(friend.memberId.eq(memberInfo.id))
-            .where(memberInfo.uniqueName.eq(uniqueName)
+            .on(friend.friendId.eq(memberInfo.id))
+            .where(memberInfo.username.eq(username)
                     .and(friend.memberId.eq(memberId)
                             .and(memberInfo.id.eq(memberId))))
             .fetchOne() != null;
