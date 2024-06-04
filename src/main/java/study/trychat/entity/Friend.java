@@ -27,13 +27,13 @@ public class Friend extends BaseEntity {
   @Column(nullable = false)
   private Long friendId;
   @Column(nullable = false)
-  private String friendNickname;
+  private String nickname;
   @Column(nullable = false)
-  private String friendProfileImg;
+  private String profileImg;
   @Column(nullable = false)
-  private String friendBackgroundImg;
+  private String backgroundImg;
   @Column(nullable = false)
-  private String friendProfileImgPath;
+  private String profileImgPath;
   @Column(nullable = false)
   @Enumerated(EnumType.STRING)
   private FriendStatus friendStatus;
@@ -57,7 +57,7 @@ public class Friend extends BaseEntity {
   }
 
   public void updateProfile(FriendNicknameUpdateRequest nicknameUpdateRequest) {
-    this.friendNickname = nicknameUpdateRequest.nickname();
+    this.nickname = nicknameUpdateRequest.nickname();
   }
 
   @Override
@@ -65,11 +65,11 @@ public class Friend extends BaseEntity {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     Friend friend = (Friend) o;
-    return Objects.equals(memberId, friend.memberId) && Objects.equals(friendId, friend.friendId) && Objects.equals(friendNickname, friend.friendNickname) && Objects.equals(friendProfileImg, friend.friendProfileImg) && Objects.equals(friendBackgroundImg, friend.friendBackgroundImg) && Objects.equals(friendProfileImgPath, friend.friendProfileImgPath) && friendStatus == friend.friendStatus;
+    return Objects.equals(memberId, friend.memberId) && Objects.equals(friendId, friend.friendId) && Objects.equals(nickname, friend.nickname) && Objects.equals(profileImg, friend.profileImg) && Objects.equals(backgroundImg, friend.backgroundImg) && Objects.equals(profileImgPath, friend.profileImgPath) && friendStatus == friend.friendStatus;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(memberId, friendId, friendNickname, friendProfileImg, friendBackgroundImg, friendProfileImgPath, friendStatus);
+    return Objects.hash(memberId, friendId, nickname, profileImg, backgroundImg, profileImgPath, friendStatus);
   }
 }

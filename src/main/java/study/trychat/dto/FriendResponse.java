@@ -7,15 +7,15 @@ import study.trychat.entity.FriendStatus;
 public record FriendResponse(
         Long id,
         Long friendId,
-        String friendNickname,
-        String friendProfileImg,
-        String friendBackgroundImg,
-        String friendProfileImgPath,
+        String nickname,
+        String profileImg,
+        String backgroundImg,
+        String profileImgPath,
         FriendStatus friendStatus
 ) {
   public static FriendResponse changeResponse(Friend friend) {
-    return of(friend.getId(), friend.getFriendId(), friend.getFriendNickname(), friend.getFriendProfileImg(),
-            friend.getFriendBackgroundImg(), friend.getFriendProfileImgPath(), friend.getFriendStatus());
+    return of(friend.getId(), friend.getFriendId(), friend.getNickname(), friend.getProfileImg(),
+            friend.getBackgroundImg(), friend.getProfileImgPath(), friend.getFriendStatus());
   }
 
   public static FriendResponse of(Long id, Long friendId, String friendNickname, String friendProfileImg,
@@ -25,14 +25,14 @@ public record FriendResponse(
   }
 
   @QueryProjection
-  public FriendResponse(Long id, Long friendId, String friendNickname, String friendProfileImg,
-                        String friendBackgroundImg, String friendProfileImgPath, FriendStatus friendStatus) {
+  public FriendResponse(Long id, Long friendId, String nickname, String profileImg,
+                        String backgroundImg, String profileImgPath, FriendStatus friendStatus) {
     this.id = id;
     this.friendId = friendId;
-    this.friendNickname = friendNickname;
-    this.friendProfileImg = friendProfileImg;
-    this.friendBackgroundImg = friendBackgroundImg;
-    this.friendProfileImgPath = friendProfileImgPath;
+    this.nickname = nickname;
+    this.profileImg = profileImg;
+    this.backgroundImg = backgroundImg;
+    this.profileImgPath = profileImgPath;
     this.friendStatus = friendStatus;
   }
 }
