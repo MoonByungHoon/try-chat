@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import study.trychat.dto.MemberProfileUpdateRequest;
-import study.trychat.exception.custom.PrimaryKeyMismatchException;
 
 import static study.trychat.init.MemberInfoInitValue.*;
 
@@ -41,11 +40,5 @@ public class MemberInfo extends BaseEntity {
     this.profileImg = profileUpdateRequest.profileImg();
     this.backgroundImg = profileUpdateRequest.backgroundImg();
     this.profileImgPath = profileUpdateRequest.profileImgPath();
-  }
-
-  public void checkId(Long userId) {
-    if (!(userId.equals(super.getId()))) {
-      throw new PrimaryKeyMismatchException();
-    }
   }
 }

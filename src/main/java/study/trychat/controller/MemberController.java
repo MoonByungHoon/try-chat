@@ -60,19 +60,19 @@ public class MemberController {
   }
 
   @GetMapping("/{userId}/profile")
-  public ResponseEntity<MemberProfileResponse> findMemberProfileByMemberId(@PathVariable final Long userId) {
+  public ResponseEntity<MemberProfileResponse> findMyProfileByMemberId(@PathVariable final Long userId) {
 
-    return ResponseEntity.ok(memberService.findMemberProfileByUserId(userId));
+    return ResponseEntity.ok(memberService.findMyProfileByUserId(userId));
   }
 
   @GetMapping("/profile")
-  public ResponseEntity<MemberProfileResponse> findMemberProfileByUsername(@RequestParam final String username) {
+  public ResponseEntity<MemberProfileResponse> findMemberProfileByUsername(@RequestBody final UsernameParam usernameParam) {
 
-    return ResponseEntity.ok(memberService.findMemberProfileByUsername(username));
+    return ResponseEntity.ok(memberService.findMemberProfileByUsername(usernameParam.username()));
   }
 
   @PutMapping("/{userId}/profile")
-  public ResponseEntity<MemberProfileResponse> updateMemberProfile(
+  public ResponseEntity<MemberProfileResponse> updateMyProfile(
           @PathVariable final Long userId,
           @Valid @RequestBody MemberProfileUpdateRequest profileUpdateRequest
   ) {

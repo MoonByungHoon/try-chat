@@ -7,7 +7,7 @@ public enum ErrorMessage {
   FRIEND_BEST_SIZE_MAX("즐겨찾기를 등록할 수 있는 친구 수를 초과하였습니다."),
   SIGN_UP_DUPLICATE_USER("이미 가입된 회원입니다."),
   MEMBER_ENTITY_NOT_FOUND("아이디 혹은 비밀번호가 일치하지 않습니다."),
-  PRIMARY_KEY_MISMATCH("요청을 수행할 대상과 일치하지 않습니다."),
+  PRIMARY_KEY_MISMATCH("사용자와 대상과 일치하지 않습니다."),
   S3_FILE_NOT_FOUND("파일 형식이 잘못되었습니다."),
   S3_FILE_IS_NULL("파일이 존재하지 않습니다."),
   S3_FILE_UPLOAD_FALSE("파일 업로드에 실패하였습니다."),

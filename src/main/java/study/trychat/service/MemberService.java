@@ -8,6 +8,7 @@ import study.trychat.entity.Member;
 import study.trychat.entity.MemberInfo;
 import study.trychat.exception.custom.DuplicateUsernameException;
 import study.trychat.exception.custom.EntityNotFoundException;
+import study.trychat.exception.custom.PrimaryKeyMismatchException;
 import study.trychat.repository.MemberInfoRepository;
 import study.trychat.repository.MemberRepository;
 
@@ -85,31 +86,13 @@ public class MemberService {
     memberRepository.delete(findMember);
   }
 
-  public MemberProfileResponse findMemberProfileByUserId(Long memberId) {
+  public MemberProfileResponse findMyProfileByUserId(Long memberId) {
 
-    MemberProfileResponse findMember = memberRepository.findMemberProfileById(memberId);
+    MemberProfileResponse findMyProfile = memberRepository.findMyProfileById(memberId);
 
-    validateFindMember(findMember);
+    validateFindMember(findMyProfile);
 
-    return findMember;
-  }
-
-  private void validateFindMember(MemberProfileResponse findMember) {
-    if (findMember.equals(null)) {
-      throw new EntityNotFoundException();
-    }
-  }
-
-  private void validateFindMember(MemberResponse findMember) {
-    if (findMember.equals(null)) {
-      throw new EntityNotFoundException();
-    }
-  }
-
-  private void validateFindMember(SignInResponse findMember) {
-    if (findMember.equals(null)) {
-      throw new EntityNotFoundException();
-    }
+    return findMyProfile;
   }
 
   public MemberProfileResponse findMemberProfileByUsername(String username) {
@@ -120,13 +103,20 @@ public class MemberService {
   @Transactional
   public MemberProfileResponse updateMemberProfile(Long memberId, MemberProfileUpdateRequest profileUpdateRequest) {
 
+    validateIdMatch(memberId, profileUpdateRequest.id());
+
     MemberInfo findMemberInfo = memberInfoRepository.findById(memberId)
             .orElseThrow(() -> new EntityNotFoundException());
 
-    findMemberInfo.checkId(memberId);
     findMemberInfo.update(profileUpdateRequest);
 
     return MemberProfileResponse.change(findMemberInfo);
+  }
+
+  private void validateIdMatch(Long memberId, Long id) {
+    if (!memberId.equals(id)) {
+      throw new PrimaryKeyMismatchException();
+    }
   }
 
   private void checkDuplicateEmail(String email) {
@@ -150,5 +140,23 @@ public class MemberService {
   private String extractByEmail(String email) {
     return Arrays.stream(email.split("@"))
             .findFirst().orElseThrow(() -> new NoSuchElementException("email split 배열의 첫번째 요소가 없습니다."));
+  }
+
+  private void validateFindMember(MemberProfileResponse findMember) {
+    if (findMember.equals(null)) {
+      throw new EntityNotFoundException();
+    }
+  }
+
+  private void validateFindMember(MemberResponse findMember) {
+    if (findMember.equals(null)) {
+      throw new EntityNotFoundException();
+    }
+  }
+
+  private void validateFindMember(SignInResponse findMember) {
+    if (findMember.equals(null)) {
+      throw new EntityNotFoundException();
+    }
   }
 }

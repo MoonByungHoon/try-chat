@@ -56,7 +56,7 @@ public class MemberQueryImpl implements MemberQuery {
   }
 
   @Override
-  public MemberProfileResponse findMemberProfileById(Long memberId) {
+  public MemberProfileResponse findMyProfileById(Long memberId) {
     return queryFactory.select(new QMemberProfileResponse(
                     memberInfo.id,
                     memberInfo.nickname,

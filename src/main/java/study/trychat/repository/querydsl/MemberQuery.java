@@ -8,7 +8,7 @@ public interface MemberQuery {
 
   SignInResponse findSignInByUsernameAndPassword(String username, String password);
 
-  MemberProfileResponse findMemberProfileById(Long memberId);
+  MemberProfileResponse findMyProfileById(Long memberId);
 
   MemberResponse findMemberQueryById(Long memberId);
 

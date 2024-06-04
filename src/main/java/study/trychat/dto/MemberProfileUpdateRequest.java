@@ -7,6 +7,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record MemberProfileUpdateRequest(
+        @NotBlank(message = "{notBlank.id.validation.message}")
+        Long id,
         @NotEmpty(message = "{notEmpty.nickname.validation.message}")
         @Size(min = 1, max = 20)
         String nickname,
@@ -24,7 +26,8 @@ public record MemberProfileUpdateRequest(
         String profileImgPath
 ) {
   @QueryProjection
-  public MemberProfileUpdateRequest(String nickname, String greetings, String profileImg, String backgroundImg, String profileImgPath) {
+  public MemberProfileUpdateRequest(Long id, String nickname, String greetings, String profileImg, String backgroundImg, String profileImgPath) {
+    this.id = id;
     this.nickname = nickname;
     this.greetings = greetings;
     this.profileImg = profileImg;
