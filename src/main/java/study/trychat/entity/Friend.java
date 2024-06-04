@@ -13,6 +13,7 @@ import study.trychat.dto.FriendNicknameUpdateRequest;
 import java.util.Objects;
 
 import static study.trychat.entity.FriendStatus.BEST_FRIEND;
+import static study.trychat.entity.FriendStatus.BLOCK;
 
 @Builder
 @Entity
@@ -47,16 +48,12 @@ public class Friend extends BaseEntity {
     return new Friend(userId, friendId, nickname, profileImg, backgroundImg, profileImgPath, friendStatus);
   }
 
-  public void updateBestStatus() {
-    this.friendStatus = BEST_FRIEND;
-  }
-
   public void bestFriend() {
     this.friendStatus = BEST_FRIEND;
   }
 
   public void block() {
-    this.friendStatus = BEST_FRIEND;
+    this.friendStatus = BLOCK;
   }
 
   public void updateProfile(FriendNicknameUpdateRequest nicknameUpdateRequest) {

@@ -13,7 +13,7 @@ public record FriendResponse(
         String friendProfileImgPath,
         FriendStatus friendStatus
 ) {
-  public static FriendResponse changeRequest(Friend friend) {
+  public static FriendResponse changeResponse(Friend friend) {
     return of(friend.getId(), friend.getFriendId(), friend.getFriendNickname(), friend.getFriendProfileImg(),
             friend.getFriendBackgroundImg(), friend.getFriendProfileImgPath(), friend.getFriendStatus());
   }

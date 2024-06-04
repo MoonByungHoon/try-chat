@@ -16,6 +16,8 @@ import study.trychat.repository.MemberInfoRepository;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 @Transactional(readOnly = true)
@@ -41,7 +43,7 @@ public class FriendService {
   }
 
   @Transactional
-  public List<FriendResponse> removeFriend(Long memberId, Long friendId) {
+  public List<FriendResponse> removeFriendByMemberIdAndFriendId(Long memberId, Long friendId) {
 
     if (friendRepository.deleteByMemberIdAndFriendId(memberId, friendId) == 0) {
       throw new DeleteFalseByMemberIdAndFriendId();
@@ -58,25 +60,31 @@ public class FriendService {
   @Transactional
   public List<FriendResponse> updateBestFriend(Long memberId, Long friendId) {
 
-    List<Friend> findFriends = friendRepository.findByMemberId();
+    List<Friend> findFriends = friendRepository.findByMemberId(memberId);
 
-    boolean presentFriend = findFriends.stream()
-            .filter(friend -> friend.getFriendId().equals(friendId))
-            .findFirst().isPresent();
+    int findIndex = findTargetIndex(findFriends, friendId);
 
-    if (!presentFriend) {
-      throw new NoSuchElementException(ErrorMessage.FRIEND_NO_SUCH.getMessage());
-    }
+    validateFindFriends(findFriends);
 
-    if (findFriends.size() >= 5) {
-      throw new BestFriendMaxException();
-    }
+    findFriends.get(findIndex).bestFriend();
 
-    Friend findFriend = findByMemberIdAndFriendId(memberId, friendId);
+    return findFriends.stream()
+            .map(FriendResponse::changeResponse)
+            .collect(Collectors.toList());
+  }
 
-    findFriend.updateBestStatus();
+  public List<FriendResponse> updateBlockFriend(Long memberId, Long friendId) {
+    List<Friend> findFriends = friendRepository.findByMemberId(memberId);
 
-    return findFriendsByMemberId(memberId);
+    int findIndex = findTargetIndex(findFriends, friendId);
+
+    validateFindFriends(findFriends);
+
+    findFriends.get(findIndex).block();
+
+    return findFriends.stream()
+            .map(FriendResponse::changeResponse)
+            .collect(Collectors.toList());
   }
 
   @Transactional
@@ -86,7 +94,25 @@ public class FriendService {
 
     findFriend.updateProfile(nicknameUpdateRequest);
 
-    return FriendResponse.changeRequest(findFriend);
+    return FriendResponse.changeResponse(findFriend);
+  }
+
+  private void validateFindFriends(List<Friend> findFriends) {
+    if (findFriends.size() >= 5) {
+      throw new BestFriendMaxException();
+    }
+  }
+
+  private int findTargetIndex(List<Friend> findFriends, Long friendId) {
+    int findIndex = IntStream.range(0, findFriends.size())
+            .filter(i -> findFriends.get(i).getFriendId().equals(friendId))
+            .findFirst().orElse(-1);
+
+    if (findIndex == -1) {
+      throw new NoSuchElementException(ErrorMessage.FRIEND_NO_SUCH.getMessage());
+    }
+
+    return findIndex;
   }
 
   private Friend findByMemberIdAndFriendId(Long memberId, Long friendId) {

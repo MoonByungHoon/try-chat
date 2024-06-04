@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import study.trychat.dto.MemberProfileUpdateRequest;
 import study.trychat.exception.custom.PrimaryKeyMismatchException;
 
-import static study.trychat.vo.MemberInfoVo.*;
+import static study.trychat.init.MemberInfoInitValue.*;
 
 @Entity
 @Getter

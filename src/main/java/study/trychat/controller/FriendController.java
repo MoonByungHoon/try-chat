@@ -54,11 +54,19 @@ public class FriendController {
     return ResponseEntity.ok(friendService.updateBestFriend(userId, friendId));
   }
 
+  @PutMapping("/{friendId}/block")
+  public ResponseEntity<List<FriendResponse>> updateBlockFriend(
+          @RequestHeader final Long userId,
+          @PathVariable final Long friendId
+  ) {
+    return ResponseEntity.ok(friendService.updateBlockFriend(userId, friendId));
+  }
+
   @DeleteMapping("/{friendId}")
   public ResponseEntity<List<FriendResponse>> removeFriendByMemberIdAndFriendId(
           @RequestHeader final Long userId,
           @PathVariable final Long friendId
   ) {
-    return ResponseEntity.ok(friendService.removeFriend(userId, friendId));
+    return ResponseEntity.ok(friendService.removeFriendByMemberIdAndFriendId(userId, friendId));
   }
 }
