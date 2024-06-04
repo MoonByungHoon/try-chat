@@ -13,7 +13,7 @@ public class MemberQueryImpl implements MemberQuery {
   private final JPAQueryFactory queryFactory;
 
   @Override
-  public MemberResponse findUserQueryById(Long memberId) {
+  public MemberResponse findMemberQueryById(Long memberId) {
     return queryFactory.select(new QMemberResponse(
                     member.id,
                     member.email
@@ -24,7 +24,7 @@ public class MemberQueryImpl implements MemberQuery {
   }
 
   @Override
-  public MemberProfileResponse findUserProfileByUsername(String username) {
+  public MemberProfileResponse findMemberProfileByUsername(String username) {
     return queryFactory.select(new QMemberProfileResponse(
                     memberInfo.id,
                     memberInfo.nickname,
@@ -56,7 +56,7 @@ public class MemberQueryImpl implements MemberQuery {
   }
 
   @Override
-  public MemberProfileResponse findUserProfileById(Long memberId) {
+  public MemberProfileResponse findMemberProfileById(Long memberId) {
     return queryFactory.select(new QMemberProfileResponse(
                     memberInfo.id,
                     memberInfo.nickname,

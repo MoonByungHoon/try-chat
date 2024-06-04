@@ -28,10 +28,10 @@ public class MemberService {
 //    가입 이메일 중복 검사.
     checkDuplicateEmail(signUpRequest.email());
 
-//    검색 필터에 사용될 유니크 네임 추출.
+//    검색 필터에 사용될 username 추출.
     String extractName = extractByEmail(signUpRequest.email());
 
-//    유니크 네임 중복 검사 및 중복 시 랜덤한 이름 생성.
+//    username 중복 검사 및 중복 시 랜덤한 이름 생성.
     String uniqueName = checkDuplicateUniqueName(extractName);
 
     Member member = signUpRequest.toEntityForSignUp(uniqueName);
@@ -44,20 +44,22 @@ public class MemberService {
     SignInResponse findMember = memberRepository
             .findSignInByUsernameAndPassword(signInRequest.email(), signInRequest.password());
 
-    if (findMember == null) {
-      throw new EntityNotFoundException();
-    }
+    validateFindMember(findMember);
 
     return findMember;
   }
 
-  public MemberResponse findUserById(Long memberId) {
+  public MemberResponse findMemberById(Long memberId) {
 
-    return memberRepository.findUserQueryById(memberId);
+    MemberResponse findMember = memberRepository.findMemberQueryById(memberId);
+
+    validateFindMember(findMember);
+
+    return findMember;
   }
 
   @Transactional
-  public void updateUser(Long memberId, MemberUpdateRequest memberUpdateRequest) {
+  public void updateMember(Long memberId, MemberUpdateRequest memberUpdateRequest) {
 
     if (memberRepository.existsByEmail(memberUpdateRequest.email())) {
       throw new DuplicateUsernameException();
@@ -73,25 +75,50 @@ public class MemberService {
   public void remove(Long memberId, MemberRemoveRequest memberRemoveRequest) {
 
     Member findMember =
-            memberRepository.findByEmailAndPassword(memberRemoveRequest.email(), memberRemoveRequest.password());
+            memberRepository.findByEmailAndPassword(
+                    memberRemoveRequest.email(),
+                    memberRemoveRequest.password()
+            );
 
     findMember.checkId(memberId);
 
     memberRepository.delete(findMember);
   }
 
-  public MemberProfileResponse findUserProfileByUserId(Long memberId) {
+  public MemberProfileResponse findMemberProfileByUserId(Long memberId) {
 
-    return memberRepository.findUserProfileById(memberId);
+    MemberProfileResponse findMember = memberRepository.findMemberProfileById(memberId);
+
+    validateFindMember(findMember);
+
+    return findMember;
   }
 
-  public MemberProfileResponse findUserProfileByUsername(String username) {
+  private void validateFindMember(MemberProfileResponse findMember) {
+    if (findMember.equals(null)) {
+      throw new EntityNotFoundException();
+    }
+  }
 
-    return memberRepository.findUserProfileByUsername(username);
+  private void validateFindMember(MemberResponse findMember) {
+    if (findMember.equals(null)) {
+      throw new EntityNotFoundException();
+    }
+  }
+
+  private void validateFindMember(SignInResponse findMember) {
+    if (findMember.equals(null)) {
+      throw new EntityNotFoundException();
+    }
+  }
+
+  public MemberProfileResponse findMemberProfileByUsername(String username) {
+
+    return memberRepository.findMemberProfileByUsername(username);
   }
 
   @Transactional
-  public MemberProfileResponse updateUserProfile(Long memberId, MemberProfileUpdateRequest profileUpdateRequest) {
+  public MemberProfileResponse updateMemberProfile(Long memberId, MemberProfileUpdateRequest profileUpdateRequest) {
 
     MemberInfo findMemberInfo = memberInfoRepository.findById(memberId)
             .orElseThrow(() -> new EntityNotFoundException());

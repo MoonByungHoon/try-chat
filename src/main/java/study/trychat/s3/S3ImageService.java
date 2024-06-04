@@ -9,8 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-import study.trychat.exception.ErrorMessage;
 import study.trychat.exception.custom.S3UploadException;
+import study.trychat.message.ErrorMessage;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

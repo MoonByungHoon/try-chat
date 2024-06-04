@@ -3,9 +3,9 @@ package study.trychat.dto;
 import jakarta.validation.constraints.NotBlank;
 
 public record FriendNicknameUpdateRequest(
-        @NotBlank
+        @NotBlank(message = "{notBlank.friendId.validation.message}")
         Long friendId,
-        @NotBlank
+        @NotBlank(message = "{notBlank.nickname.validation.message}")
         String nickname
 ) {
 }

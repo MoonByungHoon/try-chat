@@ -7,10 +7,10 @@ import study.trychat.dto.FriendNicknameUpdateRequest;
 import study.trychat.dto.FriendResponse;
 import study.trychat.entity.Friend;
 import study.trychat.entity.MemberInfo;
-import study.trychat.exception.ErrorMessage;
 import study.trychat.exception.custom.BestFriendMaxException;
 import study.trychat.exception.custom.DeleteFalseByMemberIdAndFriendId;
 import study.trychat.exception.custom.DuplicateFriendByUserNameException;
+import study.trychat.message.ErrorMessage;
 import study.trychat.repository.FriendRepository;
 import study.trychat.repository.MemberInfoRepository;
 

@@ -33,24 +33,24 @@ public class MemberController {
   }
 
   @GetMapping("/{userId}")
-  public ResponseEntity<MemberResponse> findUserById(@PathVariable final Long userId) {
+  public ResponseEntity<MemberResponse> findMemberById(@PathVariable final Long userId) {
 
-    return ResponseEntity.ok(memberService.findUserById(userId));
+    return ResponseEntity.ok(memberService.findMemberById(userId));
   }
 
   //  username과 password 변경 요청 처리.
   @PutMapping("/{userId}")
-  public ResponseEntity<String> updateUser(
+  public ResponseEntity<String> updateMember(
           @PathVariable final Long userId,
           @Valid @RequestBody MemberUpdateRequest memberUpdateRequest
   ) {
-    memberService.updateUser(userId, memberUpdateRequest);
+    memberService.updateMember(userId, memberUpdateRequest);
 
     return ResponseEntity.ok("회원정보가 수정되었습니다.");
   }
 
   @DeleteMapping("/{userId}")
-  public ResponseEntity<String> removeUser(
+  public ResponseEntity<String> removeMember(
           @PathVariable final Long userId,
           @Valid @RequestBody MemberRemoveRequest memberRemoveRequest
   ) {
@@ -60,23 +60,23 @@ public class MemberController {
   }
 
   @GetMapping("/{userId}/profile")
-  public ResponseEntity<MemberProfileResponse> findUserProfileByMemberId(@PathVariable final Long userId) {
+  public ResponseEntity<MemberProfileResponse> findMemberProfileByMemberId(@PathVariable final Long userId) {
 
-    return ResponseEntity.ok(memberService.findUserProfileByUserId(userId));
+    return ResponseEntity.ok(memberService.findMemberProfileByUserId(userId));
   }
 
   @GetMapping("/profile")
-  public ResponseEntity<MemberProfileResponse> findUserProfileByUsername(@RequestParam final String username) {
+  public ResponseEntity<MemberProfileResponse> findMemberProfileByUsername(@RequestParam final String username) {
 
-    return ResponseEntity.ok(memberService.findUserProfileByUsername(username));
+    return ResponseEntity.ok(memberService.findMemberProfileByUsername(username));
   }
 
   @PutMapping("/{userId}/profile")
-  public ResponseEntity<MemberProfileResponse> updateUserProfile(
+  public ResponseEntity<MemberProfileResponse> updateMemberProfile(
           @PathVariable final Long userId,
           @Valid @RequestBody MemberProfileUpdateRequest profileUpdateRequest
   ) {
-    return ResponseEntity.ok(memberService.updateUserProfile(userId, profileUpdateRequest));
+    return ResponseEntity.ok(memberService.updateMemberProfile(userId, profileUpdateRequest));
   }
 
   @GetMapping("/{userId}/friends")

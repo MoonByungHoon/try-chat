@@ -7,19 +7,19 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record MemberProfileUpdateRequest(
-        @NotEmpty(message = "공백은 혀용하지 않습니다.")
+        @NotEmpty(message = "{notEmpty.nickname.validation.message}")
         @Size(min = 1, max = 20)
         String nickname,
-        @NotNull
+        @NotNull(message = "{notNull.greetings.validation.message}")
         @Size(max = 60)
         String greetings,
-        @NotBlank
+        @NotBlank(message = "{notBlank.profileImg.validation.message}")
         @Size(min = 1)
         String profileImg,
-        @NotBlank
+        @NotBlank(message = "{notBlank.profileImgPath.validation.message}")
         @Size(min = 1)
         String backgroundImg,
-        @NotBlank
+        @NotBlank(message = "{notBlank.backgroundImg.validation.message}")
         @Size(min = 1)
         String profileImgPath
 ) {

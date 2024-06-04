@@ -1,4 +1,4 @@
-package study.trychat.exception;
+package study.trychat.message;
 
 public enum ErrorMessage {
   FRIEND_DELETE_FALSE("친구 삭제에 실패하였습니다."),
@@ -6,7 +6,7 @@ public enum ErrorMessage {
   FRIEND_NO_SUCH("대상은 현재 친구가 아닙니다."),
   FRIEND_BEST_SIZE_MAX("즐겨찾기를 등록할 수 있는 친구 수를 초과하였습니다."),
   SIGN_UP_DUPLICATE_USER("이미 가입된 회원입니다."),
-  MEMBER_ENTITY_NOT_FOUND("일치하는 회원이 없습니다."),
+  MEMBER_ENTITY_NOT_FOUND("아이디 혹은 비밀번호가 일치하지 않습니다."),
   PRIMARY_KEY_MISMATCH("요청을 수행할 대상과 일치하지 않습니다."),
   S3_FILE_NOT_FOUND("파일 형식이 잘못되었습니다."),
   S3_FILE_IS_NULL("파일이 존재하지 않습니다."),
