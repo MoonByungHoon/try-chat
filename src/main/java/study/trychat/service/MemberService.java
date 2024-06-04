@@ -3,6 +3,7 @@ package study.trychat.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import study.trychat.dto.*;
 import study.trychat.entity.Member;
 import study.trychat.entity.MemberInfo;
@@ -11,9 +12,12 @@ import study.trychat.exception.custom.EntityNotFoundException;
 import study.trychat.exception.custom.PrimaryKeyMismatchException;
 import study.trychat.repository.MemberInfoRepository;
 import study.trychat.repository.MemberRepository;
+import study.trychat.s3.S3ImgService;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 @Service
@@ -23,6 +27,7 @@ public class MemberService {
 
   private final MemberRepository memberRepository;
   private final MemberInfoRepository memberInfoRepository;
+  private final S3ImgService s3ImgService;
 
   @Transactional
   public void signUp(SignUpRequest signUpRequest) {
@@ -101,16 +106,47 @@ public class MemberService {
   }
 
   @Transactional
-  public MemberProfileResponse updateMemberProfile(Long memberId, MemberProfileUpdateRequest profileUpdateRequest) {
+  public MemberProfileResponse updateMemberProfile(Long memberId,
+                                                   MemberProfileUpdateRequest profileUpdateRequest,
+                                                   Map<String, MultipartFile> files) {
 
     validateIdMatch(memberId, profileUpdateRequest.id());
 
     MemberInfo findMemberInfo = memberInfoRepository.findById(memberId)
             .orElseThrow(() -> new EntityNotFoundException());
 
-    findMemberInfo.update(profileUpdateRequest);
+    if (isPresentFiles(files)) {
+      findMemberInfo.update(profileUpdateRequest);
+
+      return MemberProfileResponse.change(findMemberInfo);
+    }
+
+    List<String> fileAddress = s3ImgService.upload(files);
+
+    System.out.println("파일주소 : " + fileAddress.get(0));
+
+//    이미지 경로 수정 코드 추가 작성 필요.
 
     return MemberProfileResponse.change(findMemberInfo);
+  }
+
+  private boolean isPresentFiles(Map<String, MultipartFile> files) {
+    if (files.isEmpty()) {
+      return false;
+    }
+    return true;
+  }
+
+  private void validateFileAddress(
+          MemberInfo findMemberInfo,
+          MemberProfileUpdateRequest profileUpdateRequest,
+          List<String> fileAddress
+  ) {
+    if (!fileAddress.equals(null)) {
+      System.out.println(fileAddress.get(0));
+
+      findMemberInfo.update(profileUpdateRequest);
+    }
   }
 
   private void validateIdMatch(Long memberId, Long id) {

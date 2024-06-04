@@ -19,17 +19,40 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 @Component
 @RequiredArgsConstructor
-public class S3ImageService {
+public class S3ImgService {
 
   private final AmazonS3 amazonS3;
 
   @Value("${cloud.aws.s3.bucketName}")
   private String bucketName;
+
+  public List<String> upload(Map<String, MultipartFile> files) {
+    List<String> fileAddress = new ArrayList<>();
+
+    if (isEmptyFiles(files)) {
+      return null;
+    }
+
+    files.forEach((key, file) -> {
+
+      String fileType = determineFileType(file.getOriginalFilename());
+
+      fileAddress.add(uploadFile(file, fileType));
+    });
+
+    return fileAddress;
+  }
+
+  private boolean isEmptyFiles(Map<String, MultipartFile> files) {
+    if (files.isEmpty()) {
+      return true;
+    }
+    return false;
+  }
 
   public String upload(MultipartFile file) {
     validateFileNullCheck(file);
@@ -113,5 +136,4 @@ public class S3ImageService {
       throw new S3UploadException(ErrorMessage.S3_FILE_IS_NULL);
     }
   }
-
 }

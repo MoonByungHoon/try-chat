@@ -4,11 +4,13 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import study.trychat.dto.*;
 import study.trychat.service.FriendService;
 import study.trychat.service.MemberService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
@@ -74,9 +76,10 @@ public class MemberController {
   @PutMapping("/{userId}/profile")
   public ResponseEntity<MemberProfileResponse> updateMyProfile(
           @PathVariable final Long userId,
-          @Valid @RequestBody MemberProfileUpdateRequest profileUpdateRequest
+          @Valid @RequestBody MemberProfileUpdateRequest profileUpdateRequest,
+          @RequestPart(value = "files") Map<String, MultipartFile> files
   ) {
-    return ResponseEntity.ok(memberService.updateMemberProfile(userId, profileUpdateRequest));
+    return ResponseEntity.ok(memberService.updateMemberProfile(userId, profileUpdateRequest, files));
   }
 
   @GetMapping("/{userId}/friends")
