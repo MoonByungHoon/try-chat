@@ -4,6 +4,8 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import study.trychat.dto.*;
 
+import java.util.Optional;
+
 import static study.trychat.entity.QMember.member;
 import static study.trychat.entity.QMemberInfo.memberInfo;
 
@@ -14,28 +16,27 @@ public class MemberQueryImpl implements MemberQuery {
 
   @Override
   public MemberResponse findMemberQueryById(Long memberId) {
-    return queryFactory.select(new QMemberResponse(
-                    member.id,
-                    member.email
-            ))
+    return queryFactory.select(new QMemberResponse(member.id, member.email))
             .from(member)
             .where(member.id.eq(memberId))
             .fetchOne();
   }
 
   @Override
-  public MemberProfileResponse findMemberProfileByUsername(String username) {
-    return queryFactory.select(new QMemberProfileResponse(
-                    memberInfo.id,
-                    memberInfo.nickname,
-                    memberInfo.greetings,
-                    memberInfo.profileImg,
-                    memberInfo.backgroundImg,
-                    memberInfo.profileImgPath
-            ))
-            .from(memberInfo)
-            .where(memberInfo.username.eq(username))
-            .fetchOne();
+  public Optional<MemberProfileResponse> findMemberProfileByUsername(String username) {
+    return Optional.ofNullable(
+            queryFactory.select(new QMemberProfileResponse(
+                            memberInfo.id,
+                            memberInfo.nickname,
+                            memberInfo.greetings,
+                            memberInfo.profileImg,
+                            memberInfo.backgroundImg,
+                            memberInfo.profileImgPath
+                    ))
+                    .from(memberInfo)
+                    .where(memberInfo.username.eq(username))
+                    .fetchOne()
+    );
   }
 
   @Override

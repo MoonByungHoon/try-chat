@@ -40,7 +40,7 @@ public class FriendController {
           @RequestHeader final Long userId,
           @Valid @RequestBody FriendNicknameUpdateRequest nicknameUpdateRequest
   ) {
-    return ResponseEntity.ok(friendService.updateFriendNickname(userId, nicknameUpdateRequest));
+    return ResponseEntity.ok(friendService.updateFriendNickname(userId, nicknameUpdateRequest.friendId(), nicknameUpdateRequest.nickname()));
   }
 
   // PUT /friends/status -> status의 개수만큼의 책임을 감당한다.

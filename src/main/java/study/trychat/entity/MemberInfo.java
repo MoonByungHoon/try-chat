@@ -30,15 +30,24 @@ public class MemberInfo extends BaseEntity {
   @Column(nullable = false)
   private String profileImgPath;
 
-  public static MemberInfo init(String nickname, String uniqueName) {
-    return new MemberInfo(nickname, uniqueName, " ", PROFILE_IMG.getValue(), BACKGROUND_IMG.getValue(), PROFILE_PATH.getValue());
+  public static MemberInfo init(String nickname, String username) {
+    return new MemberInfo(nickname, username, " ", PROFILE_IMG.getValue(), BACKGROUND_IMG.getValue(), PROFILE_PATH.getValue());
   }
 
   public void update(MemberProfileUpdateRequest profileUpdateRequest) {
     this.nickname = profileUpdateRequest.nickname();
     this.greetings = profileUpdateRequest.greetings();
-    this.profileImg = profileUpdateRequest.profileImg();
-    this.backgroundImg = profileUpdateRequest.backgroundImg();
-    this.profileImgPath = profileUpdateRequest.profileImgPath();
+  }
+
+  public void updateAll(MemberProfileUpdateRequest profileUpdateRequest) {
+    this.nickname = profileUpdateRequest.nickname();
+    this.greetings = profileUpdateRequest.greetings();
+//    this.profileImg = profileUpdateRequest.profileImg();
+//    this.backgroundImg = profileUpdateRequest.backgroundImg();
+//    this.profileImgPath = profileUpdateRequest.profileImgPath();
+  }
+
+  public void updateUsername(String username) {
+    this.username = username;
   }
 }

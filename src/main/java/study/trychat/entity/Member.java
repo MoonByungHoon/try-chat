@@ -1,11 +1,7 @@
 package study.trychat.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import study.trychat.dto.MemberUpdateRequest;
+import lombok.*;
 import study.trychat.exception.custom.PrimaryKeyMismatchException;
 
 import java.util.ArrayList;
@@ -14,8 +10,8 @@ import java.util.List;
 @Builder
 @Getter
 @Entity
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AttributeOverride(name = "id", column = @Column(name = "id"))
 public class Member extends BaseEntity {
 
@@ -32,16 +28,17 @@ public class Member extends BaseEntity {
   @JoinColumn(name = "member_id")
   private List<Friend> friendList = new ArrayList<>();
 
+  @Column(nullable = false)
   @Enumerated(EnumType.STRING)
   private Roles roles; //ADMIN, USER
 
-  public void update(MemberUpdateRequest memberUpdateRequest) {
-    this.email = memberUpdateRequest.email();
-    this.password = memberUpdateRequest.password();
+  public void update(String email, String password) {
+    this.email = email;
+    this.password = password;
   }
 
   public void checkId(Long id) {
-    if (!(id.equals(super.getId()))) {
+    if (!id.equals(super.getId())) {
       throw new PrimaryKeyMismatchException();
     }
   }

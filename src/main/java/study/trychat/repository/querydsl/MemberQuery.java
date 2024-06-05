@@ -4,6 +4,8 @@ import study.trychat.dto.MemberProfileResponse;
 import study.trychat.dto.MemberResponse;
 import study.trychat.dto.SignInResponse;
 
+import java.util.Optional;
+
 public interface MemberQuery {
 
   SignInResponse findSignInByEmailAndPassword(String email, String password);
@@ -12,5 +14,5 @@ public interface MemberQuery {
 
   MemberResponse findMemberQueryById(Long memberId);
 
-  MemberProfileResponse findMemberProfileByUsername(String username);
+  Optional<MemberProfileResponse> findMemberProfileByUsername(String username);
 }

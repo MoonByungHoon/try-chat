@@ -23,15 +23,13 @@ public class MemberController {
   @PostMapping("/signup")
   public ResponseEntity<String> signUp(@Valid @RequestBody SignUpRequest signUpRequest) {
 
-    memberService.signUp(signUpRequest);
-
-    return ResponseEntity.ok("회원가입에 성공하였습니다.");
+    return ResponseEntity.ok(memberService.signUp(signUpRequest));
   }
 
   @PostMapping("/signin")
   public ResponseEntity<SignInResponse> signIn(@Valid @RequestBody SignInRequest signInRequest) {
 
-    return ResponseEntity.ok(memberService.signIn(signInRequest));
+    return ResponseEntity.ok(memberService.signIn(signInRequest.email(), signInRequest.password()));
   }
 
   @GetMapping("/{userId}")
@@ -46,9 +44,8 @@ public class MemberController {
           @PathVariable final Long userId,
           @Valid @RequestBody MemberUpdateRequest memberUpdateRequest
   ) {
-    memberService.updateMember(userId, memberUpdateRequest);
 
-    return ResponseEntity.ok("회원정보가 수정되었습니다.");
+    return ResponseEntity.ok(memberService.updateMember(userId, memberUpdateRequest.email(), memberUpdateRequest.password()));
   }
 
   @DeleteMapping("/{userId}")
@@ -56,7 +53,7 @@ public class MemberController {
           @PathVariable final Long userId,
           @Valid @RequestBody MemberRemoveRequest memberRemoveRequest
   ) {
-    memberService.remove(userId, memberRemoveRequest);
+    memberService.remove(userId, memberRemoveRequest.email(), memberRemoveRequest.password());
 
     return ResponseEntity.ok("회원 탈퇴에 성공하였습니다.");
   }
@@ -77,7 +74,7 @@ public class MemberController {
   public ResponseEntity<MemberProfileResponse> updateMyProfile(
           @PathVariable final Long userId,
           @Valid @RequestBody MemberProfileUpdateRequest profileUpdateRequest,
-          @RequestPart(value = "files") Map<String, MultipartFile> files
+          @RequestPart(value = "files", required = false) Map<String, MultipartFile> files
   ) {
     return ResponseEntity.ok(memberService.updateMemberProfile(userId, profileUpdateRequest, files));
   }
@@ -86,5 +83,14 @@ public class MemberController {
   public ResponseEntity<List<FriendResponse>> findFriendsByMemberId(@PathVariable final Long userId) {
 
     return ResponseEntity.ok(friendService.findFriendsByMemberId(userId));
+  }
+
+  @PatchMapping("/username")
+  public ResponseEntity<UsernameParam> updateMyUsername(
+          @RequestHeader final Long userId,
+          @RequestBody UsernameParam usernameParam
+  ) {
+
+    return ResponseEntity.ok(memberService.updateMyUsername(userId, usernameParam));
   }
 }

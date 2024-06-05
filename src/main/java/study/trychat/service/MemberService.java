@@ -30,7 +30,7 @@ public class MemberService {
   private final S3ImgService s3ImgService;
 
   @Transactional
-  public void signUp(SignUpRequest signUpRequest) {
+  public String signUp(SignUpRequest signUpRequest) {
 //    가입 이메일 중복 검사.
     checkDuplicateEmail(signUpRequest.email());
 
@@ -38,17 +38,24 @@ public class MemberService {
     String extractName = extractByEmail(signUpRequest.email());
 
 //    username 중복 검사 및 중복 시 랜덤한 이름 생성.
-    String uniqueName = checkDuplicateUsername(extractName);
+    String username = checkDuplicateUsername(extractName);
 
-    Member member = signUpRequest.toEntityForSignUp(uniqueName);
+    Member member = signUpRequest.toEntityForSignUp(username);
 
     memberRepository.save(member);
+
+    return "회원가입에 성공하였습니다.";
   }
 
-  public SignInResponse signIn(SignInRequest signInRequest) {
+  // comment : 파라미터가 많지 않은 경우는 그냥 컨트롤러에서 꺼내서 쓴다. 최대한 DTO에 대한 의존성을 줄이는 것은 좋다.
+  public SignInResponse signIn(String email,
+                               String password) {
 
-    SignInResponse findMember = memberRepository
-            .findSignInByEmailAndPassword(signInRequest.email(), signInRequest.password());
+    // comment : querydsl을 사용함에도 불구하고 memberRepository에서 감추고 있기 때문에 이게 올바른 리턴인지 전혀 모르겠음.
+    // comment : querydsl이 아니여도 충분하게 jpa로 해결할 수 있는데 굳이 querydsl을 쓴다면 jpa를 쓰지말기
+    // comment : proejction vs converting
+
+    SignInResponse findMember = memberRepository.findSignInByEmailAndPassword(email, password);
 
     validateFindMember(findMember);
 
@@ -65,31 +72,33 @@ public class MemberService {
   }
 
   @Transactional
-  public void updateMember(Long memberId, MemberUpdateRequest memberUpdateRequest) {
+  public String updateMember(Long memberId,
+                             String email,
+                             String password) {
 
-    if (memberRepository.existsByEmail(memberUpdateRequest.email())) {
+    if (memberRepository.existsByEmail(email)) {
       throw new DuplicateUsernameException();
     }
 
     Member findMember = memberRepository.findById(memberId)
             .orElseThrow(() -> new EntityNotFoundException());
 
-    findMember.update(memberUpdateRequest);
+    findMember.update(email, password);
+
+    return "회원정보 수정이 완료되었습니다.";
   }
 
   @Transactional
-  public void remove(Long memberId, MemberRemoveRequest memberRemoveRequest) {
+  public void remove(Long memberId,
+                     String email,
+                     String password) {
 
-    Member findMember =
-            memberRepository.findByEmailAndPassword(
-                    memberRemoveRequest.email(),
-                    memberRemoveRequest.password()
-            );
+    Member findMember = memberRepository.findByEmailAndPassword(email, password)
+            .orElseThrow(() -> new EntityNotFoundException());
 
     validateFindMember(findMember);
 
     findMember.checkId(memberId);
-
 
     memberRepository.delete(findMember);
   }
@@ -105,39 +114,47 @@ public class MemberService {
 
   public MemberProfileResponse findMemberProfileByUsername(String username) {
 
-    return memberRepository.findMemberProfileByUsername(username);
+    MemberProfileResponse findProfile = memberRepository.findMemberProfileByUsername(username);
+
+    if (findProfile == null) {
+      throw new EntityNotFoundException();
+    }
+
+    return findProfile;
   }
 
   @Transactional
-  public MemberProfileResponse updateMemberProfile(Long memberId,
-                                                   MemberProfileUpdateRequest profileUpdateRequest,
-                                                   Map<String, MultipartFile> files) {
-
-    validateIdMatch(memberId, profileUpdateRequest.id());
-
+  public MemberProfileResponse updateMemberProfile(
+          Long memberId,
+          MemberProfileUpdateRequest profileUpdateRequest,
+          Map<String, MultipartFile> files
+  ) {
     MemberInfo findMemberInfo = memberInfoRepository.findById(memberId)
             .orElseThrow(() -> new EntityNotFoundException());
 
-    if (isPresentFiles(files)) {
-      findMemberInfo.update(profileUpdateRequest);
 
-      return MemberProfileResponse.change(findMemberInfo);
+    validateIdMatch(memberId, profileUpdateRequest.id());
+
+    if (files != null) {
+      return updateAll(findMemberInfo, profileUpdateRequest, files);
     }
 
-    List<String> fileAddress = s3ImgService.upload(files);
-
-    System.out.println("파일주소 : " + fileAddress.get(0));
-
-//    이미지 경로 수정 코드 추가 작성 필요.
+    findMemberInfo.update(profileUpdateRequest);
 
     return MemberProfileResponse.change(findMemberInfo);
   }
 
-  private boolean isPresentFiles(Map<String, MultipartFile> files) {
-    if (files.isEmpty()) {
-      return false;
-    }
-    return true;
+  private MemberProfileResponse updateAll(MemberInfo findMemberInfo,
+                                          MemberProfileUpdateRequest profileUpdateRequest,
+                                          Map<String, MultipartFile> files) {
+    //미작성
+    List<String> fileAddress = s3ImgService.upload(files);
+
+    System.out.println("파일주소 : " + fileAddress.get(0));
+
+    findMemberInfo.updateAll(profileUpdateRequest);
+
+    return MemberProfileResponse.change(findMemberInfo);
   }
 
   private void validateFileAddress(
@@ -145,14 +162,15 @@ public class MemberService {
           MemberProfileUpdateRequest profileUpdateRequest,
           List<String> fileAddress
   ) {
-    if (!fileAddress.equals(null)) {
+    if (!fileAddress == null) {
       System.out.println(fileAddress.get(0));
 
       findMemberInfo.update(profileUpdateRequest);
     }
   }
 
-  private void validateIdMatch(Long memberId, Long id) {
+  private void validateIdMatch(Long memberId,
+                               Long id) {
     if (!memberId.equals(id)) {
       throw new PrimaryKeyMismatchException();
     }
@@ -164,16 +182,16 @@ public class MemberService {
     }
   }
 
-  private String checkDuplicateUsername(String uniqueName) {
-    if (memberInfoRepository.existsByUsername(uniqueName)) {
+  private String checkDuplicateUsername(String username) {
+    if (memberInfoRepository.existsByUsername(username)) {
 
       LocalDateTime now = LocalDateTime.now();
 
-      String makeUniqueName = uniqueName + String.valueOf(now.getSecond() + now.getNano() / 1000);
+      String makeUsername = username + now.getSecond() + now.getNano() / 1000;
 
-      return makeUniqueName;
+      return makeUsername;
     }
-    return uniqueName;
+    return username;
   }
 
   private String extractByEmail(String email) {
@@ -193,15 +211,13 @@ public class MemberService {
     }
   }
 
-  private void validateFindMember(SignInResponse findMember) {
-    if (findMember == null) {
-      throw new EntityNotFoundException();
-    }
-  }
+  @Transactional
+  public UsernameParam updateMyUsername(Long userId,
+                                        UsernameParam usernameParam) {
+    memberInfoRepository.findById(userId)
+            .orElseThrow(() -> new EntityNotFoundException())
+            .updateUsername(usernameParam.username());
 
-  private void validateFindMember(Member findMember) {
-    if (findMember == null) {
-      throw new EntityNotFoundException();
-    }
+    return usernameParam;
   }
 }

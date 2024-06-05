@@ -3,7 +3,6 @@ package study.trychat.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import study.trychat.dto.FriendNicknameUpdateRequest;
 import study.trychat.dto.FriendResponse;
 import study.trychat.entity.Friend;
 import study.trychat.entity.MemberInfo;
@@ -88,11 +87,11 @@ public class FriendService {
   }
 
   @Transactional
-  public FriendResponse updateFriendNickname(Long memberId, FriendNicknameUpdateRequest nicknameUpdateRequest) {
+  public FriendResponse updateFriendNickname(Long memberId, Long friendId, String nickname) {
 
-    Friend findFriend = findByMemberIdAndFriendId(memberId, nicknameUpdateRequest.friendId());
+    Friend findFriend = findByMemberIdAndFriendId(memberId, friendId);
 
-    findFriend.updateProfile(nicknameUpdateRequest);
+    findFriend.updateProfile(nickname);
 
     return FriendResponse.changeResponse(findFriend);
   }

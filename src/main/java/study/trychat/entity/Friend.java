@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import study.trychat.dto.FriendNicknameUpdateRequest;
 
 import java.util.Objects;
 
@@ -56,8 +55,8 @@ public class Friend extends BaseEntity {
     this.friendStatus = BLOCK;
   }
 
-  public void updateProfile(FriendNicknameUpdateRequest nicknameUpdateRequest) {
-    this.nickname = nicknameUpdateRequest.nickname();
+  public void updateProfile(String nickname) {
+    this.nickname = nickname;
   }
 
   @Override
