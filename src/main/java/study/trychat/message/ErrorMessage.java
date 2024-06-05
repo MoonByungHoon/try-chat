@@ -1,5 +1,10 @@
 package study.trychat.message;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
 public enum ErrorMessage {
   FRIEND_DELETE_FALSE("친구 삭제에 실패하였습니다."),
   FRIEND_ADD_DUPLICATE_USER_NAME("이미 친구 추가가 되어있습니다."),
@@ -14,12 +19,4 @@ public enum ErrorMessage {
   S3_FILE_DELETE_FALSE("파일 삭제에 실패하였습니다.");
 
   private final String message;
-
-  ErrorMessage(String message) {
-    this.message = message;
-  }
-
-  public String getMessage() {
-    return message;
-  }
 }

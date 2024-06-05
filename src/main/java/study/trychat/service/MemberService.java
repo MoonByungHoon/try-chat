@@ -38,7 +38,7 @@ public class MemberService {
     String extractName = extractByEmail(signUpRequest.email());
 
 //    username 중복 검사 및 중복 시 랜덤한 이름 생성.
-    String uniqueName = checkDuplicateUniqueName(extractName);
+    String uniqueName = checkDuplicateUsername(extractName);
 
     Member member = signUpRequest.toEntityForSignUp(uniqueName);
 
@@ -48,7 +48,7 @@ public class MemberService {
   public SignInResponse signIn(SignInRequest signInRequest) {
 
     SignInResponse findMember = memberRepository
-            .findSignInByUsernameAndPassword(signInRequest.email(), signInRequest.password());
+            .findSignInByEmailAndPassword(signInRequest.email(), signInRequest.password());
 
     validateFindMember(findMember);
 
@@ -86,7 +86,10 @@ public class MemberService {
                     memberRemoveRequest.password()
             );
 
+    validateFindMember(findMember);
+
     findMember.checkId(memberId);
+
 
     memberRepository.delete(findMember);
   }
@@ -161,7 +164,7 @@ public class MemberService {
     }
   }
 
-  private String checkDuplicateUniqueName(String uniqueName) {
+  private String checkDuplicateUsername(String uniqueName) {
     if (memberInfoRepository.existsByUsername(uniqueName)) {
 
       LocalDateTime now = LocalDateTime.now();
@@ -179,19 +182,25 @@ public class MemberService {
   }
 
   private void validateFindMember(MemberProfileResponse findMember) {
-    if (findMember.equals(null)) {
+    if (findMember == null) {
       throw new EntityNotFoundException();
     }
   }
 
   private void validateFindMember(MemberResponse findMember) {
-    if (findMember.equals(null)) {
+    if (findMember == null) {
       throw new EntityNotFoundException();
     }
   }
 
   private void validateFindMember(SignInResponse findMember) {
-    if (findMember.equals(null)) {
+    if (findMember == null) {
+      throw new EntityNotFoundException();
+    }
+  }
+
+  private void validateFindMember(Member findMember) {
+    if (findMember == null) {
       throw new EntityNotFoundException();
     }
   }

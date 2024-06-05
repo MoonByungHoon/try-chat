@@ -39,7 +39,7 @@ public class MemberQueryImpl implements MemberQuery {
   }
 
   @Override
-  public SignInResponse findSignInByUsernameAndPassword(String email, String password) {
+  public SignInResponse findSignInByEmailAndPassword(String email, String password) {
     return queryFactory.select(new QSignInResponse(
                     memberInfo.id,
                     memberInfo.nickname,
@@ -51,7 +51,8 @@ public class MemberQueryImpl implements MemberQuery {
             .from(member)
             .join(member.memberInfo, memberInfo)
             .on(member.id.eq(memberInfo.id))
-            .where(member.email.eq(email).and(member.password.eq(password)))
+            .where(member.email.eq(email)
+                    .and(member.password.eq(password)))
             .fetchOne();
   }
 

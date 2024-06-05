@@ -16,11 +16,9 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@AttributeOverride(name = "id", column = @Column(name = "id"))
 public class Member extends BaseEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
   @Column(nullable = false, unique = true, length = 340)
   private String email; // email
   @Column(nullable = false, length = 64)
@@ -43,7 +41,7 @@ public class Member extends BaseEntity {
   }
 
   public void checkId(Long id) {
-    if (!(this.id.equals(id))) {
+    if (!(id.equals(super.getId()))) {
       throw new PrimaryKeyMismatchException();
     }
   }

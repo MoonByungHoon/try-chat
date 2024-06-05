@@ -21,10 +21,10 @@ public class FriendQueryImpl implements FriendQuery {
     return queryFactory.select(new QFriendResponse(
                     friend.id,
                     friend.friendId,
-                    friend.friendNickname,
-                    friend.friendProfileImg,
-                    friend.friendBackgroundImg,
-                    friend.friendProfileImgPath,
+                    friend.nickname,
+                    friend.profileImg,
+                    friend.backgroundImg,
+                    friend.profileImgPath,
                     friend.friendStatus
             ))
             .from(friend)
@@ -50,10 +50,10 @@ public class FriendQueryImpl implements FriendQuery {
     return queryFactory.select(new QFriendResponse(
                     friend.id,
                     friend.friendId,
-                    friend.friendNickname,
-                    friend.friendProfileImg,
-                    friend.friendBackgroundImg,
-                    friend.friendProfileImgPath,
+                    friend.nickname,
+                    friend.profileImg,
+                    friend.backgroundImg,
+                    friend.profileImgPath,
                     friend.friendStatus
             ))
             .from(friend)

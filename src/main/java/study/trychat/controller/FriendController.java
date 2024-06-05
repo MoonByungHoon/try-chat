@@ -35,7 +35,7 @@ public class FriendController {
     return ResponseEntity.ok(friendService.findFriendsByMemberIdAndFriendId(userId, friendId));
   }
 
-  @PutMapping("/profile")
+  @PatchMapping("/profile")
   public ResponseEntity<FriendResponse> updateFriendNickname(
           @RequestHeader final Long userId,
           @Valid @RequestBody FriendNicknameUpdateRequest nicknameUpdateRequest

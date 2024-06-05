@@ -31,7 +31,7 @@ public class MemberInfo extends BaseEntity {
   private String profileImgPath;
 
   public static MemberInfo init(String nickname, String uniqueName) {
-    return new MemberInfo(nickname, uniqueName, "", PROFILE_IMG.getValue(), BACKGROUND_IMG.getValue(), PROFILE_PATH.getValue());
+    return new MemberInfo(nickname, uniqueName, " ", PROFILE_IMG.getValue(), BACKGROUND_IMG.getValue(), PROFILE_PATH.getValue());
   }
 
   public void update(MemberProfileUpdateRequest profileUpdateRequest) {

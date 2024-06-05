@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import study.trychat.entity.Member;
 import study.trychat.entity.MemberInfo;
+import study.trychat.entity.Roles;
 
 public record SignUpRequest(
         @NotBlank(message = "{notBlank.email.validation.message}")
@@ -22,6 +23,7 @@ public record SignUpRequest(
     return Member.builder()
             .email(email)
             .password(password)
+            .roles(Roles.USER)
             .memberInfo(MemberInfo.init(username, username))
             .build();
   }

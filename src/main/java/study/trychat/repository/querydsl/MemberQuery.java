@@ -6,7 +6,7 @@ import study.trychat.dto.SignInResponse;
 
 public interface MemberQuery {
 
-  SignInResponse findSignInByUsernameAndPassword(String username, String password);
+  SignInResponse findSignInByEmailAndPassword(String email, String password);
 
   MemberProfileResponse findMyProfileById(Long memberId);
 
