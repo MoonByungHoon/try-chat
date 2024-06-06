@@ -1,6 +1,6 @@
 package study.trychat.exception.custom;
 
-import study.trychat.message.ErrorMessage;
+import study.trychat.exception.ErrorMessage;
 
 public class DeleteFalseByMemberIdAndFriendId extends RuntimeException {
   public DeleteFalseByMemberIdAndFriendId() {

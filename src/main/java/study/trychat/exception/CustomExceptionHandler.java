@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import study.trychat.exception.custom.DuplicateUsernameException;
-import study.trychat.exception.custom.PrimaryKeyMismatchException;
+import study.trychat.exception.custom.FindTargetMismatchException;
 
 @ControllerAdvice
 public class CustomExceptionHandler {
@@ -17,8 +17,8 @@ public class CustomExceptionHandler {
     return new ResponseEntity<>(apiError, apiError.getStatus());
   }
 
-  @ExceptionHandler(PrimaryKeyMismatchException.class)
-  public ResponseEntity<ApiError> primaryKeyMismatchException(PrimaryKeyMismatchException ex) {
+  @ExceptionHandler(FindTargetMismatchException.class)
+  public ResponseEntity<ApiError> primaryKeyMismatchException(FindTargetMismatchException ex) {
     ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage());
 
     return new ResponseEntity<>(apiError, apiError.getStatus());

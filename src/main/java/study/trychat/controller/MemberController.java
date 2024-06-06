@@ -5,12 +5,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import study.trychat.dto.*;
+import study.trychat.dto.FriendBase.FriendResponse;
+import study.trychat.dto.SignBase.SignInRequest;
+import study.trychat.dto.SignBase.SignUpRequest;
+import study.trychat.dto.SignBase.SingInResponse;
+import study.trychat.dto.UsernameParam;
 import study.trychat.service.FriendService;
 import study.trychat.service.MemberService;
 
 import java.util.List;
 import java.util.Map;
+
+import static study.trychat.dto.MemberBase.*;
 
 @RestController
 @RequestMapping("/users")
@@ -27,7 +33,7 @@ public class MemberController {
   }
 
   @PostMapping("/signin")
-  public ResponseEntity<SignInResponse> signIn(@Valid @RequestBody SignInRequest signInRequest) {
+  public ResponseEntity<SingInResponse> signIn(@Valid @RequestBody SignInRequest signInRequest) {
 
     return ResponseEntity.ok(memberService.signIn(signInRequest.email(), signInRequest.password()));
   }
@@ -53,9 +59,7 @@ public class MemberController {
           @PathVariable final Long userId,
           @Valid @RequestBody MemberRemoveRequest memberRemoveRequest
   ) {
-    memberService.remove(userId, memberRemoveRequest.email(), memberRemoveRequest.password());
-
-    return ResponseEntity.ok("회원 탈퇴에 성공하였습니다.");
+    return ResponseEntity.ok(memberService.remove(userId, memberRemoveRequest.email(), memberRemoveRequest.password()));
   }
 
   @GetMapping("/{userId}/profile")

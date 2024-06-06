@@ -1,15 +1,7 @@
 package study.trychat.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
-import java.util.Objects;
+import jakarta.persistence.*;
+import lombok.*;
 
 import static study.trychat.entity.FriendStatus.BEST_FRIEND;
 import static study.trychat.entity.FriendStatus.BLOCK;
@@ -18,7 +10,8 @@ import static study.trychat.entity.FriendStatus.BLOCK;
 @Entity
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AttributeOverride(name = "id", column = @Column(name = "id"))
 public class Friend extends BaseEntity {
 
   @Column(name = "member_id", nullable = false)
@@ -57,18 +50,5 @@ public class Friend extends BaseEntity {
 
   public void updateProfile(String nickname) {
     this.nickname = nickname;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    Friend friend = (Friend) o;
-    return Objects.equals(memberId, friend.memberId) && Objects.equals(friendId, friend.friendId) && Objects.equals(nickname, friend.nickname) && Objects.equals(profileImg, friend.profileImg) && Objects.equals(backgroundImg, friend.backgroundImg) && Objects.equals(profileImgPath, friend.profileImgPath) && friendStatus == friend.friendStatus;
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(memberId, friendId, nickname, profileImg, backgroundImg, profileImgPath, friendStatus);
   }
 }

@@ -7,9 +7,9 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import study.trychat.dto.MemberProfileUpdateRequest;
+import study.trychat.dto.MemberBase.MemberProfileUpdateRequest;
 
-import static study.trychat.init.MemberInfoInitValue.*;
+import static study.trychat.init.MemberInfoDefaultValue.*;
 
 @Entity
 @Getter
@@ -34,9 +34,9 @@ public class MemberInfo extends BaseEntity {
     return new MemberInfo(nickname, username, " ", PROFILE_IMG.getValue(), BACKGROUND_IMG.getValue(), PROFILE_PATH.getValue());
   }
 
-  public void update(MemberProfileUpdateRequest profileUpdateRequest) {
-    this.nickname = profileUpdateRequest.nickname();
-    this.greetings = profileUpdateRequest.greetings();
+  public void update(String nickname, String greetings) {
+    this.nickname = nickname;
+    this.greetings = greetings;
   }
 
   public void updateAll(MemberProfileUpdateRequest profileUpdateRequest) {

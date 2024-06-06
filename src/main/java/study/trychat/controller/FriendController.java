@@ -4,8 +4,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import study.trychat.dto.FriendNicknameUpdateRequest;
-import study.trychat.dto.FriendResponse;
+import study.trychat.dto.FriendBase.FriendNicknameUpdateRequest;
+import study.trychat.dto.FriendBase.FriendResponse;
 import study.trychat.dto.UsernameParam;
 import study.trychat.service.FriendService;
 

@@ -2,7 +2,6 @@ package study.trychat.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import study.trychat.exception.custom.PrimaryKeyMismatchException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,14 +31,20 @@ public class Member extends BaseEntity {
   @Enumerated(EnumType.STRING)
   private Roles roles; //ADMIN, USER
 
-  public void update(String email, String password) {
-    this.email = email;
-    this.password = password;
+  public static Member init(String email, String password, String nickname, String username) {
+    return new Member(email, password, MemberInfo.init(nickname, username));
   }
 
-  public void checkId(Long id) {
-    if (!id.equals(super.getId())) {
-      throw new PrimaryKeyMismatchException();
-    }
+  public Member(String email, String password, MemberInfo memberInfo) {
+    this.email = email;
+    this.password = password;
+    this.roles = Roles.USER;
+    this.memberInfo = memberInfo;
+  }
+
+  public void update(String email,
+                     String password) {
+    this.email = email;
+    this.password = password;
   }
 }
