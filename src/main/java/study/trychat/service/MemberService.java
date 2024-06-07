@@ -69,7 +69,7 @@ public class MemberService {
     return MemberMapper.toSingInResponse(findMember);
   }
 
-  public MemberResponse findMemberById(Long memberId) {
+  public MemberResponse getMember(Long memberId) {
 
     Member findMember = memberRepository.findById(memberId)
             .orElseThrow(EntityNotFoundException::new);
@@ -102,7 +102,7 @@ public class MemberService {
     return "회원 탈퇴가 완료되었습니다.";
   }
 
-  public MemberProfileResponse findMyProfileByUserId(Long memberId) {
+  public MemberProfileResponse getMyProfile(Long memberId) {
 
     MemberInfo findMemberInfo = memberInfoRepository.findById(memberId)
             .orElseThrow(EntityNotFoundException::new);
@@ -110,7 +110,7 @@ public class MemberService {
     return MemberMapper.toMemberProfileResponse(findMemberInfo);
   }
 
-  public MemberProfileResponse findMemberProfileByUsername(String username) {
+  public MemberProfileResponse getMemberProfile(String username) {
 
     MemberInfo findMemberInfo = memberInfoRepository.findByUsername(username)
             .orElseThrow(EntityNotFoundException::new);

@@ -30,15 +30,15 @@ public class FriendService {
   private final FriendShipRepository friendShipRepository;
 
   @Transactional
-  public List<FriendShipResponse> addFriendByUsername(Long memberId, String username) {
+  public List<FriendShipResponse> addFriend(Long memberId, String username) {
     if (memberInfoRepository.existsByUsername(username)) {
-      Member findMember = findMemberByMemberId(memberId);
-      
+      Member findMember = getMember(memberId);
+
       validateDuplicateFriend(findMember, username);
 
       validateAddBySelf(findMember.getMemberInfo().getUsername(), username);
 
-      MemberInfo findFriendProfile = findFriendProfileByUsername(username);
+      MemberInfo findFriendProfile = getMemberInfo(username);
 
       FriendShip newFriendShip = FriendShip.init(findMember, findFriendProfile);
 
@@ -46,14 +46,14 @@ public class FriendService {
 
       friendShipRepository.save(newFriendShip);
 
-      return findFriendsByMemberId(memberId);
+      return getFriendList(memberId);
     }
 
     throw new NoSuchElementException("찾으시는 회원이 없습니다.");
   }
 
   @Transactional
-  public List<FriendShipResponse> removeFriendByMemberIdAndFriendId(Long memberId, Long friendId) {
+  public List<FriendShipResponse> removeFriend(Long memberId, Long friendId) {
 
     Member fineMember = memberRepository.findById(memberId)
             .orElseThrow(EntityNotFoundException::new);
@@ -62,10 +62,10 @@ public class FriendService {
       throw new DeleteFalseByMemberIdAndFriendId();
     }
 
-    return findFriendsByMemberId(memberId);
+    return getFriendList(memberId);
   }
 
-  public FriendShipResponse findFriendByMemberIdAndFriendId(Long memberId, Long friendId) {
+  public FriendShipResponse getFriendProfile(Long memberId, Long friendId) {
 
     FriendShip findFriendShip = friendShipRepository.findByFriendId(friendId)
             .orElseThrow(FriendNotFoundException::new);
@@ -136,7 +136,7 @@ public class FriendService {
     return FriendShipMapper.toFriendResponse(findFriendShip);
   }
 
-  public List<FriendShipResponse> findFriendsByMemberId(Long memberId) {
+  public List<FriendShipResponse> getFriendList(Long memberId) {
     List<FriendShip> findFriendShips = memberRepository.findById(memberId)
             .orElseThrow(FriendNotFoundException::new)
             .getFriendShips();
@@ -180,12 +180,12 @@ public class FriendService {
     }
   }
 
-  private MemberInfo findFriendProfileByUsername(String username) {
+  private MemberInfo getMemberInfo(String username) {
     return memberInfoRepository.findByUsername(username)
             .orElseThrow(FriendNotFoundException::new);
   }
 
-  private Member findMemberByMemberId(Long memberId) {
+  private Member getMember(Long memberId) {
     return memberRepository.findById(memberId)
             .orElseThrow(EntityNotFoundException::new);
   }

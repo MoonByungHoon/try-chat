@@ -42,12 +42,12 @@ public class FriendShipController {
                           schema = @Schema(implementation = ApiError.class)))
   })
   @PostMapping("/add")
-  public ResponseEntity<List<FriendShipResponse>> addFriendByUsername(
+  public ResponseEntity<List<FriendShipResponse>> addFriend(
           @PathVariable
           @Schema(description = "사용자의 ID") final Long userId,
           @Valid @RequestBody UsernameParam usernameParam
   ) {
-    return ResponseEntity.ok(friendService.addFriendByUsername(userId, usernameParam.username()));
+    return ResponseEntity.ok(friendService.addFriend(userId, usernameParam.username()));
   }
 
   @Operation(summary = "친구 프로필 조회", description = "사용자 친구 추가 되어 있는 대상의 프로필 조회")
@@ -65,13 +65,13 @@ public class FriendShipController {
                           schema = @Schema(implementation = ApiError.class)))
   })
   @GetMapping("/{friendId}/profile")
-  public ResponseEntity<FriendShipResponse> findFriendByMemberIdAndFriendId(
+  public ResponseEntity<FriendShipResponse> getFriendProfile(
           @PathVariable
           @Schema(description = "사용자의 ID") final Long userId,
           @PathVariable
           @Schema(description = "친구의 ID") final Long friendId
   ) {
-    return ResponseEntity.ok(friendService.findFriendByMemberIdAndFriendId(userId, friendId));
+    return ResponseEntity.ok(friendService.getFriendProfile(userId, friendId));
   }
 
   @Operation(summary = "친구 프로필 수정", description = "친구의 nickname 수정")
@@ -160,12 +160,12 @@ public class FriendShipController {
                           schema = @Schema(implementation = ApiError.class)))
   })
   @DeleteMapping("/{friendId}")
-  public ResponseEntity<List<FriendShipResponse>> removeFriendByMemberIdAndFriendId(
+  public ResponseEntity<List<FriendShipResponse>> removeFriend(
           @RequestHeader
           @Schema(description = "사용자의 ID") final Long userId,
           @PathVariable
           @Schema(description = "친구의 ID") final Long friendId
   ) {
-    return ResponseEntity.ok(friendService.removeFriendByMemberIdAndFriendId(userId, friendId));
+    return ResponseEntity.ok(friendService.removeFriend(userId, friendId));
   }
 }

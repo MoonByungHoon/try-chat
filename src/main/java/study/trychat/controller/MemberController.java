@@ -92,11 +92,11 @@ public class MemberController {
                           schema = @Schema(implementation = ApiError.class)))
   })
   @GetMapping("/{userId}")
-  public ResponseEntity<MemberResponse> findMemberById(
+  public ResponseEntity<MemberResponse> getMember(
           @PathVariable
           @Schema(description = "사용자의 ID") final Long userId
   ) {
-    return ResponseEntity.ok(memberService.findMemberById(userId));
+    return ResponseEntity.ok(memberService.getMember(userId));
   }
 
   @Operation(summary = "가입 정보 변경", description = "사용자의 가입 정보를 변경")
@@ -158,11 +158,11 @@ public class MemberController {
                           schema = @Schema(implementation = ApiError.class)))
   })
   @GetMapping("/{userId}/profile")
-  public ResponseEntity<MemberProfileResponse> findMyProfileByMemberId(
+  public ResponseEntity<MemberProfileResponse> getMyProfile(
           @PathVariable
           @Schema(description = "사용자의 ID") final Long userId
   ) {
-    return ResponseEntity.ok(memberService.findMyProfileByUserId(userId));
+    return ResponseEntity.ok(memberService.getMyProfile(userId));
   }
 
   @Operation(summary = "유저 프로필 조회", description = "유저의 프로필을 username으로 조회")
@@ -180,9 +180,9 @@ public class MemberController {
                           schema = @Schema(implementation = ApiError.class)))
   })
   @GetMapping("/profile")
-  public ResponseEntity<MemberProfileResponse> findMemberProfileByUsername(@RequestBody final UsernameParam usernameParam) {
+  public ResponseEntity<MemberProfileResponse> getMemberProfile(@RequestBody final UsernameParam usernameParam) {
 
-    return ResponseEntity.ok(memberService.findMemberProfileByUsername(usernameParam.username()));
+    return ResponseEntity.ok(memberService.getMemberProfile(usernameParam.username()));
   }
 
   @Operation(summary = "사용자 본인의 프로필 수정", description = "사용자 본인 프로필만 수정 요청 가능")
@@ -228,11 +228,11 @@ public class MemberController {
                           schema = @Schema(implementation = ApiError.class)))
   })
   @GetMapping("/{userId}/friends")
-  public ResponseEntity<List<FriendShipResponse>> findFriendsByMemberId(
+  public ResponseEntity<List<FriendShipResponse>> getFriendList(
           @PathVariable
           @Schema(description = "로그인된 사용자 ID, 추후 JWT로 변경 예정") final Long userId) {
 
-    return ResponseEntity.ok(friendService.findFriendsByMemberId(userId));
+    return ResponseEntity.ok(friendService.getFriendList(userId));
   }
 
   @Operation(summary = "사용자 username 변경", description = "친구 검색에 사용되는 username 변경")
