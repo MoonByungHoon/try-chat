@@ -32,7 +32,7 @@ import static study.trychat.dto.MemberBase.*;
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
-@Tag(name = "Member API", description = "회원 정보와 관련된 API")
+@Tag(name = "회원 API", description = "회원과 직접적으로 관련된 요청을 처리하는 API")
 public class MemberController {
 
   private final MemberService memberService;
@@ -249,9 +249,9 @@ public class MemberController {
                           mediaType = "application/json",
                           schema = @Schema(implementation = ApiError.class)))
   })
-  @PatchMapping("/username")
+  @PatchMapping("/{userId}")
   public ResponseEntity<UsernameParam> updateMyUsername(
-          @RequestHeader
+          @PathVariable
           @Schema(description = "로그인 된 사용자 ID, 추후 JWT 변경 예정") final Long userId,
           @RequestBody UsernameParam usernameParam
   ) {
