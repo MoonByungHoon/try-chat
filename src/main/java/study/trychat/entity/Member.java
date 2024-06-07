@@ -1,12 +1,7 @@
 package study.trychat.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import study.trychat.dto.MemberAuthenticationDto;
-import study.trychat.exception.custom.PrimaryKeyMismatchException;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,15 +9,13 @@ import java.util.List;
 @Builder
 @Getter
 @Entity
-@NoArgsConstructor
 @AllArgsConstructor
-public class Member {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AttributeOverride(name = "id", column = @Column(name = "id"))
+public class Member extends BaseEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
   @Column(nullable = false, unique = true, length = 340)
-  private String username;
+  private String email;
   @Column(nullable = false, length = 64)
   private String password;
 
@@ -30,18 +23,31 @@ public class Member {
   @JoinColumn(name = "member_info_id", nullable = false)
   private MemberInfo memberInfo;
 
-  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-  @JoinColumn(name = "member_id")
-  private List<Friend> friendList = new ArrayList<>();
+  @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<FriendShip> friendShips = new ArrayList<>();
 
-  public void update(MemberAuthenticationDto authenticationDto) {
-    this.username = authenticationDto.getUsername();
-    this.password = authenticationDto.getPassword();
+  @Column(nullable = false)
+  @Enumerated(EnumType.STRING)
+  private Roles roles; //ADMIN, USER
+
+  public static Member init(String email, String password, String nickname, String username) {
+    return new Member(email, password, MemberInfo.init(nickname, username));
   }
 
-  public void checkId(Long id) {
-    if (!(this.id.equals(id))) {
-      throw new PrimaryKeyMismatchException();
-    }
+  public Member(String email, String password, MemberInfo memberInfo) {
+    this.email = email;
+    this.password = password;
+    this.roles = Roles.USER;
+    this.memberInfo = memberInfo;
+  }
+
+  public void update(String email,
+                     String password) {
+    this.email = email;
+    this.password = password;
+  }
+
+  public void addFriend(FriendShip newFriendShip) {
+    this.friendShips.add(newFriendShip);
   }
 }

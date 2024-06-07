@@ -1,24 +1,26 @@
 package study.trychat.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import study.trychat.dto.MemberRequest;
-import study.trychat.exception.custom.PrimaryKeyMismatchException;
+import study.trychat.dto.MemberBase.MemberProfileUpdateRequest;
+
+import static study.trychat.init.MemberInfoDefaultValue.*;
 
 @Entity
 @Getter
-@NoArgsConstructor
-public class MemberInfo {
-
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "member_info_id")
-  private Long id;
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AttributeOverride(name = "id", column = @Column(name = "member_info_id"))
+public class MemberInfo extends BaseEntity {
   @Column(nullable = false, length = 20)
   private String nickname;
   @Column(nullable = false, length = 20)
-  private String uniqueName;
+  private String username;
   @Column(nullable = false, length = 40)
   private String greetings;
   @Column(nullable = false)
@@ -28,26 +30,24 @@ public class MemberInfo {
   @Column(nullable = false)
   private String profileImgPath;
 
-  public MemberInfo(String nickname, String uniqueName, String greetings, String profileImg, String backgroundImg, String profileImgPath) {
+  public static MemberInfo init(String nickname, String username) {
+    return new MemberInfo(nickname, username, " ", PROFILE_IMG.getValue(), BACKGROUND_IMG.getValue(), PROFILE_PATH.getValue());
+  }
+
+  public void update(String nickname, String greetings) {
     this.nickname = nickname;
-    this.uniqueName = uniqueName;
     this.greetings = greetings;
-    this.profileImg = profileImg;
-    this.backgroundImg = backgroundImg;
-    this.profileImgPath = profileImgPath;
   }
 
-  public void updateProfile(MemberRequest memberRequest) {
-    this.nickname = memberRequest.getNickname();
-    this.greetings = memberRequest.getGreetings();
-    this.profileImg = memberRequest.getProfileImg();
-    this.backgroundImg = memberRequest.getBackgroundImg();
-    this.profileImgPath = memberRequest.getProfileImgPath();
+  public void updateAll(MemberProfileUpdateRequest profileUpdateRequest) {
+    this.nickname = profileUpdateRequest.nickname();
+    this.greetings = profileUpdateRequest.greetings();
+//    this.profileImg = profileUpdateRequest.profileImg();
+//    this.backgroundImg = profileUpdateRequest.backgroundImg();
+//    this.profileImgPath = profileUpdateRequest.profileImgPath();
   }
 
-  public void checkId(Long userId) {
-    if (!(this.id == id)) {
-      throw new PrimaryKeyMismatchException();
-    }
+  public void updateUsername(String username) {
+    this.username = username;
   }
 }
