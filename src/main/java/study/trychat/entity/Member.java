@@ -15,7 +15,7 @@ import java.util.List;
 public class Member extends BaseEntity {
 
   @Column(nullable = false, unique = true, length = 340)
-  private String email; // email
+  private String email;
   @Column(nullable = false, length = 64)
   private String password;
 
@@ -23,9 +23,8 @@ public class Member extends BaseEntity {
   @JoinColumn(name = "member_info_id", nullable = false)
   private MemberInfo memberInfo;
 
-  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-  @JoinColumn(name = "member_id")
-  private List<Friend> friendList = new ArrayList<>();
+  @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<FriendShip> friendShips = new ArrayList<>();
 
   @Column(nullable = false)
   @Enumerated(EnumType.STRING)
@@ -46,5 +45,9 @@ public class Member extends BaseEntity {
                      String password) {
     this.email = email;
     this.password = password;
+  }
+
+  public void addFriend(FriendShip newFriendShip) {
+    this.friendShips.add(newFriendShip);
   }
 }

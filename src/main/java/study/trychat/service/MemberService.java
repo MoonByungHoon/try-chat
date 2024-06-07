@@ -38,6 +38,8 @@ public class MemberService {
 
   @Transactional
   public String signUp(SignUpRequest signUpRequest) {
+
+    System.out.println("이메일 : " + signUpRequest.email());
 //    가입 이메일 중복 검사.
     checkDuplicateEmail(signUpRequest.email());
 
@@ -47,7 +49,7 @@ public class MemberService {
 //    기본 회원가입 시에 사용될 username 중복 검사 및 중복 시 랜덤한 이름 생성.
     String username = checkDuplicateUsername(extractName);
 
-    Member member = MemberMapper.toMemberEntity(signUpRequest, extractName, username);
+    Member member = MemberMapper.toMemberEntity(signUpRequest.email(), signUpRequest.password(), extractName, username);
 
     memberRepository.save(member);
 
@@ -88,9 +90,7 @@ public class MemberService {
   }
 
   @Transactional
-  public String remove(Long memberId,
-                       String email,
-                       String password) {
+  public String remove(Long memberId, String email, String password) {
 
     Member findMember = memberRepository.findByEmailAndPassword(email, password)
             .orElseThrow(EntityNotFoundException::new);
@@ -184,6 +184,7 @@ public class MemberService {
 
   private String extractByEmail(String email) {
     return Arrays.stream(email.split("@"))
-            .findFirst().orElseThrow(() -> new NoSuchElementException("email split 배열의 첫번째 요소가 없습니다."));
+            .findFirst()
+            .orElseThrow(() -> new NoSuchElementException("email split 배열의 첫번째 요소가 없습니다."));
   }
 }

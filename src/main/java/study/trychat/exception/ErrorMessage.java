@@ -13,10 +13,11 @@ public enum ErrorMessage {
   SIGN_UP_DUPLICATE_USER("이미 가입된 회원입니다."),
   MEMBER_ENTITY_NOT_FOUND("일치하는 회원을 찾지 못했습니다."),
   FIND_TARGET_MISMATCH("사용자와 대상이 일치하지 않습니다."),
+  FRIEND_NOW_BEST("이미 대상이 BEST 상태입니다."),
   S3_FILE_NOT_FOUND("파일 형식이 잘못되었습니다."),
   S3_FILE_IS_NULL("파일이 존재하지 않습니다."),
   S3_FILE_UPLOAD_FALSE("파일 업로드에 실패하였습니다."),
-  S3_FILE_DELETE_FALSE("파일 삭제에 실패하였습니다.");
-
+  S3_FILE_DELETE_FALSE("파일 삭제에 실패하였습니다."),
+  FRIEND_ADD_TARGET_ME("친구 추가 대상이 본인입니다.");
   private final String message;
 }

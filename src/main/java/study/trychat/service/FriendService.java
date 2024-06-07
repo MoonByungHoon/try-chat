@@ -3,17 +3,17 @@ package study.trychat.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import study.trychat.dto.FriendBase.FriendResponse;
-import study.trychat.dto.convert.FriendMapper;
-import study.trychat.entity.Friend;
+import study.trychat.dto.FriendBase.FriendShipResponse;
+import study.trychat.dto.convert.FriendShipMapper;
+import study.trychat.entity.FriendShip;
+import study.trychat.entity.FriendStatus;
+import study.trychat.entity.Member;
 import study.trychat.entity.MemberInfo;
 import study.trychat.exception.ErrorMessage;
-import study.trychat.exception.custom.BestFriendMaxException;
-import study.trychat.exception.custom.DeleteFalseByMemberIdAndFriendId;
-import study.trychat.exception.custom.DuplicateFriendByUserNameException;
-import study.trychat.exception.custom.EntityNotFoundException;
-import study.trychat.repository.FriendRepository;
+import study.trychat.exception.custom.*;
+import study.trychat.repository.FriendShipRepository;
 import study.trychat.repository.MemberInfoRepository;
+import study.trychat.repository.MemberRepository;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -25,18 +25,26 @@ import java.util.stream.IntStream;
 @RequiredArgsConstructor
 public class FriendService {
 
+  private final MemberRepository memberRepository;
   private final MemberInfoRepository memberInfoRepository;
-  private final FriendRepository friendRepository;
+  private final FriendShipRepository friendShipRepository;
 
   @Transactional
-  public List<FriendResponse> addFriendByUsername(Long memberId, String username) {
+  public List<FriendShipResponse> addFriendByUsername(Long memberId, String username) {
     if (memberInfoRepository.existsByUsername(username)) {
-      duplicateFriend(memberId, username);
+      Member findMember = findMemberByMemberId(memberId);
+      
+      validateDuplicateFriend(findMember, username);
 
-      MemberInfo findMemberInfo = memberInfoRepository.findByUsername(username)
-              .orElseThrow(EntityNotFoundException::new);
+      validateAddBySelf(findMember.getMemberInfo().getUsername(), username);
 
-      friendRepository.save(Friend.init(memberId, findMemberInfo));
+      MemberInfo findFriendProfile = findFriendProfileByUsername(username);
+
+      FriendShip newFriendShip = FriendShip.init(findMember, findFriendProfile);
+
+      findMember.addFriend(newFriendShip);
+
+      friendShipRepository.save(newFriendShip);
 
       return findFriendsByMemberId(memberId);
     }
@@ -45,85 +53,112 @@ public class FriendService {
   }
 
   @Transactional
-  public List<FriendResponse> removeFriendByMemberIdAndFriendId(Long memberId, Long friendId) {
+  public List<FriendShipResponse> removeFriendByMemberIdAndFriendId(Long memberId, Long friendId) {
 
-    if (friendRepository.deleteByMemberIdAndFriendId(memberId, friendId) == 0) {
+    Member fineMember = memberRepository.findById(memberId)
+            .orElseThrow(EntityNotFoundException::new);
+
+    if (friendShipRepository.deleteByMemberAndFriendId(fineMember, friendId) == 0) {
       throw new DeleteFalseByMemberIdAndFriendId();
     }
 
     return findFriendsByMemberId(memberId);
   }
 
-  public FriendResponse findFriendsByMemberIdAndFriendId(Long memberId, Long friendId) {
+  public FriendShipResponse findFriendByMemberIdAndFriendId(Long memberId, Long friendId) {
 
-    Friend findFriend = friendRepository.findByMemberIdAndFriendId(memberId, friendId)
-            .orElseThrow(EntityNotFoundException::new);
+    FriendShip findFriendShip = friendShipRepository.findByFriendId(friendId)
+            .orElseThrow(FriendNotFoundException::new);
 
-    return FriendMapper.toFriendResponse(findFriend);
+    validateFriend(memberId, findFriendShip);
+
+    return FriendShipMapper.toFriendResponse(findFriendShip);
+  }
+
+  private void validateFriend(Long memberId, FriendShip findFriendShip) {
+    if (!findFriendShip.checkId(memberId)) {
+      throw new FriendNotFoundException();
+    }
   }
 
   @Transactional
-  public List<FriendResponse> updateBestFriend(Long memberId, Long friendId) {
+  public List<FriendShipResponse> updateBestFriend(Long memberId, Long friendId) {
 
-    List<Friend> findFriends = friendRepository.findByMemberId(memberId)
-            .orElseThrow(EntityNotFoundException::new);
+    List<FriendShip> findFriendShips = friendShipRepository.findByMemberId(memberId)
+            .orElseThrow(FriendNotFoundException::new);
 
-    int findIndex = findTargetIndex(findFriends, friendId);
+    int findIndex = findTargetIndex(findFriendShips, friendId);
 
-    validateFindFriends(findFriends);
+    validateBestFriend(findFriendShips, Long.valueOf(findIndex));
+    validateBestFriendMax(findFriendShips);
 
-    findFriends.get(findIndex).bestFriend();
+    findFriendShips.get(findIndex).bestFriend();
 
-    return findFriends.stream()
-            .map(FriendMapper::toFriendResponse)
+    return findFriendShips.stream()
+            .map(FriendShipMapper::toFriendResponse)
             .collect(Collectors.toList());
   }
 
-  public List<FriendResponse> updateBlockFriend(Long memberId, Long friendId) {
+  private void validateBestFriend(List<FriendShip> findFriendShips, Long findIndex) {
+    FriendShip targetFriendShip = findFriendShips.stream()
+            .filter(friend -> friend.getFriendId().equals(findIndex))
+            .findFirst()
+            .orElseThrow(FriendNotFoundException::new);
 
-    List<Friend> findFriends = friendRepository.findByMemberId(memberId)
-            .orElseThrow(EntityNotFoundException::new);
+    if (targetFriendShip.getFriendStatus().equals(FriendStatus.BEST_FRIEND)) {
+      throw new NowStatusBestException();
+    }
+  }
 
-    int findIndex = findTargetIndex(findFriends, friendId);
 
-    validateFindFriends(findFriends);
+  public List<FriendShipResponse> updateBlockFriend(Long memberId, Long friendId) {
 
-    findFriends.get(findIndex).block();
+    List<FriendShip> findFriendShips = friendShipRepository.findByMemberId(memberId)
+            .orElseThrow(FriendNotFoundException::new);
 
-    return findFriends.stream()
-            .map(FriendMapper::toFriendResponse)
+    int findIndex = findTargetIndex(findFriendShips, friendId);
+
+    findFriendShips.get(findIndex).block();
+
+    return findFriendShips.stream()
+            .map(FriendShipMapper::toFriendResponse)
             .collect(Collectors.toList());
   }
 
   @Transactional
-  public FriendResponse updateFriendNickname(Long memberId, Long friendId, String nickname) {
+  public FriendShipResponse updateFriendNickname(Long memberId, Long friendId, String nickname) {
 
-    Friend findFriend = friendRepository.findByMemberIdAndFriendId(memberId, friendId)
-            .orElseThrow(EntityNotFoundException::new);
+    FriendShip findFriendShip = friendShipRepository.findByFriendId(friendId)
+            .orElseThrow(FriendNotFoundException::new);
 
-    findFriend.updateProfile(nickname);
+    findFriendShip.updateProfile(nickname);
 
-    return FriendMapper.toFriendResponse(findFriend);
+    return FriendShipMapper.toFriendResponse(findFriendShip);
   }
 
-  public List<FriendResponse> findFriendsByMemberId(Long memberId) {
-    List<Friend> findFriends = friendRepository.findByMemberId(memberId)
-            .orElseThrow(EntityNotFoundException::new);
+  public List<FriendShipResponse> findFriendsByMemberId(Long memberId) {
+    List<FriendShip> findFriendShips = memberRepository.findById(memberId)
+            .orElseThrow(FriendNotFoundException::new)
+            .getFriendShips();
 
-    return findFriends.stream()
-            .map(FriendMapper::toFriendResponse)
+    return findFriendShips.stream()
+            .map(FriendShipMapper::toFriendResponse)
             .collect(Collectors.toList());
   }
 
-  private void validateFindFriends(List<Friend> findFriends) {
-    if (findFriends.size() >= 5) {
+  private void validateBestFriendMax(List<FriendShip> findFriendShips) {
+    long count = findFriendShips.stream()
+            .filter(friend -> friend.getFriendStatus().equals(FriendStatus.BEST_FRIEND))
+            .count();
+
+    if (count >= 5) {
       throw new BestFriendMaxException();
     }
   }
 
-  private int findTargetIndex(List<Friend> findFriends, Long friendId) {
-    int findIndex = IntStream.range(0, findFriends.size())
-            .filter(i -> findFriends.get(i).getFriendId().equals(friendId))
+  private int findTargetIndex(List<FriendShip> findFriendShips, Long friendId) {
+    int findIndex = IntStream.range(0, findFriendShips.size())
+            .filter(i -> findFriendShips.get(i).getFriendId().equals(friendId))
             .findFirst().orElse(-1);
 
     if (findIndex == -1) {
@@ -133,9 +168,25 @@ public class FriendService {
     return findIndex;
   }
 
-  private void duplicateFriend(Long memberId, String username) {
-    if (friendRepository.existsByMemberIdAndUsername(memberId, username)) {
+  private void validateDuplicateFriend(Member member, String username) {
+    if (friendShipRepository.existsByMemberAndUsername(member, username) > 0) {
       throw new DuplicateFriendByUserNameException();
     }
+  }
+
+  private void validateAddBySelf(String myUsername, String friendUsername) {
+    if (myUsername.equals(friendUsername)) {
+      throw new FriendAddTargetMeException();
+    }
+  }
+
+  private MemberInfo findFriendProfileByUsername(String username) {
+    return memberInfoRepository.findByUsername(username)
+            .orElseThrow(FriendNotFoundException::new);
+  }
+
+  private Member findMemberByMemberId(Long memberId) {
+    return memberRepository.findById(memberId)
+            .orElseThrow(EntityNotFoundException::new);
   }
 }
