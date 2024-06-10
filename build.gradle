@@ -6,70 +6,31 @@ plugins {
 
 group = 'study'
 version = '0.0.1-SNAPSHOT'
+java.sourceCompatibility = '17'
+
 dependencies {
-  implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
   implementation 'org.springframework.boot:spring-boot-starter-web'
+  implementation 'org.springframework.boot:spring-boot-starter-security'
+  implementation 'org.springframework.boot:spring-boot-starter-actuator'
   implementation 'org.springframework.boot:spring-boot-starter-validation'
-  implementation 'org.springframework.boot:spring-boot-starter-mustache'
-  runtimeOnly "org.springframework.boot:spring-boot-devtools"
-  compileOnly 'org.projectlombok:lombok'
-  annotationProcessor 'org.projectlombok:lombok'
-  runtimeOnly "mysql:mysql-connector-java"
-
-// DB
-  runtimeOnly 'com.h2database:h2'
-  implementation 'com.mysql:mysql-connector-j'
-
-// websocket
-  implementation 'org.springframework.boot:spring-boot-starter-websocket'
-
-//  Swagger
   implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
-
-//  AWS
   implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
-// Spring Security
-//  implementation 'org.springframework.boot:spring-boot-starter-security'
+  implementation 'com.h2database:h2'
+  implementation 'com.mysql:mysql-connector-j'
+  implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
-//  Oauth2
-//  implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-//  implementation 'org.springframework.boot:spring-boot-starter-oauth2-client-jose'
-
-//  JWT
-//  implementation 'com.auth0:java-jwt:4.4.0'
-//  implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-//  runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
-//  runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
-
-//	서버 헬스 체크 (Endpoints : /actuator/health)
-  implementation 'org.springframework.boot:spring-boot-starter-actuator'
-
-  testImplementation 'org.springframework.boot:spring-boot-starter-test'
-  testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
-  testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.2'
-  testImplementation 'org.junit.jupiter:junit-jupiter-params'
-  testImplementation 'org.mockito:mockito-core:3.12.4'
   testImplementation 'io.rest-assured:rest-assured:5.4.0'
+  testImplementation 'org.junit.jupiter:junit-jupiter-params'
+  testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+  implementation 'org.projectlombok:lombok'
   testImplementation 'org.projectlombok:lombok'
-  testImplementation 'org.springframework.boot:spring-boot-starter-security'
-
-//  QueryDSL 멘토링 피드백을 통한 사용 중단.
-//  QueryDSL 사용하기 위한 의존성 추가
-//  implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
-//  annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
-//  annotationProcessor "jakarta.annotation:jakarta.annotation-api"
-//  annotationProcessor "jakarta.persistence:jakarta.persistence-api"
-}
-
-java {
-  sourceCompatibility = '17'
+  annotationProcessor 'org.projectlombok:lombok'
 }
 
 configurations {
-  compileOnly {
-    extendsFrom annotationProcessor
-  }
+  compileOnly.extendsFrom annotationProcessor
 }
 
 repositories {
@@ -80,7 +41,3 @@ repositories {
 tasks.named('test') {
   useJUnitPlatform()
 }
-
-//clean {
-//  delete file('src/main/generated')
-//}
