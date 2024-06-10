@@ -13,8 +13,8 @@ import study.trychat.dto.convert.MemberMapper;
 import study.trychat.entity.Member;
 import study.trychat.entity.MemberInfo;
 import study.trychat.exception.custom.DuplicateUsernameException;
-import study.trychat.exception.custom.EntityNotFoundException;
 import study.trychat.exception.custom.FindTargetMismatchException;
+import study.trychat.exception.custom.MemberEntityNotFoundException;
 import study.trychat.repository.MemberInfoRepository;
 import study.trychat.repository.MemberRepository;
 import study.trychat.s3.S3ImgService;
@@ -38,10 +38,11 @@ public class MemberService {
 
   @Transactional
   public String signUp(SignUpRequest signUpRequest) {
-
-    System.out.println("이메일 : " + signUpRequest.email());
 //    가입 이메일 중복 검사.
     checkDuplicateEmail(signUpRequest.email());
+
+//    todo 패스워드 암호화
+//    String password = passwordEncoder(signUpRequest.password());
 
 //    nickname 추출.
     String extractName = extractByEmail(signUpRequest.email());
@@ -64,7 +65,7 @@ public class MemberService {
     // comment : proejction vs converting
 
     Member findMember = memberRepository.findByEmailAndPassword(email, password)
-            .orElseThrow(EntityNotFoundException::new);
+            .orElseThrow(MemberEntityNotFoundException::new);
 
     return MemberMapper.toSingInResponse(findMember);
   }
@@ -72,7 +73,7 @@ public class MemberService {
   public MemberResponse getMember(Long memberId) {
 
     Member findMember = memberRepository.findById(memberId)
-            .orElseThrow(EntityNotFoundException::new);
+            .orElseThrow(MemberEntityNotFoundException::new);
 
     return MemberMapper.toMemberResponse(findMember);
   }
@@ -83,7 +84,7 @@ public class MemberService {
                              String password) {
 
     memberRepository.findById(memberId)
-            .orElseThrow(EntityNotFoundException::new)
+            .orElseThrow(MemberEntityNotFoundException::new)
             .update(email, password);
 
     return "회원정보 수정이 완료되었습니다.";
@@ -93,7 +94,7 @@ public class MemberService {
   public String remove(Long memberId, String email, String password) {
 
     Member findMember = memberRepository.findByEmailAndPassword(email, password)
-            .orElseThrow(EntityNotFoundException::new);
+            .orElseThrow(MemberEntityNotFoundException::new);
 
     validateIdMatch(memberId, findMember.getId());
 
@@ -105,7 +106,7 @@ public class MemberService {
   public MemberProfileResponse getMyProfile(Long memberId) {
 
     MemberInfo findMemberInfo = memberInfoRepository.findById(memberId)
-            .orElseThrow(EntityNotFoundException::new);
+            .orElseThrow(MemberEntityNotFoundException::new);
 
     return MemberMapper.toMemberProfileResponse(findMemberInfo);
   }
@@ -113,7 +114,7 @@ public class MemberService {
   public MemberProfileResponse getMemberProfile(String username) {
 
     MemberInfo findMemberInfo = memberInfoRepository.findByUsername(username)
-            .orElseThrow(EntityNotFoundException::new);
+            .orElseThrow(MemberEntityNotFoundException::new);
 
     return MemberMapper.toMemberProfileResponse(findMemberInfo);
   }
@@ -125,7 +126,7 @@ public class MemberService {
     validateIdMatch(memberId, profileUpdateRequest.id());
 
     MemberInfo findMemberInfo = memberInfoRepository.findById(memberId)
-            .orElseThrow(EntityNotFoundException::new);
+            .orElseThrow(MemberEntityNotFoundException::new);
 
     if (files != null) {
       return updateAll(findMemberInfo, profileUpdateRequest, files);
@@ -141,7 +142,7 @@ public class MemberService {
                                         UsernameParam usernameParam) {
 
     memberInfoRepository.findById(userId)
-            .orElseThrow(EntityNotFoundException::new)
+            .orElseThrow(MemberEntityNotFoundException::new)
             .updateUsername(usernameParam.username());
 
     return usernameParam;

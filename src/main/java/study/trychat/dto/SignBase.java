@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
 public sealed interface SignBase permits SignBase.SignInRequest, SignBase.SingInResponse, SignBase.SignUpRequest {
+
   record SignInRequest(
           @NotBlank(message = "이메일을 입력해주세요.")
           @Email(message = "이메일 양식을 지켜주세요.", regexp = "^[^@]{5,64}@[^@]{8,255}")

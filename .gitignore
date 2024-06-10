@@ -3,6 +3,7 @@ build/
 **/src/main/generated/
 **/src/test/
 application.properties
+oauth-key.properties
 
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/

@@ -56,7 +56,7 @@ public class FriendService {
   public List<FriendShipResponse> removeFriend(Long memberId, Long friendId) {
 
     Member fineMember = memberRepository.findById(memberId)
-            .orElseThrow(EntityNotFoundException::new);
+            .orElseThrow(MemberEntityNotFoundException::new);
 
     if (friendShipRepository.deleteByMemberAndFriendId(fineMember, friendId) == 0) {
       throw new DeleteFalseByMemberIdAndFriendId();
@@ -72,7 +72,7 @@ public class FriendService {
 
     validateFriend(memberId, findFriendShip);
 
-    return FriendShipMapper.toFriendResponse(findFriendShip);
+    return FriendShipMapper.toFriendShipResponse(findFriendShip);
   }
 
   private void validateFriend(Long memberId, FriendShip findFriendShip) {
@@ -95,7 +95,7 @@ public class FriendService {
     findFriendShips.get(findIndex).bestFriend();
 
     return findFriendShips.stream()
-            .map(FriendShipMapper::toFriendResponse)
+            .map(FriendShipMapper::toFriendShipResponse)
             .collect(Collectors.toList());
   }
 
@@ -121,7 +121,7 @@ public class FriendService {
     findFriendShips.get(findIndex).block();
 
     return findFriendShips.stream()
-            .map(FriendShipMapper::toFriendResponse)
+            .map(FriendShipMapper::toFriendShipResponse)
             .collect(Collectors.toList());
   }
 
@@ -133,7 +133,7 @@ public class FriendService {
 
     findFriendShip.updateProfile(nickname);
 
-    return FriendShipMapper.toFriendResponse(findFriendShip);
+    return FriendShipMapper.toFriendShipResponse(findFriendShip);
   }
 
   public List<FriendShipResponse> getFriendList(Long memberId) {
@@ -142,7 +142,7 @@ public class FriendService {
             .getFriendShips();
 
     return findFriendShips.stream()
-            .map(FriendShipMapper::toFriendResponse)
+            .map(FriendShipMapper::toFriendShipResponse)
             .collect(Collectors.toList());
   }
 
@@ -187,6 +187,6 @@ public class FriendService {
 
   private Member getMember(Long memberId) {
     return memberRepository.findById(memberId)
-            .orElseThrow(EntityNotFoundException::new);
+            .orElseThrow(MemberEntityNotFoundException::new);
   }
 }

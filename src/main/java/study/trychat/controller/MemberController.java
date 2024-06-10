@@ -38,6 +38,7 @@ public class MemberController {
   private final MemberService memberService;
   private final FriendService friendService;
 
+
   @PostMapping("/signup")
   @Operation(summary = "회원가입", description = "사용자가 회원가입")
   @ApiResponses(value = {
@@ -180,9 +181,11 @@ public class MemberController {
                           schema = @Schema(implementation = ApiError.class)))
   })
   @GetMapping("/profile")
-  public ResponseEntity<MemberProfileResponse> getMemberProfile(@RequestBody final UsernameParam usernameParam) {
+  public ResponseEntity<MemberProfileResponse> getMemberProfile(
+          @RequestParam
+          @Schema(description = "검색에 사용되는 username") final String username) {
 
-    return ResponseEntity.ok(memberService.getMemberProfile(usernameParam.username()));
+    return ResponseEntity.ok(memberService.getMemberProfile(username));
   }
 
   @Operation(summary = "사용자 본인의 프로필 수정", description = "사용자 본인 프로필만 수정 요청 가능")

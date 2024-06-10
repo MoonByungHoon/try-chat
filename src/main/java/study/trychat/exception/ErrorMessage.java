@@ -19,5 +19,6 @@ public enum ErrorMessage {
   S3_FILE_UPLOAD_FALSE("파일 업로드에 실패하였습니다."),
   S3_FILE_DELETE_FALSE("파일 삭제에 실패하였습니다."),
   FRIEND_ADD_TARGET_ME("친구 추가 대상이 본인입니다.");
+  
   private final String message;
 }

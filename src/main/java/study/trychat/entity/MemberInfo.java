@@ -30,8 +30,19 @@ public class MemberInfo extends BaseEntity {
   @Column(nullable = false)
   private String profileImgPath;
 
+  public MemberInfo(String name, String profileImgUrl) {
+//    todo profileImgUrl 경로 확인 후 수정 필요.
+    this.nickname = name;
+    this.username = name;
+    this.greetings = " ";
+    this.profileImg = profileImgUrl;
+    this.backgroundImg = BACKGROUND_IMG.getValue();
+    this.profileImgPath = "수정";
+  }
+
   public static MemberInfo init(String nickname, String username) {
-    return new MemberInfo(nickname, username, " ", PROFILE_IMG.getValue(), BACKGROUND_IMG.getValue(), PROFILE_PATH.getValue());
+    return new MemberInfo(nickname, username, " ", PROFILE_IMG.getValue(),
+            BACKGROUND_IMG.getValue(), PROFILE_PATH.getValue());
   }
 
   public void update(String nickname, String greetings) {
