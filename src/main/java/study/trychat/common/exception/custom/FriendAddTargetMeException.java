@@ -2,8 +2,8 @@ package study.trychat.common.exception.custom;
 
 import study.trychat.common.exception.ErrorMessage;
 
-public class FriendAddTargetMeException extends RuntimeException {
+public final class FriendAddTargetMeException extends BaseCustomExceptions {
   public FriendAddTargetMeException() {
-    super(ErrorMessage.FRIEND_ADD_TARGET_ME.getMessage());
+    super(ErrorMessage.FRIEND_ADD_TARGET_ME);
   }
 }
