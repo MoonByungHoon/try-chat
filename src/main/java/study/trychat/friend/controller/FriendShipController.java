@@ -10,7 +10,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import study.trychat.common.exception.ApiError;
+import study.trychat.common.exception.ErrorResponse;
 import study.trychat.friend.dto.FriendBase.FriendNicknameUpdateRequest;
 import study.trychat.friend.dto.FriendBase.FriendShipResponse;
 import study.trychat.friend.service.FriendService;
@@ -35,11 +35,11 @@ public class FriendShipController {
           @ApiResponse(responseCode = "400", description = "친구 추가 실패",
                   content = @Content(
                           mediaType = "application/json",
-                          schema = @Schema(implementation = ApiError.class))),
+                          schema = @Schema(implementation = ErrorResponse.class))),
           @ApiResponse(responseCode = "500", description = "서버 에러",
                   content = @Content(
                           mediaType = "application/json",
-                          schema = @Schema(implementation = ApiError.class)))
+                          schema = @Schema(implementation = ErrorResponse.class)))
   })
   @PostMapping("/add")
   public ResponseEntity<List<FriendShipResponse>> addFriend(
@@ -58,11 +58,11 @@ public class FriendShipController {
           @ApiResponse(responseCode = "400", description = "조회 실패",
                   content = @Content(
                           mediaType = "application/json",
-                          schema = @Schema(implementation = ApiError.class))),
+                          schema = @Schema(implementation = ErrorResponse.class))),
           @ApiResponse(responseCode = "500", description = "서버 에러",
                   content = @Content(
                           mediaType = "application/json",
-                          schema = @Schema(implementation = ApiError.class)))
+                          schema = @Schema(implementation = ErrorResponse.class)))
   })
   @GetMapping("/{friendId}/profile")
   public ResponseEntity<FriendShipResponse> getFriendProfile(
@@ -82,11 +82,11 @@ public class FriendShipController {
           @ApiResponse(responseCode = "400", description = "수정 실패",
                   content = @Content(
                           mediaType = "application/json",
-                          schema = @Schema(implementation = ApiError.class))),
+                          schema = @Schema(implementation = ErrorResponse.class))),
           @ApiResponse(responseCode = "500", description = "서버 에러",
                   content = @Content(
                           mediaType = "application/json",
-                          schema = @Schema(implementation = ApiError.class)))
+                          schema = @Schema(implementation = ErrorResponse.class)))
   })
   @PatchMapping("/profile")
   public ResponseEntity<FriendShipResponse> updateFriendNickname(
@@ -105,11 +105,11 @@ public class FriendShipController {
           @ApiResponse(responseCode = "400", description = "변경 실패",
                   content = @Content(
                           mediaType = "application/json",
-                          schema = @Schema(implementation = ApiError.class))),
+                          schema = @Schema(implementation = ErrorResponse.class))),
           @ApiResponse(responseCode = "500", description = "서버 에러",
                   content = @Content(
                           mediaType = "application/json",
-                          schema = @Schema(implementation = ApiError.class)))
+                          schema = @Schema(implementation = ErrorResponse.class)))
   })
   @PatchMapping("/{friendId}/best")
   public ResponseEntity<List<FriendShipResponse>> updateBestFriend(
@@ -129,11 +129,11 @@ public class FriendShipController {
           @ApiResponse(responseCode = "400", description = "변경 실패",
                   content = @Content(
                           mediaType = "application/json",
-                          schema = @Schema(implementation = ApiError.class))),
+                          schema = @Schema(implementation = ErrorResponse.class))),
           @ApiResponse(responseCode = "500", description = "서버 에러",
                   content = @Content(
                           mediaType = "application/json",
-                          schema = @Schema(implementation = ApiError.class)))
+                          schema = @Schema(implementation = ErrorResponse.class)))
   })
   @PatchMapping("/{friendId}/block")
   public ResponseEntity<List<FriendShipResponse>> updateBlockFriend(
@@ -153,11 +153,11 @@ public class FriendShipController {
           @ApiResponse(responseCode = "400", description = "삭제 실패",
                   content = @Content(
                           mediaType = "application/json",
-                          schema = @Schema(implementation = ApiError.class))),
+                          schema = @Schema(implementation = ErrorResponse.class))),
           @ApiResponse(responseCode = "500", description = "서버 에러",
                   content = @Content(
                           mediaType = "application/json",
-                          schema = @Schema(implementation = ApiError.class)))
+                          schema = @Schema(implementation = ErrorResponse.class)))
   })
   @DeleteMapping("/{friendId}")
   public ResponseEntity<List<FriendShipResponse>> removeFriend(

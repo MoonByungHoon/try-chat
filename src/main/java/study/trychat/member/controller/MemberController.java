@@ -13,15 +13,15 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import study.trychat.common.exception.ErrorResponse;
 import study.trychat.friend.dto.FriendBase.FriendShipResponse;
+import study.trychat.friend.service.FriendService;
 import study.trychat.member.dto.MemberBase;
 import study.trychat.member.dto.SignBase;
 import study.trychat.member.dto.SignBase.SignInRequest;
 import study.trychat.member.dto.SignBase.SignUpRequest;
 import study.trychat.member.dto.SignBase.SingInResponse;
 import study.trychat.member.dto.UsernameParam;
-import study.trychat.common.exception.ApiError;
-import study.trychat.friend.service.FriendService;
 import study.trychat.member.service.MemberService;
 
 import java.util.List;
@@ -47,11 +47,11 @@ public class MemberController {
           @ApiResponse(responseCode = "400", description = "회원가입 실패",
                   content = @Content(
                           mediaType = "application/json",
-                          schema = @Schema(implementation = ApiError.class))),
+                          schema = @Schema(implementation = ErrorResponse.class))),
           @ApiResponse(responseCode = "500", description = "서버 에러",
                   content = @Content(
                           mediaType = "application/json",
-                          schema = @Schema(implementation = ApiError.class)))
+                          schema = @Schema(implementation = ErrorResponse.class)))
   })
   public ResponseEntity<String> signUp(@Valid @RequestBody SignUpRequest signUpRequest) {
 
@@ -66,11 +66,11 @@ public class MemberController {
           @ApiResponse(responseCode = "400", description = "로그인 실패",
                   content = @Content(
                           mediaType = "application/json",
-                          schema = @Schema(implementation = ApiError.class))),
+                          schema = @Schema(implementation = ErrorResponse.class))),
           @ApiResponse(responseCode = "500", description = "서버 에러",
                   content = @Content(
                           mediaType = "application/json",
-                          schema = @Schema(implementation = ApiError.class)))
+                          schema = @Schema(implementation = ErrorResponse.class)))
   })
   @PostMapping("/signin")
   public ResponseEntity<SingInResponse> signIn(@Valid @RequestBody SignInRequest signInRequest) {
@@ -86,11 +86,11 @@ public class MemberController {
           @ApiResponse(responseCode = "400", description = "조회 실패",
                   content = @Content(
                           mediaType = "application/json",
-                          schema = @Schema(implementation = ApiError.class))),
+                          schema = @Schema(implementation = ErrorResponse.class))),
           @ApiResponse(responseCode = "500", description = "서버 에러",
                   content = @Content(
                           mediaType = "application/json",
-                          schema = @Schema(implementation = ApiError.class)))
+                          schema = @Schema(implementation = ErrorResponse.class)))
   })
   @GetMapping("/{userId}")
   public ResponseEntity<MemberResponse> getMember(
@@ -107,11 +107,11 @@ public class MemberController {
           @ApiResponse(responseCode = "400", description = "변경 실패",
                   content = @Content(
                           mediaType = "application/json",
-                          schema = @Schema(implementation = ApiError.class))),
+                          schema = @Schema(implementation = ErrorResponse.class))),
           @ApiResponse(responseCode = "500", description = "서버 에러",
                   content = @Content(
                           mediaType = "application/json",
-                          schema = @Schema(implementation = ApiError.class)))
+                          schema = @Schema(implementation = ErrorResponse.class)))
   })
   @PutMapping("/{userId}")
   public ResponseEntity<String> updateMember(
@@ -129,11 +129,11 @@ public class MemberController {
           @ApiResponse(responseCode = "400", description = "탈퇴 실패",
                   content = @Content(
                           mediaType = "application/json",
-                          schema = @Schema(implementation = ApiError.class))),
+                          schema = @Schema(implementation = ErrorResponse.class))),
           @ApiResponse(responseCode = "500", description = "서버 에러",
                   content = @Content(
                           mediaType = "application/json",
-                          schema = @Schema(implementation = ApiError.class)))
+                          schema = @Schema(implementation = ErrorResponse.class)))
   })
   @DeleteMapping("/{userId}")
   public ResponseEntity<String> removeMember(
@@ -152,11 +152,11 @@ public class MemberController {
           @ApiResponse(responseCode = "400", description = "조회 실패",
                   content = @Content(
                           mediaType = "application/json",
-                          schema = @Schema(implementation = ApiError.class))),
+                          schema = @Schema(implementation = ErrorResponse.class))),
           @ApiResponse(responseCode = "500", description = "서버 에러",
                   content = @Content(
                           mediaType = "application/json",
-                          schema = @Schema(implementation = ApiError.class)))
+                          schema = @Schema(implementation = ErrorResponse.class)))
   })
   @GetMapping("/{userId}/profile")
   public ResponseEntity<MemberProfileResponse> getMyProfile(
@@ -174,11 +174,11 @@ public class MemberController {
           @ApiResponse(responseCode = "400", description = "조회 실패",
                   content = @Content(
                           mediaType = "application/json",
-                          schema = @Schema(implementation = ApiError.class))),
+                          schema = @Schema(implementation = ErrorResponse.class))),
           @ApiResponse(responseCode = "500", description = "서버 에러",
                   content = @Content(
                           mediaType = "application/json",
-                          schema = @Schema(implementation = ApiError.class)))
+                          schema = @Schema(implementation = ErrorResponse.class)))
   })
   @GetMapping("/profile")
   public ResponseEntity<MemberProfileResponse> getMemberProfile(
@@ -196,11 +196,11 @@ public class MemberController {
           @ApiResponse(responseCode = "400", description = "수정 실패",
                   content = @Content(
                           mediaType = "application/json",
-                          schema = @Schema(implementation = ApiError.class))),
+                          schema = @Schema(implementation = ErrorResponse.class))),
           @ApiResponse(responseCode = "500", description = "서버 에러",
                   content = @Content(
                           mediaType = "application/json",
-                          schema = @Schema(implementation = ApiError.class)))
+                          schema = @Schema(implementation = ErrorResponse.class)))
   })
   @PutMapping(value = "/{userId}/profile", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
           produces = MediaType.APPLICATION_JSON_VALUE)
@@ -224,11 +224,11 @@ public class MemberController {
           @ApiResponse(responseCode = "400", description = "조회 실패",
                   content = @Content(
                           mediaType = "application/json",
-                          schema = @Schema(implementation = ApiError.class))),
+                          schema = @Schema(implementation = ErrorResponse.class))),
           @ApiResponse(responseCode = "500", description = "서버 에러",
                   content = @Content(
                           mediaType = "application/json",
-                          schema = @Schema(implementation = ApiError.class)))
+                          schema = @Schema(implementation = ErrorResponse.class)))
   })
   @GetMapping("/{userId}/friends")
   public ResponseEntity<List<FriendShipResponse>> getFriendList(
@@ -246,11 +246,11 @@ public class MemberController {
           @ApiResponse(responseCode = "400", description = "변경 실패",
                   content = @Content(
                           mediaType = "application/json",
-                          schema = @Schema(implementation = ApiError.class))),
+                          schema = @Schema(implementation = ErrorResponse.class))),
           @ApiResponse(responseCode = "500", description = "서버 에러",
                   content = @Content(
                           mediaType = "application/json",
-                          schema = @Schema(implementation = ApiError.class)))
+                          schema = @Schema(implementation = ErrorResponse.class)))
   })
   @PatchMapping("/{userId}")
   public ResponseEntity<UsernameParam> updateMyUsername(

@@ -55,7 +55,7 @@ public class FriendService {
   public List<FriendShipResponse> removeFriend(Long memberId, Long friendId) {
 
     Member member = memberRepository.findById(memberId)
-            .orElseThrow(EntityNotFoundException::new);
+            .orElseThrow(MemberNotFoundException::new);
 
     boolean removed = member.getFriendShips().removeIf(friendShip -> friendShip.getFriendId().equals(friendId));
 
@@ -88,19 +88,22 @@ public class FriendService {
     FriendShip friendShip = friendShipRepository.findByMemberIdAndFriendId(memberId, friendId)
             .orElseThrow(FriendNotFoundException::new);
 
+    validateBestFriend(friendShip);
+
     friendShip.bestFriend();
 
     return getFriendList(memberId);
   }
 
-  private void validateBestFriend(List<FriendShip> findFriendShips, Long findIndex) {
-    FriendShip targetFriendShip = findFriendShips.stream()
-            .filter(friend -> friend.getFriendId().equals(findIndex))
-            .findFirst()
-            .orElseThrow(FriendNotFoundException::new);
-
-    if (targetFriendShip.getFriendStatus().equals(FriendStatus.BEST_FRIEND)) {
+  private void validateBestFriend(FriendShip friendShip) {
+    if (friendShip.getFriendStatus().equals(FriendStatus.BEST_FRIEND)) {
       throw new NowStatusBestException();
+    }
+  }
+
+  private void validateBlockFriend(FriendShip friendShip) {
+    if (friendShip.getFriendStatus().equals(FriendStatus.BLOCK)) {
+      throw new NowStatusBlockException();
     }
   }
 
@@ -109,6 +112,8 @@ public class FriendService {
 
     FriendShip friendShip = friendShipRepository.findByMemberIdAndFriendId(memberId, friendId)
             .orElseThrow(FriendNotFoundException::new);
+
+    validateBlockFriend(friendShip);
 
     friendShip.block();
 
@@ -177,6 +182,6 @@ public class FriendService {
 
   private Member getMember(Long memberId) {
     return memberRepository.findById(memberId)
-            .orElseThrow(EntityNotFoundException::new);
+            .orElseThrow(MemberNotFoundException::new);
   }
 }
