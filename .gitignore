@@ -1,7 +1,6 @@
 .gradle
 build/
 **/src/main/generated/
-**/src/test/
 application.properties
 oauth-key.properties
 

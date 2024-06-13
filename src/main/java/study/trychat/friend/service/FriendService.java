@@ -33,7 +33,9 @@ public class FriendService {
     if (memberInfoRepository.existsByUsername(username)) {
       Member findMember = getMember(memberId);
 
-      validateDuplicateFriend(findMember, username);
+      Long friendId = getFriendId(username);
+
+      validateDuplicateFriend(memberId, friendId);
 
       validateAddBySelf(findMember.getMemberInfo().getUsername(), username);
 
@@ -49,6 +51,12 @@ public class FriendService {
     }
 
     throw new NoSuchElementException("찾으시는 회원이 없습니다.");
+  }
+
+  private Long getFriendId(String username) {
+    MemberInfo memberInfo = memberInfoRepository.findByUsername(username)
+            .orElseThrow(FriendNotFoundException::new);
+    return memberInfo.getId();
   }
 
   @Transactional
@@ -163,8 +171,8 @@ public class FriendService {
     return findIndex;
   }
 
-  private void validateDuplicateFriend(Member member, String username) {
-    if (friendShipRepository.existsByMemberAndUsername(member, username) > 0) {
+  private void validateDuplicateFriend(Long memberId, Long friendId) {
+    if (friendShipRepository.existsByMemberIdAndFriendId(memberId, friendId)) {
       throw new DuplicateFriendByUserNameException();
     }
   }

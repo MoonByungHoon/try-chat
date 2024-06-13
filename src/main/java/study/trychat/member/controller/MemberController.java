@@ -44,7 +44,7 @@ public class MemberController {
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "회원가입 성공",
                   content = @Content(mediaType = "String")),
-          @ApiResponse(responseCode = "400", description = "회원가입 실패",
+          @ApiResponse(responseCode = "409", description = "이미 가입된 이메일",
                   content = @Content(
                           mediaType = "application/json",
                           schema = @Schema(implementation = ErrorResponse.class))),
@@ -202,12 +202,12 @@ public class MemberController {
                           mediaType = "application/json",
                           schema = @Schema(implementation = ErrorResponse.class)))
   })
-  @PutMapping(value = "/{userId}/profile", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+  @PutMapping(value = "/{userId}/profile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
           produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<MemberProfileResponse> updateMyProfile(
           @PathVariable
           @Schema(description = "사용자의 ID") final Long userId,
-          @Valid @RequestBody MemberProfileUpdateRequest profileUpdateRequest,
+          @Valid @RequestPart MemberProfileUpdateRequest profileUpdateRequest,
           @RequestPart(value = "files", required = false) Map<String, MultipartFile> files
   ) {
 

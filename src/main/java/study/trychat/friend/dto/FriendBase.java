@@ -3,7 +3,6 @@ package study.trychat.friend.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import study.trychat.friend.domain.FriendStatus;
 
 import static study.trychat.friend.dto.FriendBase.FriendNicknameUpdateRequest;
 import static study.trychat.friend.dto.FriendBase.FriendShipResponse;
@@ -36,7 +35,7 @@ public sealed interface FriendBase permits FriendNicknameUpdateRequest, FriendSh
           @Schema(description = "이미지 파일이 저장된 경로")
           String profileImgPath,
           @Schema(description = "친구 관계 상태")
-          FriendStatus friendStatus
+          String friendStatus
   ) implements study.trychat.friend.dto.FriendBase {
   }
 }
