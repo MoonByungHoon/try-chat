@@ -20,7 +20,10 @@ public enum ErrorMessage {
   S3_FILE_IS_NULL("파일이 존재하지 않습니다.", HttpStatus.BAD_REQUEST),
   S3_FILE_UPLOAD_FALSE("파일 업로드에 실패하였습니다.", HttpStatus.BAD_REQUEST),
   S3_FILE_DELETE_FALSE("파일 삭제에 실패하였습니다.", HttpStatus.BAD_REQUEST),
-  FRIEND_ADD_TARGET_ME("친구 추가 대상이 본인입니다.", HttpStatus.CONFLICT);
+  FRIEND_ADD_TARGET_ME("친구 추가 대상이 본인입니다.", HttpStatus.CONFLICT),
+  CHATROOM_ENTITY_NOT_FOUND("채팅방을 찾을 수 없습니다.", HttpStatus.CONFLICT),
+  CHATROOM_NOT_HOST("해당 채팅방의 수정 권한이 없습니다.", HttpStatus.BAD_REQUEST),
+  NOT_ROOM_MEMBER("해당 채팅방의 맴버가 아닙니다.", HttpStatus.CONFLICT);
 
   private final String message;
   private final HttpStatus status;
