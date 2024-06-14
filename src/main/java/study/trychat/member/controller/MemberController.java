@@ -61,7 +61,7 @@ public class MemberController {
   @Operation(summary = "로그인", description = "사용자 로그인")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "로그인 성공",
-                  content = @Content(mediaType = "String",
+                  content = @Content(mediaType = "application/json",
                           schema = @Schema(implementation = SignBase.SignUpRequest.class))),
           @ApiResponse(responseCode = "400", description = "로그인 실패",
                   content = @Content(
@@ -81,7 +81,7 @@ public class MemberController {
   @Operation(summary = "가입 정보 조회", description = "사용자의 가입 정보를 조회")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "조회 성공",
-                  content = @Content(mediaType = "String",
+                  content = @Content(mediaType = "application/json",
                           schema = @Schema(implementation = MemberBase.MemberResponse.class))),
           @ApiResponse(responseCode = "400", description = "조회 실패",
                   content = @Content(
@@ -147,7 +147,7 @@ public class MemberController {
   @Operation(summary = "유저 프로필 조회", description = "지정 대상의 프로필을 조회")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "조회 성공",
-                  content = @Content(mediaType = "String",
+                  content = @Content(mediaType = "application/json",
                           schema = @Schema(implementation = MemberProfileResponse.class))),
           @ApiResponse(responseCode = "400", description = "조회 실패",
                   content = @Content(
@@ -169,7 +169,7 @@ public class MemberController {
   @Operation(summary = "유저 프로필 조회", description = "유저의 프로필을 username으로 조회")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "조회 성공",
-                  content = @Content(mediaType = "String",
+                  content = @Content(mediaType = "application/json",
                           schema = @Schema(implementation = MemberProfileResponse.class))),
           @ApiResponse(responseCode = "400", description = "조회 실패",
                   content = @Content(
@@ -191,7 +191,7 @@ public class MemberController {
   @Operation(summary = "사용자 본인의 프로필 수정", description = "사용자 본인 프로필만 수정 요청 가능")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "수정 성공",
-                  content = @Content(mediaType = "String",
+                  content = @Content(mediaType = "application/json",
                           schema = @Schema(implementation = MemberProfileResponse.class))),
           @ApiResponse(responseCode = "400", description = "수정 실패",
                   content = @Content(

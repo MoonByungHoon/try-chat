@@ -14,7 +14,6 @@ import study.trychat.common.exception.ErrorResponse;
 import study.trychat.friend.dto.FriendBase.FriendNicknameUpdateRequest;
 import study.trychat.friend.dto.FriendBase.FriendShipResponse;
 import study.trychat.friend.service.FriendService;
-import study.trychat.member.dto.MemberBase;
 import study.trychat.member.dto.UsernameParam;
 
 import java.util.List;
@@ -30,8 +29,8 @@ public class FriendShipController {
   @Operation(summary = "친구 추가", description = "사용자가 대상의 username을 통해 친구 추가")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "친구 추가 성공",
-                  content = @Content(mediaType = "String",
-                          schema = @Schema(implementation = MemberBase.MemberProfileResponse.class))),
+                  content = @Content(mediaType = "application/json",
+                          schema = @Schema(implementation = FriendShipResponse.class))),
           @ApiResponse(responseCode = "400", description = "친구 추가 실패",
                   content = @Content(
                           mediaType = "application/json",
@@ -53,8 +52,8 @@ public class FriendShipController {
   @Operation(summary = "친구 프로필 조회", description = "사용자 친구 추가 되어 있는 대상의 프로필 조회")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "조회 성공",
-                  content = @Content(mediaType = "String",
-                          schema = @Schema(implementation = MemberBase.MemberProfileResponse.class))),
+                  content = @Content(mediaType = "application/json",
+                          schema = @Schema(implementation = FriendShipResponse.class))),
           @ApiResponse(responseCode = "400", description = "조회 실패",
                   content = @Content(
                           mediaType = "application/json",
@@ -77,8 +76,8 @@ public class FriendShipController {
   @Operation(summary = "친구 프로필 수정", description = "친구의 nickname 수정")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "수정 성공",
-                  content = @Content(mediaType = "String",
-                          schema = @Schema(implementation = MemberBase.MemberProfileResponse.class))),
+                  content = @Content(mediaType = "application/json",
+                          schema = @Schema(implementation = FriendShipResponse.class))),
           @ApiResponse(responseCode = "400", description = "수정 실패",
                   content = @Content(
                           mediaType = "application/json",
@@ -100,8 +99,8 @@ public class FriendShipController {
   @Operation(summary = "사용자의 친구 즐겨찾기", description = "즐겨찾기 설정(Best 관계)")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "변경 성공",
-                  content = @Content(mediaType = "String",
-                          schema = @Schema(implementation = MemberBase.MemberProfileResponse.class))),
+                  content = @Content(mediaType = "application/json",
+                          schema = @Schema(implementation = FriendShipResponse.class))),
           @ApiResponse(responseCode = "400", description = "변경 실패",
                   content = @Content(
                           mediaType = "application/json",
@@ -124,8 +123,8 @@ public class FriendShipController {
   @Operation(summary = "사용자의 친구 차단", description = "차단 설정(Block 관계)")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "변경 성공",
-                  content = @Content(mediaType = "String",
-                          schema = @Schema(implementation = MemberBase.MemberProfileResponse.class))),
+                  content = @Content(mediaType = "application/json",
+                          schema = @Schema(implementation = FriendShipResponse.class))),
           @ApiResponse(responseCode = "400", description = "변경 실패",
                   content = @Content(
                           mediaType = "application/json",
@@ -148,8 +147,8 @@ public class FriendShipController {
   @Operation(summary = "친구 삭제", description = "사용자 친구 추가 상태인 대상 친구 관계 해제")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "삭제 성공",
-                  content = @Content(mediaType = "String",
-                          schema = @Schema(implementation = MemberBase.MemberProfileResponse.class))),
+                  content = @Content(mediaType = "application/json",
+                          schema = @Schema(implementation = FriendShipResponse.class))),
           @ApiResponse(responseCode = "400", description = "삭제 실패",
                   content = @Content(
                           mediaType = "application/json",
